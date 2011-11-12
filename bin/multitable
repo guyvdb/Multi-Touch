@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# A quick bash script that sets up the LD_LIBRARY_PATH
+# and then launches the application
+#
+
+
+
+
+#APP=`basename $0 | sed s,\.run$,,`
+
+##
+# Find the bin directory
+##
+BIN_DIR=`dirname $0`
+TMP="${BIN_DIR#?}"
+
+if [ "${BIN_DIR%$TMP}" != "/" ]; then
+  BIN_DIR=$PWD/$BIN_DIR
+fi
+
+##
+# Find and export the lib directory
+##
+LIB_DIR="${BIN_DIR}./bin"
+LD_LIBRARY_PATH=$LIB_DIR
+export LD_LIBRARY_PATH
+
+
+##
+# Find and run the application 
+#
+# A command line option must be passed to the script.
+# It must be one of the following [dm, pc, table, editor].
+# This is used to determine which executable to launch
+##
+if [ $1 = "dm" ] ; then
+  $BIN_DIR/dm
+elif [ $1 = "pc" ] ; then
+  $BIN_DIR/pc
+elif [ $1 = "table" ] ; then
+  $BIN_DIR/table
+elif [ $1 = "editor" ] ; then
+  $BIN_DIR/tiled
+elif [ $1 = "view" ] ; then
+  $BIN_DIR/tmxviewer "$2"
+else
+  echo "-----------------------"
+  echo "Error. Invalid command"
+  echo "Usage: ${0} <command> <options>"
+  echo "   where command is [dm | pc | table | editor | view]"
+  echo "   example: ${0} gm"
+  echo "   only view takes an option"
+  echo "   example: ${0} view ../maps/test.tmx"
+  
+fi
+
+
+
+
+#$BIN_DIR/$APP "$@"
+
