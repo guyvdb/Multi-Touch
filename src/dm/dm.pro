@@ -9,15 +9,10 @@ QT       += core gui sql network
 TARGET = dm
 TEMPLATE = app
 
-
-# engine/GameEngine.cpp \
-
 SOURCES += main.cpp\
     forms/MainWindow.cpp \
     forms/CreateGameDialog.cpp \
     forms/NetworkSettingDialog.cpp
-
-# engine/GameEngine.h \
 
 HEADERS  += \
     forms/MainWindow.h \
@@ -29,13 +24,27 @@ FORMS    += \
     forms/CreateGameDialog.ui \
     forms/NetworkSettingDialog.ui
 
-
-
-DESTDIR += ../../bin
-
-LIBS += -L$$PWD/../../bin/ -lmt -ltiled -lqjson
+INCLUDEPATH += $$PWD/../../include
+DEPENDPATH += $$PWD/../../include
 
 INCLUDEPATH += $$PWD/../libmt
 DEPENDPATH += $$PWD/../libmt
+
+
+unix {
+  DESTDIR += ../../linux
+}
+
+
+win32 {
+  DESTDIR += ../../win32
+}
+
+
+LIBS += -L$$DESTDIR -lmt -ltiled -lqjson
+
+
+
+
 
 

@@ -17,9 +17,21 @@ HEADERS  +=
 FORMS    +=
 
 
-DESTDIR += ../../bin
 
-LIBS += -L$$PWD/../../bin/ -lmt -ltiled -lqjson
+INCLUDEPATH += $$PWD/../../include
+DEPENDPATH += $$PWD/../../include
 
-INCLUDEPATH += $$PWD/../libmt
-DEPENDPATH += $$PWD/../libmt
+
+unix {
+  DESTDIR += ../../linux
+}
+
+
+win32 {
+  DESTDIR += ../../win32
+}
+
+
+LIBS += -L$$DESTDIR -lmt -ltiled -lqjson
+
+

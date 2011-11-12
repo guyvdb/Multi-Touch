@@ -41,17 +41,27 @@ HEADERS +=\
     net/Discovery.h
 
 
-DESTDIR += ../../bin
-
-
-
-unix:!macx:!symbian: LIBS += -L$$PWD/../../bin/ -ltiled -lqjson
-
-INCLUDEPATH += $$PWD/../../include
-DEPENDPATH += $$PWD/../../include
-
 FORMS += \
     forms/DiscoveryDialog.ui
 
 OTHER_FILES += \
     ../../config/multitable.conf
+
+
+INCLUDEPATH += $$PWD/../../include
+DEPENDPATH += $$PWD/../../include
+
+
+unix {
+  DESTDIR += ../../linux
+}
+
+
+win32 {
+  DESTDIR += ../../win32
+}
+
+
+LIBS += -L$$DESTDIR -ltiled -lqjson
+
+
