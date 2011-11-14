@@ -13,21 +13,23 @@ DEFINES += LIBMTV_LIBRARY
 
 SOURCES += \
     Module.cpp \
-    Pipeline.cpp \
     Setting.cpp \
-    Factory.cpp\
     modules/CameraModule.cpp \
-    modules/DualCameraModule.cpp
+    ModuleFactory.cpp \
+    ModulePipeline.cpp \
+    modules/AmplifyModule.cpp \
+    modules/GrayScaleModule.cpp
 
 
 HEADERS +=\
            libmtv_global.h \
     Module.h \
-    Pipeline.h \
     Setting.h \
-    Factory.h \
     modules/CameraModule.h \
-    modules/DualCameraModule.h
+    ModuleFactory.h \
+    ModulePipeline.h \
+    modules/AmplifyModule.h \
+    modules/GrayScaleModule.h
 
 
 CONFIG   -= app_bundle

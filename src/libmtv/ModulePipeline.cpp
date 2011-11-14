@@ -1,115 +1,108 @@
-#include "Module.h"
+#include "ModulePipeline.h"
+
 
 namespace mtv {
 
   /* -------------------------------------------------------------------------------------------
-   * Default constructor
+   * Get the one and only instance
    * ------------------------------------------------------------------------------------------- */
-  Module::Module() : QObject()
-  {
-    this->setSetting("threaded",false);
+  ModulePipeline* ModulePipeline::instance() {
+    if(pipeline == 0x0) {
+      pipeline = new ModulePipeline();
+    }
+    return pipeline;
   }
 
   /* -------------------------------------------------------------------------------------------
-   * Destructor
+   * Free the pipeline
    * ------------------------------------------------------------------------------------------- */
-  Module::~Module() {
+  void ModulePipeline::free() {
+    if(pipeline) delete pipeline;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   * Private constructor
+   * ------------------------------------------------------------------------------------------- */
+  ModulePipeline::ModulePipeline() {
 
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * Get the last error message
    * ------------------------------------------------------------------------------------------- */
-  QString Module::getName() {
-    return this->name;
+  QString ModulePipeline::getLastError() const {
+    return this->lastError;
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * Enabel a module
    * ------------------------------------------------------------------------------------------- */
-  void Module::setName(const QString name) {
-    this->name = name;
+  bool ModulePipeline::enableModule(Module* module) {
+    /*Module *existing = this->getNamedModule(module->getName());
+    if(existing == 0x0) {
+      this->modules.append(module);
+      return true;
+    } else {
+      this->lastError = "Module ";
+    }*/
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * Enabel a module
    * ------------------------------------------------------------------------------------------- */
-  bool Module::isCapable(int flag) {
-    return this->capabilities() & flag;
+  bool ModulePipeline::enableModule(const QString name) {
+
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * disabel a module
    * ------------------------------------------------------------------------------------------- */
-  bool Module::isInputOnly() {
-    return (this->isCapable(CAPINPUT) && !this->isCapable(CAPOUTPUT));
+  bool ModulePipeline::disableModule(Module* module) {
+
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * disabel a module
    * ------------------------------------------------------------------------------------------- */
-  bool Module::isOutputOnly() {
-     return (this->isCapable(CAPOUTPUT) && !this->isCapable(CAPINPUT));
+  bool ModulePipeline::disableModule(const QString name) {
+
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * get list of active modules - make a copy
    * ------------------------------------------------------------------------------------------- */
-  bool Module::hasSetting(const QString name) {
-    return this->settings.contains(name);
+  void ModulePipeline::getModules(QList<Module*> &result) {
+
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * get the first module in the pipeline
    * ------------------------------------------------------------------------------------------- */
-  QVariant Module::getSetting(const QString name) {
-    if(!this->settings.contains(name)) return 0x0;
-    return this->settings[name];
+  Module *ModulePipeline::getFirstEnabledModule() {
+
   }
 
   /* -------------------------------------------------------------------------------------------
-   *
+   * get the last module in the pipeline
    * ------------------------------------------------------------------------------------------- */
-  void Module::setSetting(const QString name, QVariant value) {
-    this->settings[name] = value;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  QVariant Module::getSettingDescription(const QString name) {
-    if(!this->settingDescriptions.contains(name)) return 0x0;
-    return this->settingDescriptions[name];
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  void Module::setSettingDescription(const QString name, QVariant value) {
-    this->settingDescriptions[name] = value;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  bool Module::chain(Module* module) {
-
-  }
-
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  bool Module::unchain(Module *module) {
+  Module *ModulePipeline::getLastEnabledModule() {
 
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Module::frameReady(Module* module, const QString &name) {
-
+  Module *ModulePipeline::getNamedModule(const QString name) {
+    /*
+    foreach(Module* module, this->modules) {
+      if(module->name() == name) return module;
+    }
+    return 0x0;
+    */
   }
+
+
+
 
 
 }

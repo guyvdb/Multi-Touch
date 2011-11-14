@@ -1,19 +1,19 @@
 #include "CameraModule.h"
 #include <QDebug>
+
+
 namespace mtv {
-    CameraModule::CameraModule() : Module(CAPOUTPUT | CAPGUI)
+
+    CameraModule::CameraModule() : Module()
     {
     }
 
-
-    QString CameraModule::name() const {
-      return "camera";
+    int CameraModule::capabilities() const {
+        return (Module::CAPOUTPUT | Module::CAPGUI);
     }
 
-    void CameraModule::hello() {
-        qDebug() << "Hello from the camera module";
+    void CameraModule::frame(Module *module, const QString &name) {
     }
-
 
 }
 

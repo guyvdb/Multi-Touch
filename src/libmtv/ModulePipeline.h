@@ -30,20 +30,42 @@
 #include <QObject>
 
 #include "libmtv_global.h"
+#include "Module.h"
 
 namespace mtv {
 
-  class LIBMTV_EXPORT Pipeline : public QObject
+  class LIBMTV_EXPORT ModulePipeline : public QObject
   {
       Q_OBJECT
   public:
-      Pipeline(QObject *parent = 0);
+    static ModulePipeline* instance();
+    static void free();
 
-  signals:
+    bool enableModule(Module* module);                    // enable a module
+    bool enableModule(const QString name);                // enable a module
+    bool disableModule(Module* module);                   // disable a module - will disable all modules down the chain
+    bool disableModule(const QString name);               // disable a module
 
-  public slots:
+    void getModules(QList<Module*> &result);              // return a list of enabled modules
+    QString getLastError() const;
+  private:
+    ModulePipeline();
+    ModulePipeline(const ModulePipeline &copy ){}
+    void operator = (const ModulePipeline &factory){}
+
+    bool hasOutputOnlyModule();
+    bool hasInputOnlyModule();
+    Module *getFirstEnabledModule();
+    Module *getLastEnabledModule();
+
+    Module* getNamedModule(const QString name);
+
+    QList<Module*> modules;
+    QString lastError;
 
   };
+
+  static ModulePipeline* pipeline = 0x0;
 
 }
 

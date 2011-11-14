@@ -70,6 +70,13 @@
 #include "Setting.h"
 
 
+
+#define MODULE_DECLAR(name, module) \
+   qDebug << #name;
+
+
+
+
 namespace mtv {
 
 
@@ -86,13 +93,16 @@ namespace mtv {
       };
 
 
-      Module(int capabilities);
+      Module();
       ~Module();
 
       /* must be overridden by implementing classes */
-      virtual void hello() = 0;
-      virtual QString name() const = 0;
       virtual void frame(Module *module, const QString &name) = 0;
+      virtual int capabilities() const = 0;
+
+      /* name */
+      QString getName();
+      void setName(const QString name);
 
       /* capabilities */
       bool isCapable(int flag);
@@ -116,7 +126,7 @@ namespace mtv {
   private:
       QHash<QString, QVariant> settings;
       QHash<QString, QVariant> settingDescriptions;
-      int capabilities;
+      QString name;
   signals:
       void sendFrameReady(Module* module, const QString &name);
 

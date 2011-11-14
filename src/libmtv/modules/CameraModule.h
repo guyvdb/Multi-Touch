@@ -1,8 +1,12 @@
 #ifndef CAMERAMODULE_H
 #define CAMERAMODULE_H
 
+#include <QMetaType>
+#include "ModuleFactory.h"
 #include "Module.h"
 #include "libmtv_global.h"
+
+
 
 namespace mtv {
 
@@ -10,12 +14,13 @@ namespace mtv {
     {
       Q_OBJECT
     public:
-      CameraModule();
-      ~CameraModule();
-      virtual void hello();
-      virtual QString name() const;
+      Q_INVOKABLE CameraModule();
+      virtual void frame(Module *module, const QString &name);
+      virtual int capabilities() const;
     };
 }
+
+
 
 
 #endif // CAMERAMODULE_H
