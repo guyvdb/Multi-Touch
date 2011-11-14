@@ -9,6 +9,12 @@
 #include "libmt_global.h"
 
 #include "net/Discovery.h"
+#include "net/TcpServer.h"
+#include "net/TcpClient.h"
+#include "net/UdpServer.h"
+#include "net/UdpClient.h"
+
+
 #include "settings/Settings.h"
 
 namespace MT {
@@ -42,15 +48,34 @@ namespace MT {
         void networkDiscoveryComplete();
     private slots:
         void OnNetworkDiscovered(const QString host, int tcpPort, int udpPort);
-
+        void processDatagram();
     private:
+
+        void startServer();
+        void stopServer();
+        void startClient();
+        void stopClient();
+
         Settings *settings;
         GameMode mode;
-        Discovery *networkDiscovery;
+        Discovery *discovery;
+        QUdpSocket *datagram;
 
         QString host;
         int tcpPort;
         int udpPort;
+
+
+
+        /*TcpServer *tcpServer;
+        TcpClient *tcpClient;
+        UdpServer *udpServer;
+        UdpClient *udpClient;*/
+
+
+
+
+
 
     };
 

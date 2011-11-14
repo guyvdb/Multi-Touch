@@ -4,11 +4,6 @@
 # and then launches the application
 #
 
-
-
-
-#APP=`basename $0 | sed s,\.run$,,`
-
 ##
 # Find the bin directory
 ##
@@ -22,7 +17,7 @@ fi
 ##
 # Find and export the lib directory
 ##
-LIB_DIR="${BIN_DIR}./bin"
+LIB_DIR="${BIN_DIR}./linux"
 LD_LIBRARY_PATH=$LIB_DIR
 export LD_LIBRARY_PATH
 

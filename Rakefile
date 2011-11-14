@@ -3,15 +3,17 @@ ROOT = File.dirname(__FILE__)
 
 task :clean do
 
-  patterns = [
+  # files
+  files = [
     "**/Makefile",
-    "bin/libmt.*",
-    "bin/pc",
-    "bin/dm",
-    "bin/table",
-    "bin/tiled",
-    "bin/tmxviewer",
-    "bin/*.so*",
+    "linux/libmt.*",
+    "linux/pc",
+    "linux/dm",
+    "linux/table",
+    "linux/tiled",
+    "linux/tmxviewer",
+    "linux/tuio",
+    "linux/*.so*",
     "build/*",
     "contrib/qjson/build/*",
     "contrib/tiled/bin/*",
@@ -21,12 +23,16 @@ task :clean do
     "**/*~"
   ]
 
-  patterns.each do |p|
+  files.each do |p|
     pattern = File.join(ROOT,p)
     Dir.glob(pattern).each do |file|
       system("rm -rf #{file}")
     end
-
   end
+
+  #directories
+  dirs = [
+    "/contrib/tiled/build"
+  ]
 
 end

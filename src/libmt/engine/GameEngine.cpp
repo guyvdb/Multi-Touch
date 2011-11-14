@@ -1,5 +1,5 @@
 #include "GameEngine.h"
-
+#include "message/Message.h"
 
 namespace MT {
 
@@ -9,7 +9,14 @@ namespace MT {
     GameEngine::GameEngine(Settings *settings,  GameEngine::GameMode mode, QObject *parent) : QObject(parent), settings(settings), mode(mode)
     {
       // set all pointers to null
-      this->networkDiscovery = 0x0;
+      this->discovery = 0x0;
+      this->datagram = 0x0;
+      /*
+      this->tcpServer = 0x0;
+      this->tcpClient = 0x0;
+      this->udpServer = 0x0;
+      this->udpClient = 0x0;
+      */
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -17,7 +24,14 @@ namespace MT {
      * ------------------------------------------------------------------------------------------- */
     GameEngine::~GameEngine() {
       // delete anything created
-      delete this->networkDiscovery;
+      delete this->discovery;
+      delete this->datagram;
+      /*
+      delete this->tcpServer;
+      delete this->tcpClient;
+      delete this->udpServer;
+      delete this->udpClient;
+      */
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -29,12 +43,11 @@ namespace MT {
 
       switch(this->mode) {
       case GameServer:
-        this->networkDiscovery = new Discovery(Discovery::Transmitter, this->settings);
+        this->startServer();
         break;
       case GameTable:
       case GameClient:
-        this->networkDiscovery = new Discovery(Discovery::Receiver, this->settings);
-        this->connect(this->networkDiscovery,SIGNAL(discovered(QString,int,int)),this,SLOT(OnNetworkDiscovered(QString,int,int)));
+        this->startClient();
         break;
       }
     }
@@ -43,9 +56,69 @@ namespace MT {
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::stop() {
-      delete this->networkDiscovery;
-      this->networkDiscovery = 0x0;
+      switch(this->mode) {
+      case GameServer:
+        this->stopServer();
+        break;
+      case GameTable:
+      case GameClient:
+        this->stopClient();
+        break;
+      }
     }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::startServer() {
+      // startup tcp and udp before we broadcast discovery
+
+
+      // clients get network configuration from discovery
+      // servers need to look it up from config
+      QVariantMap network = this->settings->getMap()->value("network").toMap();
+      QVariantMap ports = network.value("ports").toMap();
+
+      this->host = network.value("server").toString();
+      this->udpPort = ports.value("udp").toInt();
+      this->tcpPort = ports.value("tcp").toInt();
+
+      // start listening on UDPdatagram
+      this->datagram = new QUdpSocket();
+      QHostAddress address(this->host);
+
+      this->connect(this->datagram,SIGNAL(readyRead()), this, SLOT(processDatagram()));
+      this->datagram->bind(address,this->udpPort,QUdpSocket::DontShareAddress);
+
+
+      // start broadcasting discovery packets
+      this->discovery = new Discovery(Discovery::Transmitter, this->settings);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::stopServer() {
+      delete this->discovery;
+      this->discovery = 0x0;
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::startClient() {
+      this->discovery = new Discovery(Discovery::Receiver, this->settings);
+      this->connect(this->discovery,SIGNAL(discovered(QString,int,int)),this,SLOT(OnNetworkDiscovered(QString,int,int)));
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::stopClient() {
+      delete this->discovery;
+      this->discovery = 0x0;
+    }
+
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -54,8 +127,24 @@ namespace MT {
       this->host = host;
       this->tcpPort = tcpPort;
       this->udpPort = udpPort;
-      this->networkDiscovery->deleteLater();
+      this->discovery->deleteLater();
       emit networkDiscoveryComplete();
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     * A datagram has arrived
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::processDatagram() {
+      qDebug() << "[UDP] receive";
+      while(this->datagram->hasPendingDatagrams()) {
+          QByteArray buffer;
+          buffer.resize(this->datagram->pendingDatagramSize());
+          this->datagram->readDatagram(buffer.data(), buffer.size());
+          Message::packet_t packet = Message::decode(buffer);
+          if(packet.ok) {
+            qDebug() << "PACKET: " << packet.type;
+          }
+      }
     }
 
 }

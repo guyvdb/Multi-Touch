@@ -109,7 +109,6 @@ namespace MT {
               Q_ASSERT(false); //should never get here
             }
           }
-
       }
     }
 

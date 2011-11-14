@@ -23,7 +23,11 @@ SOURCES += \
     engine/GameEngine.cpp \
     settings/Settings.cpp \
     message/Message.cpp \
-    net/Discovery.cpp
+    net/Discovery.cpp \
+    net/TcpServer.cpp \
+    net/UdpServer.cpp \
+    net/TcpClient.cpp \
+    net/UdpClient.cpp
 
 HEADERS +=\
         libmt_global.h \
@@ -38,7 +42,11 @@ HEADERS +=\
     engine/GameEngine.h \
     settings/Settings.h \
     message/Message.h \
-    net/Discovery.h
+    net/Discovery.h \
+    net/TcpServer.h \
+    net/UdpServer.h \
+    net/TcpClient.h \
+    net/UdpClient.h
 
 
 FORMS += \
@@ -63,5 +71,3 @@ win32 {
 
 
 LIBS += -L$$DESTDIR -ltiled -lqjson
-
-
