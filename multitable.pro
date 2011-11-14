@@ -4,4 +4,6 @@ SUBDIRS     =     src/libmt \
                   src/table \
                   src/dm \
                   src/libofqf \
-                  src/tuio
+                  src/tuio \
+    src/libmtv \
+    src/pipeline

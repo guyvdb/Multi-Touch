@@ -13,10 +13,12 @@ task :clean do
     "linux/tiled",
     "linux/tmxviewer",
     "linux/tuio",
+    "linux/pipeline",
     "linux/*.so*",
     "build/*",
     "contrib/qjson/build/*",
     "contrib/tiled/bin/*",
+    "contrib/qjson/CMakeLists.txt.user",
     "**/*.o",    
     "**/moc_*",    
     "**/ui_*",
@@ -32,7 +34,14 @@ task :clean do
 
   #directories
   dirs = [
-    "/contrib/tiled/build"
+    "contrib/tiled/build",
+    "contrib/qjson/build"
   ]
+
+  dirs.each do |d|
+    name = File.join(ROOT,d)
+    system("rm -rf #{name}") if File.directory?(name)
+  end
+  
 
 end
