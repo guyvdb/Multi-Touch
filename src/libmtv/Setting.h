@@ -1,83 +1,94 @@
-/* -------------------------------------------------------------------------------------------
- *                                  M U L T I - T A B L E
- *  -------------------------------------------------------------------------------------------
- *                               Copyright 2011 Guy van den Berg
- *                                      All Rights Reserved
- * ------------------------------------------------------------------------------------------- */
+#ifndef PROPERTY_H
+#define PROPERTY_H
 
-/*
-  A setting is a variable used in a module that is adjustable by some external code.
-
- */
-
-#ifndef SETTING_H
-#define SETTING_H
-
-#include<QVariant>
 #include <QObject>
-#include <QString>
-#include <QList>
+#include "libmtv_global.h"
 
 namespace mtv {
 
-  class FrameMatrixInfo {
+  class Module;
 
-  };
-
-
-  class Setting : public QObject
+  class LIBMTV_EXPORT Setting : public QObject
   {
-    Q_OBJECT
+      Q_OBJECT
   public:
-      enum SETTING_DATATYPE {
-        SETTING_NONE,
-        SETTING_BOOL,
-        SETTING_STRING,
-        SETTING_DOUBLE,
-        SETTING_POINTLIST,
-        SETTING_FRAME
+      enum PropertyType {
+          NONE,
+          BOOLEAN,
+          STRING,
+          INTEGER,
+          DOUBLE,
+          POINTLIST,
+          FRAME
       };
 
+      Setting(const QString name);
+      Setting(const QString name, bool value);
       Setting(const QString name, const QString value);
       Setting(const QString name, int value);
-      Setting(const QString  name, bool value);
       Setting(const QString name, double value);
-      ~Setting();
+      Setting(const QString name, Module *module, const QString frameName);
 
-      void setValue(QVariant value);
-      QVariant getValue();
-
-
-
-      SETTING_DATATYPE getDataType();
-      void setDataType(SETTING_DATATYPE type);
-
-      void setReadOnly(bool value);
       bool isReadOnly();
+      void setReadOnly(bool value);
 
-      void setIsFrameMatrix(bool value);
-      bool isFrameMatrix();
-
-      void setFrameMatrixInfo(mtv::FrameMatrixInfo info);
-      mtv::FrameMatrixInfo getFrameMatrixInfo;
-
-
-      bool haveMin();
-      bool haveMax();
+      bool hasMin();
+      void setHasMin(bool value);
       int getMin();
       void setMin(int value);
+
+      bool hasMax();
+      void setHasMax(bool value);
       int getMax();
       void setMax(int value);
 
 
-  signals:
-      void changed(Setting &setting);
+      void set(const QString value);
+      void set(bool value);
+      void set(int value);
+      void set(double value);
+      void set(Module*module, const QString frameName);
 
+      bool asBool();
+      QString asString();
+      double asDouble();
+      int asInteger();
+
+      Module * getModule();
+      QString getFrameName() const;
+      QString getName() const;
+
+      //void hookModule(const char *amember, Qt::ConnectionType atype);  // hook the modules frameReady event to amember, atype
+      //void unhookModule(const char *amember, Qt::ConnectionType atype);// unhook the modules frameReady event from amember, atype
+
+  signals:
+      void beforeSettingChanged(mtv::Setting *setting);
+      void afterSettingChanged(mtv::Setting *setting);
   private:
-      QVariant value;
+    PropertyType type;
+    QString name;
+    QString frameName;
+
+    bool bValue;
+    QString sValue;
+    int iValue;
+    double dValue;
+    Module* mValue;
+
+    bool readOnly;
+    bool hasMaxValue;
+    bool hasMinValue;
+    int maxValue;
+    int minValue;
+
+
+    void init();
+
+  signals:
+
+  public slots:
 
   };
 
 }
-
-#endif // SETTING_H
+#endif // PROPERTY_H

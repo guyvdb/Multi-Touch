@@ -5,7 +5,8 @@
  *                                      All Rights Reserved
  * ------------------------------------------------------------------------------------------- */
 
-#include "ModuleFactory.h"
+#include <QStringList>
+#include "PipelineFactory.h"
 
 // Add you module include file here in alphabetical order
 //-------------------------------------------------------
@@ -15,12 +16,12 @@
 
 namespace mtv {
 
-  // Add you module include file here in alphabetical order
+  // Add your module here in alphabetical order
   //-------------------------------------------------------
-  void ModuleFactory::defineModules() {
-    define("amplify",         AmplifyModule::staticMetaObject);
-    define("camera",          CameraModule::staticMetaObject);
-    define("gray-scale",      GrayScaleModule::staticMetaObject);
+  void PipelineFactory::defineModules() {
+    define("amplify",         new AmplifyModuleFactory());
+    define("camera",          new CameraModuleFactory());
+    define("gray-scale",      new GrayScaleModuleFactory());
   }
 
 
@@ -40,61 +41,67 @@ namespace mtv {
    * D O   N O T   E D I T   B E L O W   H E R E
    * ****************************************************************************************** */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /* -------------------------------------------------------------------------------------------
-   * Get the one and only instance of the Singelton factory
-   * ------------------------------------------------------------------------------------------- */
-  ModuleFactory* ModuleFactory::instance() {
-    if(factory == 0x0) {
-      factory = new ModuleFactory();
-      factory->defineModules();
-    }
-    return factory;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   * Free the factor instance .. if it exists
-   * ------------------------------------------------------------------------------------------- */
-  void ModuleFactory::free() {   
-    if(factory) {
-      delete factory;
-    }
-  }
-
   /* -------------------------------------------------------------------------------------------
    * free all of the registered modules
    * ------------------------------------------------------------------------------------------- */
-  ModuleFactory::~ModuleFactory() {
+  PipelineFactory::~PipelineFactory() {
     //foreach(Module* module, this->modules) delete module; // TODO notify modules with a #stop();
   }
 
   /* -------------------------------------------------------------------------------------------
    * Private constructor
    * ------------------------------------------------------------------------------------------- */
-  ModuleFactory::ModuleFactory() {
-
+  PipelineFactory::PipelineFactory() {
+    this->defineModules();    
   }
 
   /* -------------------------------------------------------------------------------------------
    * Register a module. Only one input-only module allowed. Only one output-only module allowed
    * ------------------------------------------------------------------------------------------- */
-  void ModuleFactory::define(const QString name, QMetaObject obj){
+  void PipelineFactory::define(const QString name, ModuleFactory *factory){
     Q_ASSERT(!this->modules.contains(name));
-    this->modules[name] = obj;
+    this->modules[name] = factory;
   }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QStringList PipelineFactory::listModules() {
+    QStringList result;
+    QHash<QString, ModuleFactory*>::iterator i;
+    for(i=this->modules.begin(); i != this->modules.end(); i++) {
+      result << i.key();
+    }
+    return result;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QString PipelineFactory::getLastError() const {
+    return this->lastError;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  Module* PipelineFactory::createInstance(const QString moduleName, const QString instanceName) {
+    if(this->modules.contains(moduleName)) {
+      ModuleFactory *f = this->modules[moduleName];
+      Module *module = f->createInstance();
+      if(module) {
+        module->setting("instance")->set(instanceName);
+        return module;
+      } else {
+        this->lastError = "Could not construct an instance of the module. Is the factory correct?";
+        return 0x0;
+      }
+    } else {
+      this->lastError = "Modules '" + moduleName + "' is not a defined module";
+      return 0x0;
+    }
+  }
+
 
   /* -------------------------------------------------------------------------------------------
    * Make a copy of the module list

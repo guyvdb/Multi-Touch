@@ -2,7 +2,11 @@
 #define CAMERAMODULE_H
 
 #include <QMetaType>
-#include "ModuleFactory.h"
+
+
+#include <opencv2/opencv.hpp>
+
+
 #include "Module.h"
 #include "libmtv_global.h"
 
@@ -12,12 +16,38 @@ namespace mtv {
 
     class LIBMTV_EXPORT CameraModule : public Module
     {
-      Q_OBJECT
-    public:
-      Q_INVOKABLE CameraModule();
-      virtual void frame(Module *module, const QString &name);
+    public:      
+      CameraModule();
+
+      /* capabilities of this module */
       virtual int capabilities() const;
+
+      /* start and stop this module */
+      virtual void start();
+      virtual void stop();
+
+    protected:
+
+      /* tick */
+      virtual void tick();
+
+    protected slots:
+      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) {}
+
+    private:
+      bool running;
+      QTimer *timer;
+      cv::VideoCapture *capture;
+      cv::Mat frame;
+
     };
+
+
+    class CameraModuleFactory : public ModuleFactory {
+    public:
+      virtual Module* createInstance() {return qobject_cast<Module*>(new CameraModule()); }
+    };
+
 }
 
 

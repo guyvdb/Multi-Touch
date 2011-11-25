@@ -6,11 +6,16 @@
 
 
 SOURCES += main.cpp\
-        PipelineEditorWindow.cpp
+        PipelineEditorWindow.cpp \
+    VideoWidget.cpp \
+    AddModuleDialog.cpp
 
-HEADERS  += PipelineEditorWindow.h
+HEADERS  += PipelineEditorWindow.h \
+    VideoWidget.h \
+    AddModuleDialog.h
 
-FORMS    += PipelineEditorWindow.ui
+FORMS    += PipelineEditorWindow.ui \
+    AddModuleDialog.ui
 
 
 CONFIG   -= app_bundle
@@ -32,4 +37,3 @@ win32 {
   DESTDIR += ../../win32
   LIBS += -L$$DESTDIR  -lqjson
 }
-
