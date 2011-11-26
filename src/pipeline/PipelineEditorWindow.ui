@@ -180,7 +180,7 @@
         <string/>
        </property>
       </widget>
-      <widget class="QLabel" name="amplify">
+      <widget class="QLabel" name="image2">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -199,7 +199,7 @@
         <string/>
        </property>
       </widget>
-      <widget class="QLabel" name="grayScale">
+      <widget class="QLabel" name="image3">
        <property name="geometry">
         <rect>
          <x>360</x>

@@ -2,6 +2,8 @@
 #include <QDebug>
 
 #include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+
 
 
 namespace mtv {
@@ -28,9 +30,8 @@ namespace mtv {
 
     void SimpleIOModule::OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) {
       if(name == this->setting("input")->getFrameName()) {
-          if(this->process(module, name, matrix)) {
-              emit frameReady(this, this->outputName(), this->frame);
-          }
+        cv::Mat &output = this->process(module,name, matrix);
+        emit frameReady(this, this->outputName(), output);
       }
     }
 
@@ -48,6 +49,20 @@ namespace mtv {
           this->connect(setting->getModule(),SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrame(mtv::Module*,QString,cv::Mat&)));
         }
       }
+    }
+
+    void SimpleIOModule::save(cv::Mat &frame) {
+      // debug method
+      QString file = "/home/guy/Projects/Current/multitable/output/";
+      file.append(this->outputName());
+      file.append(".jpg");
+
+      qDebug() << "SAVE: " << file;
+
+      std::string path(file.toAscii().constData());
+
+      cv::imwrite(path, frame);
+
     }
 
 }

@@ -21,7 +21,10 @@ SOURCES += \
     PipelineFactory.cpp \
     PipelineSingleton.cpp \
     Setting.cpp \
-    SimpleIOModule.cpp
+    SimpleIOModule.cpp \
+    modules/CannyModule.cpp \
+    modules/ErodeModule.cpp \
+    modules/DilateModule.cpp
 
 
 HEADERS +=\
@@ -35,7 +38,10 @@ HEADERS +=\
     DataType.h \
     PipelineFactory.h \
     Setting.h \
-    SimpleIOModule.h
+    SimpleIOModule.h \
+    modules/CannyModule.h \
+    modules/ErodeModule.h \
+    modules/DilateModule.h
 
 
 CONFIG   -= app_bundle

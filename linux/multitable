@@ -39,6 +39,8 @@ elif [ $1 = "editor" ] ; then
   $BIN_DIR/tiled
 elif [ $1 = "view" ] ; then
   $BIN_DIR/tmxviewer "$2"
+elif [ $1 = "pipeline" ] ; then
+  $BIN_DIR/pipeline
 else
   echo "-----------------------"
   echo "Error. Invalid command"

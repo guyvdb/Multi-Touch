@@ -2,7 +2,7 @@
 #define CAMERAMODULE_H
 
 #include <QMetaType>
-
+#include <QTime>
 
 #include <opencv2/opencv.hpp>
 
@@ -38,7 +38,8 @@ namespace mtv {
       bool running;
       QTimer *timer;
       cv::VideoCapture *capture;
-      cv::Mat frame;
+      QTime time;
+      int frames;
 
     };
 

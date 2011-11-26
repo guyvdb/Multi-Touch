@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline name="default">
+
+  <!-- video input -->
+  <module name="video0" type="camera">
+    <setting name="device" type="integer" value="0"/>
+    <setting name="fps" type="integer" value="100"/>
+  </module>
+
+  <!-- gray scale -->
+  <module name="grayscale" type="grayscale">
+    <setting name="input" type="frame" value="video0:OUTPUT" />
+  </module>
+
+  <!-- erode -->
+  <module name="erode" type="erode">
+    <setting name="input" type="frame" value="grayscale:OUTPUT">
+  </module>
+
+</pipeline>

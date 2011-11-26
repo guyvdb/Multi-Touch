@@ -26,11 +26,14 @@ namespace mtv {
       /* tick */
       virtual void tick() {}
 
-      virtual bool process(mtv::Module* module, const QString name, cv::Mat &matrix) = 0;
+      virtual cv::Mat &process(mtv::Module* module, const QString name, cv::Mat &matrix) = 0;
       virtual QString outputName() = 0;
 
-    private:
-      cv::Mat frame;
+
+      void save(cv::Mat &frame);
+
+      cv::Mat output;
+
 
     protected slots:
       virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);

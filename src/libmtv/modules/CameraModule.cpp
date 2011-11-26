@@ -12,14 +12,8 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     CameraModule::CameraModule() : Module() {
-      //this->setProp("threaded",true);
-      //this->addProp("device",0);
-      //this->addProp("fps",2);
-
       this->setting("device")->set(0);
-      this->setting("fps")->set(0);
-
-
+      this->setting("fps")->set(0);      
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -33,12 +27,13 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     void CameraModule::start() {
-
-
-
       int device = this->setting("device")->asInteger(); //   getProp("device")->getValue().toInt();
       int fps =  this->setting("fps")->asInteger(); // getProp("fps")->getValue().toInt();
       int frequency = 1000 / fps;
+
+      this->frames = 0;
+      this->time.start();
+
 
       qDebug() << "Starting device:" << device << " at " << fps << "fps";
 
@@ -62,9 +57,16 @@ namespace mtv {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void CameraModule::tick() {     
-      *this->capture >> this->frame;
-      emit frameReady(this, "RAW", this->frame);
+    void CameraModule::tick() {
+      cv::Mat frame;
+      *this->capture >> frame;
+
+
+      if(frame.data != 0x0) {
+        emit frameReady(this, "OUTPUT", frame);
+      } else {
+        qDebug() << ".";
+      }
     }
 }
 

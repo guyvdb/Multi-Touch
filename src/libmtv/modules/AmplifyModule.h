@@ -2,37 +2,18 @@
 #define AMPLIFYMODULE_H
 
 #include "libmtv_global.h"
-#include "Module.h"
+#include "SimpleIOModule.h"
 
 
 namespace mtv {
 
-    class LIBMTV_EXPORT AmplifyModule : public Module
+    class LIBMTV_EXPORT AmplifyModule : public SimpleIOModule
     {
     public:
-      /* dynamically invokable constructor */
       AmplifyModule();
-
-      /* capabilities of this module */
-      virtual int capabilities() const;
-
-      /* start and stop this module */
-      virtual void start();
-      virtual void stop();
-
     protected:
-      /* tick */
-      virtual void tick() {}
-
-    private:
-      cv::Mat frame;
-
-    protected slots:
-      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);
-    private slots:
-
-      void OnBeforeInputChanged(mtv::Setting *setting);
-      void OnAfterInputChanged(mtv::Setting *setting);
+      virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
+      virtual QString outputName();
     };
 
     class AmplifyModuleFactory : public ModuleFactory {

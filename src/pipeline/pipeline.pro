@@ -17,6 +17,8 @@ HEADERS  += PipelineEditorWindow.h \
 FORMS    += PipelineEditorWindow.ui \
     AddModuleDialog.ui
 
+OTHER_FILES += \
+    ../../config/pipelin.xml
 
 CONFIG   -= app_bundle
 

@@ -12,7 +12,11 @@
 //-------------------------------------------------------
 #include "modules/AmplifyModule.h"
 #include "modules/CameraModule.h"
+#include "modules/CannyModule.h"
+#include "modules/DilateModule.h"
+#include "modules/ErodeModule.h"
 #include "modules/GrayScaleModule.h"
+
 
 namespace mtv {
 
@@ -21,7 +25,10 @@ namespace mtv {
   void PipelineFactory::defineModules() {
     define("amplify",         new AmplifyModuleFactory());
     define("camera",          new CameraModuleFactory());
-    define("gray-scale",      new GrayScaleModuleFactory());
+    define("canny",           new CannyModuleFactory());
+    define("dilate",          new DilateModuleFactory());
+    define("erode",           new ErodeModuleFactory());
+    define("grayscale",       new GrayScaleModuleFactory());
   }
 
 
