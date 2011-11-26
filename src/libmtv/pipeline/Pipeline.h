@@ -38,23 +38,29 @@ namespace mtv {
     Module *getModule(const QString moduleName, const QString instanceName);
     bool instanceExists(const QString moduleName, const QString instanceName);
     QList<ModuleError*> getModuleErrors();
+    void listModules(QList<Module*> &result);
+
+    QString getName();
+    void setName(const QString value);
+
     bool start();
     void stop();
+    bool isRunning();
+    void clear();
   private:
 
     Pipeline(const Pipeline &copy ){}
     void operator = (const Pipeline &factory){}
     QString createQualifiedName(const QString moduleName, const QString instanceName);
     bool instanceExists(const QString qualifiedName);
-    Module* getModule(const QString qualifiedName);
-    //QThread *getOrCreateThread(const QString name);
+    Module* getModule(const QString qualifiedName);    
     bool isModuleInstanceNameUnique(const QString qualifiedName);
-    //void startModule(Module *module);
-    //QHash<QString, QThread*> threads;
+
     QHash<QString, Module*> modules;
     QString lastError;
     bool running;
     PipelineFactory *factory;
+    QString name;
 
   };
 

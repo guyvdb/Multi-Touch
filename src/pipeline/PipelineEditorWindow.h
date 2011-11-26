@@ -5,7 +5,7 @@
 #include <QLabel>
 #include <QImage>
 
-#include "Module.h"
+#include "pipeline/Module.h"
 #include <opencv2/opencv.hpp>
 
 namespace Ui {

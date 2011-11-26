@@ -2,7 +2,7 @@
 #define ERODEMODULE_H
 
 #include "libmtv_global.h"
-#include "SimpleIOModule.h"
+#include "pipeline/SimpleIOModule.h"
 
 
 namespace mtv {

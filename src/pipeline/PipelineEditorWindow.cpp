@@ -5,9 +5,9 @@
 #include <QMessageBox>
 #include <QVariant>
 #include <QDebug>
-#include "Pipeline.h"
-#include "Module.h"
-
+#include "pipeline/Pipeline.h"
+#include "pipeline/Module.h"
+#include "serialize/PipelineSerializer.h"
 
 #include <opencv2/highgui/highgui.hpp>
 
@@ -44,6 +44,8 @@ void PipelineEditorWindow::on_pushButton_clicked()
   qDebug() << "GUI THREAD: " << this->thread();
 
   mtv::Pipeline *pipeline = mtv::Pipeline::instance();
+
+  pipeline->setName("test");
 
 
   mtv::Module *device0 = pipeline->createModule("camera","video0");
@@ -82,6 +84,12 @@ void PipelineEditorWindow::on_pushButton_clicked()
   this->connect(grayscale,SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrameReady(mtv::Module*,QString,cv::Mat&)));
   this->connect(canny,SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrameReady(mtv::Module*,QString,cv::Mat&)));
   this->connect(erode,SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrameReady(mtv::Module*,QString,cv::Mat&)));
+
+
+  mtv::PipelineSerializer serializer;
+
+  serializer.savePipeline("/home/guy/output/pipeline.xml");
+
 
   pipeline->start();
 

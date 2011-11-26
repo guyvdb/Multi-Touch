@@ -42,6 +42,7 @@ namespace mtv {
       int getMax();
       void setMax(int value);
 
+      PropertyType getPropertyType() {return this->type;}
 
       void set(const QString value);
       void set(bool value);

@@ -19,12 +19,7 @@ namespace mtv {
    * ------------------------------------------------------------------------------------------- */
   Pipeline::~Pipeline() {
     if(this->running) this->stop();
-
-    QHash<QString, Module*>::iterator mi;
-    for(mi=this->modules.begin(); mi != this->modules.end(); mi++) {
-      delete mi.value();
-    }   
-
+    this->clear();
     delete this->factory;
   }
 
@@ -34,6 +29,16 @@ namespace mtv {
   Pipeline::Pipeline() {
     this->factory = new PipelineFactory();
     this->running = false;
+    this->name = "default";
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Pipeline::clear() {
+    QHash<QString, Module*>::iterator i;
+    for(i=this->modules.begin(); i != this->modules.end(); i++) delete i.value();
+    this->modules.clear();
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -64,41 +69,9 @@ namespace mtv {
     this->running = true;
   }
 
-
-  /* -------------------------------------------------------------------------------------------
-   * Start a module. Decide if to run it on the main module thread or on its own thread.
-   * ------------------------------------------------------------------------------------------- */
-  /*void Pipeline::startModule(Module *module) {
-    // if we are running this module must be started on its thread.
-
-    QThread *thread;
-
-    if(module->getProp("threaded")->getValue().toBool()) {
-      thread = getOrCreateThread(module->createQualifiedName());
-      qDebug() << "MOVING TO OWN THREAD";
-    } else {
-      thread = getOrCreateThread("main");
-      qDebug() << "MOVING TO MAIN THREAD";
-    }
-
-    module->moveToThread(thread);
-    module->start();
-
-
-    if(!thread->isRunning()) thread->start();
-  }*/
-
-  /* -------------------------------------------------------------------------------------------
-   * Get a thread. If it does not exists, create it
-   * ------------------------------------------------------------------------------------------- */
-  /*QThread *Pipeline::getOrCreateThread(const QString name) {
-    if(!this->threads.contains(name)) {
-      this->threads[name] = new QThread();
-    }
-    return this->threads[name];
+  bool Pipeline::isRunning() {
+    return this->running;
   }
-  */
-
 
   /* -------------------------------------------------------------------------------------------
    * Get the last error message
@@ -227,7 +200,7 @@ namespace mtv {
 
   /* -------------------------------------------------------------------------------------------
    * check if an instance exists
-   * ------------------------------------------------------------------------------------------- */
+   * ---------------------Pipeline::---------------------------------------------------------------------- */
   bool Pipeline::instanceExists(const QString moduleName, const QString instanceName) {
     return this->instanceExists(this->createQualifiedName(moduleName,instanceName));
   }
@@ -239,7 +212,26 @@ namespace mtv {
     return this->modules.contains(qualifiedName);
   }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QString Pipeline::getName() {
+    return this->name;
+  }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Pipeline::setName(const QString value) {
+    this->name = value;
+  }
 
+  /* -------------------------------------------------------------------------------------------
+   * Return a list of all modules
+   * ------------------------------------------------------------------------------------------- */
+  void Pipeline::listModules(QList<Module*> &result) {
+    QHash<QString, Module*>::iterator i;
+    for(i=this->modules.begin();i != this->modules.end();i++) result.append(i.value());
+  }
 
 }

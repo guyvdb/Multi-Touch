@@ -98,6 +98,7 @@ namespace mtv {
       Module *module = f->createInstance();
       if(module) {
         module->setting("instance")->set(instanceName);
+        module->setModuleName(moduleName);
         return module;
       } else {
         this->lastError = "Could not construct an instance of the module. Is the factory correct?";

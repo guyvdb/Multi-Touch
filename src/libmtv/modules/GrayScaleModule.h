@@ -4,7 +4,7 @@
 
 
 #include "libmtv_global.h"
-#include "SimpleIOModule.h"
+#include "pipeline/SimpleIOModule.h"
 #include <opencv2/core/core.hpp>
 
 namespace mtv {
@@ -20,8 +20,6 @@ namespace mtv {
     public:
       virtual Module* createInstance() {return qobject_cast<Module*>(new GrayScaleModule()); }
     };
-
-
 }
 
 

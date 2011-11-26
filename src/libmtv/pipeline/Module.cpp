@@ -7,8 +7,6 @@ namespace mtv {
    * ------------------------------------------------------------------------------------------- */
   Module::Module() : QObject()
   {
-    //this->addProp("threaded",false);
-    //this->addProp("instance","unknown");
     this->timer = new QTimer();
     this->timer->setSingleShot(false);
     this->connect(this->timer, SIGNAL(timeout()), this, SLOT(OnTimerTimedOut()));
@@ -35,6 +33,14 @@ namespace mtv {
       this->settings[name] = s;
     }
     return this->settings[name];
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Module::listSettings(QList<Setting*> &result) {
+    QHash<QString, Setting*>::iterator i;
+    for(i=this->settings.begin(); i != this->settings.end(); i++) result.append(i.value());
   }
 
   /* -------------------------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 
 
-#include "Module.h"
+#include "pipeline/Module.h"
 #include "libmtv_global.h"
 
 

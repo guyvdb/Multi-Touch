@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= gui
+QT       -= gui xml
 
 TARGET = mtv
 TEMPLATE = lib
@@ -12,36 +12,38 @@ TEMPLATE = lib
 DEFINES += LIBMTV_LIBRARY
 
 SOURCES += \
-    Module.cpp \
+    pipeline/Module.cpp \
+    pipeline/Pipeline.cpp \
+    pipeline/ModuleError.cpp \
+    pipeline/PipelineFactory.cpp \
+    pipeline/PipelineSingleton.cpp \
+    pipeline/Setting.cpp \
+    pipeline/SimpleIOModule.cpp \
     modules/CameraModule.cpp \
     modules/AmplifyModule.cpp \
     modules/GrayScaleModule.cpp \
-    Pipeline.cpp \
-    ModuleError.cpp \
-    PipelineFactory.cpp \
-    PipelineSingleton.cpp \
-    Setting.cpp \
-    SimpleIOModule.cpp \
     modules/CannyModule.cpp \
     modules/ErodeModule.cpp \
-    modules/DilateModule.cpp
+    modules/DilateModule.cpp \
+    serialize/PipelineSerializer.cpp
 
 
 HEADERS +=\
-           libmtv_global.h \
-    Module.h \
+    libmtv_global.h \
+    pipeline/Module.h \
+    pipeline/Pipeline.h \
+    pipeline/ModuleError.h \
+    pipeline/DataType.h \
+    pipeline/PipelineFactory.h \
+    pipeline/Setting.h \
+    pipeline/SimpleIOModule.h \
     modules/CameraModule.h \
     modules/AmplifyModule.h \
     modules/GrayScaleModule.h \
-    Pipeline.h \
-    ModuleError.h \
-    DataType.h \
-    PipelineFactory.h \
-    Setting.h \
-    SimpleIOModule.h \
     modules/CannyModule.h \
     modules/ErodeModule.h \
-    modules/DilateModule.h
+    modules/DilateModule.h \
+    serialize/PipelineSerializer.h
 
 
 CONFIG   -= app_bundle

@@ -52,6 +52,7 @@ namespace mtv {
 
       /* settings */
       Setting *setting(const QString name);
+      void listSettings(QList<Setting*> &result);
 
       /* module name - class, instance and qualified */
       QString getModuleName() const {return this->moduleName; }
