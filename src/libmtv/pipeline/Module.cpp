@@ -110,7 +110,7 @@ namespace mtv {
    *
    * ------------------------------------------------------------------------------------------- */
   void Module::addError(const QString propname, const QString message) {
-    ModuleError *error = new ModuleError(this->createQualifiedName(), propname,message);
+    ModuleError *error = new ModuleError(this->getInstanceName(), propname,message);
     this->errors.append(error);
   }
 
@@ -118,8 +118,7 @@ namespace mtv {
    *
    * ------------------------------------------------------------------------------------------- */
   void Module::addError(const QString message) {
-
-    ModuleError *error = new ModuleError(this->createQualifiedName(), "General", message);
+    ModuleError *error = new ModuleError(this->getInstanceName(), "General", message);
     this->errors.append(error);
   }
 
@@ -129,27 +128,6 @@ namespace mtv {
   void Module::clearErrors() {
     foreach(ModuleError *e, this->errors) delete e;
     this->errors.clear();
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  QString Module::createQualifiedName(const QString moduleName, const QString instanceName) {
-     return moduleName + "->" + instanceName;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  QString  Module::createQualifiedName() {
-    return Module::createQualifiedName(this->moduleName,  this->setting("instance")->asString());
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  QString Module::getInstanceName() {
-    return this->setting("instance")->asString();
   }
 
   /* -------------------------------------------------------------------------------------------

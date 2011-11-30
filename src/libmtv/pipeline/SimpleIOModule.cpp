@@ -30,7 +30,7 @@ namespace mtv {
 
     void SimpleIOModule::OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) {
       if(name == this->setting("input")->getFrameName()) {
-        cv::Mat &output = this->process(module,name, matrix);
+        cv::Mat &output = this->process(module, name, matrix);
         emit frameReady(this, this->outputName(), output);
       }
     }

@@ -12,6 +12,7 @@ namespace mtv {
     {
     public:
       DilateModule();
+      virtual QString getModuleName() {return "dilate";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();

@@ -8,11 +8,13 @@
 SOURCES += main.cpp\
         PipelineEditorWindow.cpp \
     VideoWidget.cpp \
-    AddModuleDialog.cpp
+    AddModuleDialog.cpp \
+    VideoGrid.cpp
 
 HEADERS  += PipelineEditorWindow.h \
     VideoWidget.h \
-    AddModuleDialog.h
+    AddModuleDialog.h \
+    VideoGrid.h
 
 FORMS    += PipelineEditorWindow.ui \
     AddModuleDialog.ui

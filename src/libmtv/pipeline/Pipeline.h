@@ -28,15 +28,14 @@ namespace mtv {
     static Pipeline* instance();
     ~Pipeline();
     QString getLastError() const;
-    QStringList getModuleDependants(const QString qualifiedName);
-    QStringList getModuleDependants(const QString moduleName, const QString instanceName);
+    QStringList getModuleDependants(const QString instanceName);
     QStringList getModuleDependants(Module *module);
     bool removeModule(Module *module);
-    bool removeModule(const QString moduleName, const QString instanceName);
+    bool removeModule(const QString instanceName);
     bool addModule(Module *module);
     Module *createModule(const QString moduleName, const QString instanceName);
-    Module *getModule(const QString moduleName, const QString instanceName);
-    bool instanceExists(const QString moduleName, const QString instanceName);
+    Module* getModule(const QString instanceName);
+    bool instanceExists(const QString instanceName);
     QList<ModuleError*> getModuleErrors();
     void listModules(QList<Module*> &result);
 
@@ -51,9 +50,7 @@ namespace mtv {
 
     Pipeline(const Pipeline &copy ){}
     void operator = (const Pipeline &factory){}
-    QString createQualifiedName(const QString moduleName, const QString instanceName);
-    bool instanceExists(const QString qualifiedName);
-    Module* getModule(const QString qualifiedName);    
+
     bool isModuleInstanceNameUnique(const QString qualifiedName);
 
     QHash<QString, Module*> modules;

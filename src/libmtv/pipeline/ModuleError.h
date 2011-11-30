@@ -14,12 +14,12 @@ namespace mtv {
   class ModuleError
   {
   public:
-      ModuleError(const QString qualifiedModuleName, const QString propname, const QString message);
-      QString getQualifiedModuleName() const {return this->qualifiedName;}
+      ModuleError(const QString instanceName, const QString propname, const QString message);
+      QString getInstanceName() const {return this->instanceName;}
       QString getPropName() const {return this->propname;}
       QString getMessage() const {return this->message;}
   private:
-    QString qualifiedName;
+    QString instanceName;
     QString propname;
     QString message;
   };

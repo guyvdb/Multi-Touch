@@ -2,8 +2,8 @@
 
 namespace mtv {
 
-ModuleError::ModuleError(const QString qualifiedModuleName, const QString propname, const QString message)
-  : qualifiedName(qualifiedModuleName), propname(propname), message(message)
+ModuleError::ModuleError(const QString instanceName, const QString propname, const QString message)
+  : instanceName(instanceName), propname(propname), message(message)
   {
   }
 

@@ -18,11 +18,13 @@ namespace mtv {
     Setting *getSetting() {return this->setting;}
     QString getInstanceName() {return this->instanceName;}
     QString getFrameName() {return this->frameName;}
+    //QString getPropertyName() {return this->propertyName; }
 
   private:
     Setting *setting;
     QString instanceName;
     QString frameName;
+    //QString propertyName;
   };
 
   class LIBMTV_EXPORT PipelineSerializer : public QObject

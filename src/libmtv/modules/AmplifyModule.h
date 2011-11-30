@@ -11,6 +11,7 @@ namespace mtv {
     {
     public:
       AmplifyModule();
+      virtual QString getModuleName() {return "amplify";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();

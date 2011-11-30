@@ -4,9 +4,15 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QImage>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+
 
 #include "pipeline/Module.h"
 #include <opencv2/opencv.hpp>
+
+#include "VideoGrid.h"
+#include "VideoWidget.h"
 
 namespace Ui {
     class PipelineEditorWindow;
@@ -24,15 +30,21 @@ protected:
     virtual void resizeEvent(QResizeEvent *e);
 
 private slots:
-  void on_pushButton_clicked();
-  void on_pushButton_2_clicked();
 
-  void OnFrameReady(mtv::Module *module, const QString name, cv::Mat &matrix); 
+  void OnShowContextMenu(const QPoint &point);
+  void on_actionLoad_triggered();
+
 private:
     Ui::PipelineEditorWindow *ui;
+    QGraphicsView *videoView;
+    QGraphicsScene *videoScene;
+    VideoGrid *grid;
 
-    void setFrame(QLabel *label, const QString name,  cv::Mat &matrix);
-    QImage MatToQImage(const cv::Mat &matrix);
+    QHash<QString, VideoWidget*> widgets;
+    QStringList widgetOrder;
+
+    //void setFrame(QLabel *label, const QString name,  cv::Mat &matrix);
+    void layoutVideoWidgets();
 
 };
 

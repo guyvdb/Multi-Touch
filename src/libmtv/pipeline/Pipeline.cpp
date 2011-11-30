@@ -93,15 +93,6 @@ namespace mtv {
    * Go through all the properties of all modules and see what the output of this module
    * is bound to.
    * ------------------------------------------------------------------------------------------- */
-  QStringList Pipeline::getModuleDependants(const QString moduleName, const QString instanceName) {
-    Module *module = this->getModule(moduleName, instanceName);
-    return this->getModuleDependants(module);
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   * Go through all the properties of all modules and see what the output of this module
-   * is bound to.
-   * ------------------------------------------------------------------------------------------- */
   QStringList Pipeline::getModuleDependants(Module *module) {
 
   }
@@ -110,8 +101,8 @@ namespace mtv {
    * If there is nothing that depends on this module, remove it
    * TODO if we are running stop it. If it is the last module on the thread reclaim it
    * ------------------------------------------------------------------------------------------- */
-  bool Pipeline::removeModule(const QString moduleName, const QString instanceName) {
-    Module *m = this->getModule(moduleName, instanceName);
+  bool Pipeline::removeModule(const QString instanceName) {
+    Module *m = this->getModule(instanceName);
     if(m) {
       return this->removeModule(m);
     } else {
@@ -125,15 +116,15 @@ namespace mtv {
    * TODO if we are running stop it. If it is the last module on the thread reclaim it
    * ------------------------------------------------------------------------------------------- */
   bool Pipeline::removeModule(Module *module) {
-    QString key = module->createQualifiedName();
+    QString key = module->getInstanceName();
 
-    QStringList dependencies = this->getModuleDependants(module->getModuleName(), module->setting("instance")->asString());
+    QStringList dependencies = this->getModuleDependants(module->getInstanceName());
     if(dependencies.count() == 0) {
       this->modules.remove(key);
       delete module;
       return true;
     } else {
-      this->lastError = "Module '" + module->createQualifiedName() + "' is a dependancy of other modules.";
+      this->lastError = "Module '" + module->getInstanceName() + "' is a dependancy of other modules.";
       return false;
     }
   }
@@ -142,11 +133,11 @@ namespace mtv {
    * If we are running... put it on a thread and start it.
    * ------------------------------------------------------------------------------------------- */
   bool Pipeline::addModule(Module *module) {    
-    if(this->instanceExists(module->createQualifiedName())) {
-      this->lastError = "An instance named '" + module->createQualifiedName() + "' already exists";
+    if(this->instanceExists(module->getInstanceName())) {
+      this->lastError = "An instance named '" + module->getInstanceName() + "' already exists";
       return false;
     } else {
-      this->modules[module->createQualifiedName()] = module;
+      this->modules[module->getInstanceName()] = module;
       if(this->running) {
         module->start();
       }
@@ -158,8 +149,8 @@ namespace mtv {
    * Add an instance of this module, if the combination of moduleName and instanceName is unique
    * ------------------------------------------------------------------------------------------- */
   Module * Pipeline::createModule(const QString moduleName, const QString instanceName) {
-    if(this->instanceExists(moduleName, instanceName)) {
-      this->lastError = "An instance named '" + this->createQualifiedName(moduleName, instanceName) + "' already exists";
+    if(this->instanceExists(instanceName)) {
+      this->lastError = "An instance named '" + instanceName + "' already exists";
       return 0x0;
     } else {
       Module *module = this->factory->createInstance(moduleName,instanceName);
@@ -172,44 +163,24 @@ namespace mtv {
     }
   }
 
-  /* -------------------------------------------------------------------------------------------
-   * Get a named instance of a module
-   * ------------------------------------------------------------------------------------------- */
-  Module *Pipeline::getModule(const QString moduleName, const QString instanceName) {
-    return this->getModule(this->createQualifiedName(moduleName, instanceName));
-  }
 
   /* -------------------------------------------------------------------------------------------
    * Get a named instance of a module
    * ------------------------------------------------------------------------------------------- */
-  Module* Pipeline::getModule(const QString qualifiedName) {
-    if(this->instanceExists(qualifiedName)) {
-      return this->modules[qualifiedName];
+  Module* Pipeline::getModule(const QString instanceName) {
+    if(this->instanceExists(instanceName)) {
+      return this->modules[instanceName];
     } else {
-      this->lastError = "Instance '" + qualifiedName + "' does not exist.";
+      this->lastError = "Instance '" + instanceName + "' does not exist.";
       return 0x0;
     }
   }
 
   /* -------------------------------------------------------------------------------------------
-   * Combined the module name and instance name into a key
-   * ------------------------------------------------------------------------------------------- */
-  QString Pipeline::createQualifiedName(const QString moduleName, const QString instanceName) {
-    return Module::createQualifiedName(moduleName, instanceName);
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   * check if an instance exists
-   * ---------------------Pipeline::---------------------------------------------------------------------- */
-  bool Pipeline::instanceExists(const QString moduleName, const QString instanceName) {
-    return this->instanceExists(this->createQualifiedName(moduleName,instanceName));
-  }
-
-  /* -------------------------------------------------------------------------------------------
    * check if an instance exists
    * ------------------------------------------------------------------------------------------- */
-  bool Pipeline::instanceExists(const QString qualifiedName) {
-    return this->modules.contains(qualifiedName);
+  bool Pipeline::instanceExists(const QString instanceName) {
+    return this->modules.contains(instanceName);
   }
 
   /* -------------------------------------------------------------------------------------------

@@ -1,17 +1,19 @@
 #include "PipelineSerializer.h"
 
 #include <QFile>
+#include <QDebug>
+
 
 #include <QXmlStreamWriter>
 #include <QStringList>
-
+#include "pipeline/Setting.h"
 
 #include "pipeline/Pipeline.h"
 
 namespace mtv {
 
 LateBind::LateBind(Setting *setting, const QString instanceName, const QString frameName)
-  : QObject(), setting(setting) {
+  : QObject(), setting(setting), instanceName(instanceName), frameName(frameName) {
 
 }
 
@@ -74,6 +76,9 @@ LateBind::LateBind(Setting *setting, const QString instanceName, const QString f
 
     //add last module
     if(module != 0x0) pipeline->addModule(module);
+
+    this->preformLateBinds(errors);
+
     return true;
 
   }
@@ -154,8 +159,12 @@ LateBind::LateBind(Setting *setting, const QString instanceName, const QString f
             break;
           case Setting::FRAME :
             w.writeAttribute("type","frame");
-            QString value = setting->getModule()->getInstanceName() + ":" + setting->getFrameName();
-            w.writeAttribute("value", value);
+
+            Module* m = setting->getModule();
+            if(m != 0x0) {
+              QString value = m->getInstanceName() + ":" + setting->getFrameName();
+              w.writeAttribute("value", value);
+            }
             break;
         }
         w.writeEndElement();
@@ -177,9 +186,9 @@ LateBind::LateBind(Setting *setting, const QString instanceName, const QString f
   }
 
   void PipelineSerializer::addSetting(QXmlStreamReader *xml, Module* module, QStringList &errors) {
-    QString name = xml->attributes().value("type").toString();
+    QString name = xml->attributes().value("name").toString();
     QString type = xml->attributes().value("type").toString();
-    QString value = xml->attributes().value("type").toString();
+    QString value = xml->attributes().value("value").toString();
 
     if(type == "boolean") {
       this->addBooleanSetting(name, value, module, errors);
@@ -223,8 +232,9 @@ LateBind::LateBind(Setting *setting, const QString instanceName, const QString f
 
   void PipelineSerializer::addDoubleSetting(const QString name, const QString value, Module* module, QStringList &errors) {
     bool ok = false;
-    int d = value.toDouble(&ok);
+    double d = value.toDouble(&ok);
     if(ok) {
+      qDebug() << "Setting " << name << " = " << d << " as double. Values = " << value;
       module->setting(name)->set(d);
     } else {
       //TODO check min/max values
@@ -243,14 +253,23 @@ LateBind::LateBind(Setting *setting, const QString instanceName, const QString f
     if(parts.length() != 2) {
       errors.append("Setting: " + name + " not set on " + module->getModuleName() + ":" + module->getInstanceName() + ". Format incorrect. Use <name:frame name>");
     } else {
-      this->lateBindings.append(new LateBind(module->setting(name),parts[0],parts[1]));
+      this->lateBindings.append(new LateBind( module->setting(name),parts[0],parts[1]));
     }
   }
 
   void PipelineSerializer::preformLateBinds(QStringList &errors) {
     foreach(LateBind* bind, this->lateBindings)  {
-      //Module *module = Pipeline::instance()->getModule()
+      Module *module = Pipeline::instance()->getModule(bind->getInstanceName());
+      if(module != 0x0) {
+        Setting *setting = bind->getSetting();
+        setting->set(module,bind->getFrameName());
+      } else {
+        errors.append("Could not find " + bind->getInstanceName() + ":" + bind->getFrameName());
+
+      }
     }
+
+    this->clearLateBindings();
   }
 
   void PipelineSerializer::clearLateBindings() {

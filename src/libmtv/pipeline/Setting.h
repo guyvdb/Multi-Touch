@@ -22,6 +22,7 @@ namespace mtv {
           FRAME
       };
 
+      /* constructors */
       Setting(const QString name);
       Setting(const QString name, bool value);
       Setting(const QString name, const QString value);
@@ -29,38 +30,51 @@ namespace mtv {
       Setting(const QString name, double value);
       Setting(const QString name, Module *module, const QString frameName);
 
+      /* read only */
       bool isReadOnly();
       void setReadOnly(bool value);
 
+      /* min integer value */
       bool hasMin();
       void setHasMin(bool value);
       int getMin();
       void setMin(int value);
 
+      /* max integer value */
       bool hasMax();
       void setHasMax(bool value);
       int getMax();
       void setMax(int value);
 
+      /* choices */
+      bool hasChoices();
+      void setHasChoices(bool value);
+      QString getChoices();
+      void setChoices(const QString value);
+
+      /* property type */
       PropertyType getPropertyType() {return this->type;}
 
+      /* set value */
       void set(const QString value);
       void set(bool value);
       void set(int value);
       void set(double value);
       void set(Module*module, const QString frameName);
 
+      /* get value */
       bool asBool();
       QString asString();
       double asDouble();
       int asInteger();
 
+      /* frame info */
       Module * getModule();
       QString getFrameName() const;
+
+      /* name */
       QString getName() const;
 
-      //void hookModule(const char *amember, Qt::ConnectionType atype);  // hook the modules frameReady event to amember, atype
-      //void unhookModule(const char *amember, Qt::ConnectionType atype);// unhook the modules frameReady event from amember, atype
 
   signals:
       void beforeSettingChanged(mtv::Setting *setting);
@@ -69,6 +83,8 @@ namespace mtv {
     PropertyType type;
     QString name;
     QString frameName;
+
+
 
     bool bValue;
     QString sValue;
@@ -82,6 +98,8 @@ namespace mtv {
     int maxValue;
     int minValue;
 
+    bool hasValueChoices;
+    QString choices;
 
     void init();
 

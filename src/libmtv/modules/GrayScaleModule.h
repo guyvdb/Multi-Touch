@@ -11,6 +11,8 @@ namespace mtv {
 
     class LIBMTV_EXPORT GrayScaleModule : public SimpleIOModule
     {    
+    public:
+      virtual QString getModuleName() {return "grayscale";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();

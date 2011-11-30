@@ -11,6 +11,7 @@ namespace mtv {
     {
     public:
       ErodeModule();
+      virtual QString getModuleName() {return "erode";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();

@@ -12,7 +12,6 @@ namespace mtv {
     {
         Q_OBJECT
     public:
-      /* dynamically invokable constructor */
       SimpleIOModule();
 
       /* capabilities of this module */
@@ -29,7 +28,7 @@ namespace mtv {
       virtual cv::Mat &process(mtv::Module* module, const QString name, cv::Mat &matrix) = 0;
       virtual QString outputName() = 0;
 
-
+      // debug method
       void save(cv::Mat &frame);
 
       cv::Mat output;

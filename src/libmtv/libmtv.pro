@@ -25,7 +25,22 @@ SOURCES += \
     modules/CannyModule.cpp \
     modules/ErodeModule.cpp \
     modules/DilateModule.cpp \
-    serialize/PipelineSerializer.cpp
+    serialize/PipelineSerializer.cpp \
+    modules/BlurModule.cpp \
+    modules/GaussianModule.cpp \
+    modules/MedianModule.cpp \
+    modules/SobelModule.cpp \
+    modules/BlobFinderModule.cpp \
+    modules/ThresholdModule.cpp \
+    modules/CirclesModule.cpp \
+    modules/ForegroundModule.cpp \
+    modules/VideoModule.cpp \
+    modules/HighpassModule.cpp \
+    modules/ContoursModule.cpp \
+    modules/WatershedModule.cpp \
+    modules/HarrisCornersModule.cpp \
+    modules/FastFeaturesModule.cpp \
+    modules/BrightenModule.cpp
 
 
 HEADERS +=\
@@ -43,7 +58,22 @@ HEADERS +=\
     modules/CannyModule.h \
     modules/ErodeModule.h \
     modules/DilateModule.h \
-    serialize/PipelineSerializer.h
+    serialize/PipelineSerializer.h \
+    modules/BlurModule.h \
+    modules/GaussianModule.h \
+    modules/MedianModule.h \
+    modules/SobelModule.h \
+    modules/BlobFinderModule.h \
+    modules/ThresholdModule.h \
+    modules/CirclesModule.h \
+    modules/ForegroundModule.h \
+    modules/VideoModule.h \
+    modules/HighpassModule.h \
+    modules/ContoursModule.h \
+    modules/WatershedModule.h \
+    modules/HarrisCornersModule.h \
+    modules/FastFeaturesModule.h \
+    modules/BrightenModule.h
 
 
 CONFIG   -= app_bundle

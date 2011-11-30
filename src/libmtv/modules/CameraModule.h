@@ -6,11 +6,8 @@
 
 #include <opencv2/opencv.hpp>
 
-
 #include "pipeline/Module.h"
 #include "libmtv_global.h"
-
-
 
 namespace mtv {
 
@@ -25,6 +22,8 @@ namespace mtv {
       /* start and stop this module */
       virtual void start();
       virtual void stop();
+
+      virtual QString getModuleName() {return "camera";}
 
     protected:
 

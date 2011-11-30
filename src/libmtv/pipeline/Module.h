@@ -54,20 +54,17 @@ namespace mtv {
       Setting *setting(const QString name);
       void listSettings(QList<Setting*> &result);
 
-      /* module name - class, instance and qualified */
-      QString getModuleName() const {return this->moduleName; }
-      void setModuleName(const QString name) {this->moduleName = name; }
-      static QString createQualifiedName(const QString moduleName, const QString instanceName);
-      QString createQualifiedName();
-
+      /* module name */
+      virtual QString getModuleName() = 0;
 
       /* capabilities */
       bool isCapable(int flag);
 
-      /* the name of this instance */
-      QString getInstanceName();
+      /* instance name  */
+      QString getInstanceName() {return this->instanceName; }
+      void setInstanceName(const QString value) {this->instanceName = value; }
 
-      /* set the pipline that holds this instance */
+      /* pipline */
       void setPipeline(Pipeline *pipeline) {this->pipeline = pipeline; }
 
       /* errors */
@@ -77,29 +74,29 @@ namespace mtv {
       QList<ModuleError*> getErrors() {return this->errors;}
       QString getLastError() {return this->lastError; }
 
-
   protected:
       /* tick */
       virtual void tick() = 0;
       void startTicking(int frequency);
       void stopTicking();
 
+      /* Image Convertion */
+      //TODO test and convert color spaces
+      //void convert(cv::Mat &source, cv::Mat & dest);
+
   private:
       QHash<QString, Setting*> settings;
-      //QHash<QString, Prop*> props;
-      QString moduleName;     
+      QString instanceName;
       Pipeline *pipeline;
       QList<ModuleError*> errors;
       QString lastError;
       QTimer *timer;
   signals:
       void frameReady(mtv::Module* module, const QString name, cv::Mat &matrix);
-
   protected slots:
       virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) = 0;
   private slots:
       void OnTimerTimedOut();
-
   };
 
 

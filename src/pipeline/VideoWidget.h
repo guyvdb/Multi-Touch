@@ -1,17 +1,30 @@
 #ifndef VIDEOWIDGET_H
 #define VIDEOWIDGET_H
 
-#include <QWidget>
 
-class VideoWidget : public QWidget
+#include <QGraphicsWidget>
+#include <QPixmap>
+#include <QImage>
+
+#include "pipeline/Module.h"
+
+class VideoWidget : public QGraphicsWidget
 {
     Q_OBJECT
 public:
-    explicit VideoWidget(QWidget *parent = 0);
+   VideoWidget(mtv::Module *module);
+   ~VideoWidget();
 
-signals:
-
-public slots:
+   QString getModuleInstanceName();
+protected:
+   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+private:
+   mtv::Module *module;
+   QPixmap pixmap;
+   QRect bounds;
+   QImage MatToQImage(const cv::Mat &matrix);
+private slots:
+   void OnFrameReady(mtv::Module *module, const QString name, cv::Mat &matrix);
 
 };
 

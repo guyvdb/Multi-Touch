@@ -11,6 +11,7 @@ namespace mtv {
     {
     public:
       CannyModule();
+      virtual QString getModuleName() {return "canny";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();

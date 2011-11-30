@@ -11,12 +11,24 @@
 // Add you module include file here in alphabetical order
 //-------------------------------------------------------
 #include "modules/AmplifyModule.h"
+#include "modules/BlurModule.h"
+#include "modules/BrightenModule.h"
 #include "modules/CameraModule.h"
 #include "modules/CannyModule.h"
+#include "modules/CirclesModule.h"
 #include "modules/DilateModule.h"
 #include "modules/ErodeModule.h"
+#include "modules/FastFeaturesModule.h"
+#include "modules/ForegroundModule.h"
+#include "modules/GaussianModule.h"
 #include "modules/GrayScaleModule.h"
-
+#include "modules/HarrisCornersModule.h"
+#include "modules/HighpassModule.h"
+#include "modules/MedianModule.h"
+#include "modules/SobelModule.h"
+#include "modules/ThresholdModule.h"
+#include "modules/VideoModule.h"
+#include "modules/WatershedModule.h"
 
 namespace mtv {
 
@@ -24,11 +36,25 @@ namespace mtv {
   //-------------------------------------------------------
   void PipelineFactory::defineModules() {
     define("amplify",         new AmplifyModuleFactory());
+    define("blur",            new BlurModuleFactory());
+    define("brighten",        new BrightenModuleFactory());
     define("camera",          new CameraModuleFactory());
     define("canny",           new CannyModuleFactory());
+    define("circles",         new CirclesModuleFactory());
     define("dilate",          new DilateModuleFactory());
     define("erode",           new ErodeModuleFactory());
+    define("fast-features",   new FastFeaturesModuleFactory());
+    define("foreground",      new ForegroundModuleFactory());
+    define("gaussian",        new GaussianModuleFactory());
     define("grayscale",       new GrayScaleModuleFactory());
+    define("harris-corners",  new HarrisCornersModuleFactory());
+    define("highpass",        new HighpassModuleFactory());
+    define("median",          new MedianModuleFactory());
+    define("sobel",           new SobelModuleFactory());
+    define("threshold",       new ThresholdModuleFactory());
+    define("video",           new VideoModuleFactory());
+    define("watershed",       new WatershedModuleFactory());
+
   }
 
 
@@ -97,8 +123,7 @@ namespace mtv {
       ModuleFactory *f = this->modules[moduleName];
       Module *module = f->createInstance();
       if(module) {
-        module->setting("instance")->set(instanceName);
-        module->setModuleName(moduleName);
+        module->setInstanceName(instanceName);
         return module;
       } else {
         this->lastError = "Could not construct an instance of the module. Is the factory correct?";
@@ -109,25 +134,5 @@ namespace mtv {
       return 0x0;
     }
   }
-
-
-  /* -------------------------------------------------------------------------------------------
-   * Make a copy of the module list
-   * ------------------------------------------------------------------------------------------- */
-//  void ModuleFactory::getModules(QList<Module *> &result) {
-//    foreach(Module*module, this->modules) result.append(module);
-//  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-//  Module *ModuleFactory::getNamedModule(const QString name) {
-//    foreach(Module* module, this->modules) {
-//      if(module->name() == name) return module;
-//   }
-//    return 0x0;
-//  }
-
-
 
 }
