@@ -18,23 +18,25 @@ VideoWidget::~VideoWidget(){
 
 void VideoWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
 
-
-  //qDebug() << "Colors: " << this->pixmap.colorCount() << " Depth: " << this->pixmap.depth() ;
+  // image
   if(!this->pixmap.isNull() ) {
     painter->drawPixmap(this->bounds ,this->pixmap);
   }
 
   QRect label(0,0,320,18);
 
+  // header bar
   painter->setPen(Qt::transparent);
   painter->setBrush(Qt::black);
   painter->drawRect(label);
 
+  //name
   painter->setPen(Qt::white);
   painter->drawText(label,Qt::AlignCenter, module->getInstanceName());
 
-  QBrush brush(Qt::black);
-  QPen pen(brush,3);
+  // bounding rect
+  QBrush brush(Qt::white);
+  QPen pen(brush,1);
   painter->setBrush(Qt::transparent);
   painter->setPen(pen);
   painter->drawRect(this->boundingRect());

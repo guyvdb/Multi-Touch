@@ -7,6 +7,8 @@ task :clean do
   files = [
     "**/Makefile",
     "linux/libmt.*",
+    "linux/libmtg.*",
+    "linux/libmtv.*",
     "linux/pc",
     "linux/dm",
     "linux/table",
@@ -14,7 +16,6 @@ task :clean do
     "linux/tmxviewer",
     "linux/tuio",
     "linux/pipeline",
-    "linux/*.so*",
     "build/*",
     "contrib/qjson/build/*",
     "contrib/tiled/bin/*",

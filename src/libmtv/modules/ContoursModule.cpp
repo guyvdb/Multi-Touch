@@ -25,12 +25,14 @@ namespace mtv {
       bool approx =  this->setting("use-approximation")->asBool();
 
 
+      this->dump("contours: matrix", matrix);
 
       int i = this->findContours(matrix,minSize,maxSize,maxBlob,findHoles,approx);
 
     //matrix.copyTo(this->output);
 
     //return this->output;
+
   }
 
   QString ContoursModule::outputName() {

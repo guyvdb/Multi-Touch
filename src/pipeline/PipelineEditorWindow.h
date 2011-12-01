@@ -33,6 +33,12 @@ private slots:
 
   void OnShowContextMenu(const QPoint &point);
   void on_actionLoad_triggered();
+  void on_btnShowAllModules_clicked();
+  void on_btnHideAllModules_clicked();
+
+  void on_btnPipelineStart_clicked();
+
+  void on_btnPipelineStop_clicked();
 
 private:
     Ui::PipelineEditorWindow *ui;

@@ -16,25 +16,46 @@ namespace mtv {
     int size;
     cv::Size box;
 
+    //this->dump("matrix",matrix);
+
     // make a blur copy
     cv::Mat blured;
+
+    //this->dump("start: blured",blured);
+
+
+
     size = this->setting("size1")->asInteger();
     box = cv::Size(size, size);
     cv::blur(matrix, blured,box);
 
+    //this->dump("blur: blured",blured);
+
+
     // matrix - blured  = highpass image
     cv::absdiff(matrix, blured, this->output);
+
+    //this->dump("absdiff: blured",blured);
+
 
     // blur highpass to remove noise
     size = this->setting("size2")->asInteger();
     box = cv::Size(size, size);
-    cv::blur(this->output, this->output, box);
+    cv::blur(blured, this->output, box);
+
+
+    //this->dump("output",this->output);
+
+
     return this->output;
   }
 
   QString HighpassModule::outputName() {
     return "OUTPUT";
   }
+
+
+
 
 }
 

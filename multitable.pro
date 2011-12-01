@@ -1,9 +1,9 @@
 TEMPLATE    =     subdirs
-SUBDIRS     =     src/libmt \
+SUBDIRS     =     src/libmtg \
+                  src/libmtv \
+                  src/pipeline \
                   src/pc \
                   src/table \
-                  src/dm \
-                  src/libofqf \
-                  src/tuio \
-    src/libmtv \
-    src/pipeline
+                  src/dm
+
+

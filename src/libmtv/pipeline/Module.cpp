@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "Module.h"
 
 namespace mtv {
@@ -42,61 +43,6 @@ namespace mtv {
     QHash<QString, Setting*>::iterator i;
     for(i=this->settings.begin(); i != this->settings.end(); i++) result.append(i.value());
   }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  /*bool Module::setProp(const QString name, QVariant value) {
-    if (!this->props.contains(name)) {
-      this->lastError = "No such property '" + name + "'";
-      return false;
-    }
-    Prop *p = this->props[name];
-    p->setValue(value);
-    return true;
-  }*/
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  /*Prop* Module::getProp(const QString name){
-    if (!this->props.contains(name)) {
-      this->lastError = "No such property '" + name + "'";
-      return 0x0;
-    }
-    return this->props[name];
-  }*/
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  /*Prop* Module::addProp(const QString name) {
-    if(this->props.contains(name)) {
-      this->lastError = "Property with name '" + name + "' already exists.";
-      return 0x0;
-    }
-
-    Prop *p = new Prop(name);
-    this->props[name] = p;
-    return p;
-  }*/
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
- /* Prop* Module::addProp(const QString name, QVariant value) {
-    if(this->props.contains(name)) {
-      this->lastError = "Property with name '" + name + "' already exists.";
-      return 0x0;
-    }
-
-    Prop* p = this->addProp(name);
-    if(p){
-      p->setValue(value);
-    }
-    return p;
-  }*/
-
 
   /* -------------------------------------------------------------------------------------------
    *
@@ -152,11 +98,14 @@ namespace mtv {
     this->tick();
   }
 
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  /*void Module::frameReady(const QString name, cv::Mat &matrix) {
-
-  }*/
+  void Module::dump(const QString name, cv::Mat &matrix) {
+    qDebug() << "---" << name << " matrix info ------------------------------------";
+    qDebug() << "Cols: " << matrix.cols;
+    qDebug() << "Rows: " << matrix.rows;
+    qDebug() << "Channels: " << matrix.channels();
+    qDebug() << "Depth: " << matrix.depth();
+    qDebug() << "";
+    qDebug() << "";
+  }
 
 }

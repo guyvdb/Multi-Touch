@@ -21,6 +21,14 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
+bool moduleOrdinalSort(mtv::Module* m1, mtv::Module* m2) {
+  return m1->getOrdinal() < m2->getOrdinal();
+}
+
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 PipelineEditorWindow::PipelineEditorWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::PipelineEditorWindow)
@@ -70,11 +78,13 @@ void PipelineEditorWindow::resizeEvent(QResizeEvent *e) {
 
   int h = this->height() - 42;
 
-  this->ui->pipelineFrame->setGeometry(QRect(10,10,300, h));
-  this->ui->videoFrame->setGeometry(QRect(320,10,this->width()-330,h));
+  this->ui->pipelineFrame->setGeometry(QRect(10,10,350, h));
+  this->ui->videoFrame->setGeometry(QRect(370,10,this->width()-370,h));
 
   QRect s(QPoint(0,0),this->ui->videoFrame->size());
   this->videoView->setGeometry(s);
+
+  this->ui->listModules->setGeometry(QRect(10,130,330,this->ui->pipelineFrame->size().height() - 130 - 10));
 
   this->grid->resizeTo(this->videoView->size());
 
@@ -124,6 +134,7 @@ void PipelineEditorWindow::OnShowContextMenu(const QPoint &point) {
         int idx = this->widgetOrder.indexOf(module->getInstanceName());
         this->widgetOrder.removeAt(idx);
         this->videoScene->removeItem(v);
+        delete v;
         this->layoutVideoWidgets();
       }
     }
@@ -161,6 +172,8 @@ void PipelineEditorWindow::layoutVideoWidgets() {
   }
 }
 
+
+
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
@@ -176,15 +189,61 @@ void PipelineEditorWindow::on_actionLoad_triggered()
 
     QList<mtv::Module *> modules;
     mtv::Pipeline::instance()->listModules(modules);
+
+    // sort on ordinal
+    qSort(modules.begin(), modules.end(), moduleOrdinalSort);
+
     foreach(mtv::Module *module, modules) {
       QString value = module->getModuleName() + ":" + module->getInstanceName();
       ui->listModules->addItem(value);
     }
-
-    mtv::Pipeline::instance()->start();
-
   }
 }
 
+void PipelineEditorWindow::on_btnShowAllModules_clicked()
+{
+  // show all the modules as video clips
+  QList<mtv::Module*> modules;
+  mtv::Pipeline::instance()->listModules(modules);
+  qSort(modules.begin(), modules.end(), moduleOrdinalSort);
 
+  foreach(mtv::Module *module, modules) {
+    if(!this->widgets.contains(module->getInstanceName())) {
+      VideoWidget *v = new VideoWidget(module);
+      this->widgets[module->getInstanceName()] = v;
+      this->widgetOrder.append(module->getInstanceName());
+      this->videoScene->addItem(v);
+      this->layoutVideoWidgets();
+    }
+  }
 
+}
+
+void PipelineEditorWindow::on_btnHideAllModules_clicked()
+{
+  // remove all visible video clips
+  QHash<QString, VideoWidget*>::iterator i;
+  for(i = this->widgets.begin(); i != this->widgets.end(); i++){
+    VideoWidget *v = i.value();
+    this->videoScene->removeItem(v);
+    delete v;
+  }
+  this->widgetOrder.clear();
+  this->widgets.clear();
+  this->layoutVideoWidgets();
+}
+
+void PipelineEditorWindow::on_btnPipelineStart_clicked()
+{
+    mtv::Pipeline *pipeline = mtv::Pipeline::instance();
+
+    if(!pipeline->isRunning()) pipeline->start();
+
+}
+
+void PipelineEditorWindow::on_btnPipelineStop_clicked()
+{
+  mtv::Pipeline *pipeline = mtv::Pipeline::instance();
+
+  if(pipeline->isRunning()) pipeline->stop();
+}

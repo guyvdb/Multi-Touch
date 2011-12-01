@@ -74,11 +74,18 @@ namespace mtv {
       QList<ModuleError*> getErrors() {return this->errors;}
       QString getLastError() {return this->lastError; }
 
+      /* ordinal position for displaying in the pipeline editor */
+      void setOrdinal(int value) {this->ordinal = value;}
+      int getOrdinal() {return this->ordinal; }
+
   protected:
       /* tick */
       virtual void tick() = 0;
       void startTicking(int frequency);
       void stopTicking();
+
+      /* debug method */
+      void dump(const QString name, cv::Mat &matrix);
 
       /* Image Convertion */
       //TODO test and convert color spaces
@@ -91,6 +98,7 @@ namespace mtv {
       QList<ModuleError*> errors;
       QString lastError;
       QTimer *timer;
+      int ordinal;
   signals:
       void frameReady(mtv::Module* module, const QString name, cv::Mat &matrix);
   protected slots:

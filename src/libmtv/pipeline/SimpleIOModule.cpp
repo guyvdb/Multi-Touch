@@ -53,7 +53,7 @@ namespace mtv {
 
     void SimpleIOModule::save(cv::Mat &frame) {
       // debug method
-      QString file = "/home/guy/Projects/Current/multitable/output/";
+      QString file = "../output/";
       file.append(this->outputName());
       file.append(".jpg");
 

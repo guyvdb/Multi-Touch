@@ -29,9 +29,9 @@ namespace mtv {
         uchar * data = this->output.ptr<uchar>(row);
         for(int col = 0; col < cols; col++) {
             if(data[col] >= threshold) {
-                data[col] = data[col] + (data[col] * brighten);
+                data[col] = 255; //data[col] + (data[col] * brighten);
             } else {
-                data[col] = (data[col] * dim);
+                data[col] = 0; //(data[col] * dim);
             }
         }
     }

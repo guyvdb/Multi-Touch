@@ -1,9 +1,13 @@
 #include "CameraModule.h"
+
 #include <QDebug>
 #include <QVariant>
 #include <QThread>
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/video/video.hpp>
+
+#include <iostream>
 
 
 namespace mtv {
@@ -27,11 +31,11 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     void CameraModule::start() {
-      int device = this->setting("device")->asInteger(); //   getProp("device")->getValue().toInt();
-      int fps =  this->setting("fps")->asInteger(); // getProp("fps")->getValue().toInt();
+      int device = this->setting("device")->asInteger();
+      int fps =  this->setting("fps")->asInteger();
       int frequency = 1000 / fps;
 
-      this->frames = 0;
+      this->frameCount = 0;
       this->time.start();
 
 
@@ -59,14 +63,32 @@ namespace mtv {
      * ------------------------------------------------------------------------------------------- */
     void CameraModule::tick() {
       cv::Mat frame;
-      *this->capture >> frame;
 
 
-      if(frame.data != 0x0) {
-        emit frameReady(this, "OUTPUT", frame);
+      if(this->capture->read(frame)) {
+        std::cout << "T";
+
+        if(frame.data != 0x0) {
+          this->frameCount++;
+          std::cout << "F";
+          emit frameReady(this, "OUTPUT", frame);
+        } else {
+          std::cout << ".";
+        }
+
+        if(frameCount > 100) {
+          int actual = this->frameCount / (this->time.elapsed()/1000);
+
+          this->frameCount = 0;
+          this->time.start();
+
+          qDebug() << "FPS (actual) - reset " << actual;
+        }
+
       } else {
-        qDebug() << ".";
+        std::cout << "M";
       }
+
     }
 }
 

@@ -16,6 +16,7 @@
 #include "modules/CameraModule.h"
 #include "modules/CannyModule.h"
 #include "modules/CirclesModule.h"
+#include "modules/ContoursModule.h"
 #include "modules/DilateModule.h"
 #include "modules/ErodeModule.h"
 #include "modules/FastFeaturesModule.h"
@@ -24,6 +25,7 @@
 #include "modules/GrayScaleModule.h"
 #include "modules/HarrisCornersModule.h"
 #include "modules/HighpassModule.h"
+#include "modules/HistogramModule.h"
 #include "modules/MedianModule.h"
 #include "modules/SobelModule.h"
 #include "modules/ThresholdModule.h"
@@ -41,6 +43,7 @@ namespace mtv {
     define("camera",          new CameraModuleFactory());
     define("canny",           new CannyModuleFactory());
     define("circles",         new CirclesModuleFactory());
+    define("contours",        new ContoursModuleFactory());
     define("dilate",          new DilateModuleFactory());
     define("erode",           new ErodeModuleFactory());
     define("fast-features",   new FastFeaturesModuleFactory());
@@ -49,6 +52,7 @@ namespace mtv {
     define("grayscale",       new GrayScaleModuleFactory());
     define("harris-corners",  new HarrisCornersModuleFactory());
     define("highpass",        new HighpassModuleFactory());
+    define("histogram",       new HistogramModuleFactory());
     define("median",          new MedianModuleFactory());
     define("sobel",           new SobelModuleFactory());
     define("threshold",       new ThresholdModuleFactory());

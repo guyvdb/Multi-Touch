@@ -69,6 +69,9 @@ namespace mtv {
     this->running = true;
   }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   bool Pipeline::isRunning() {
     return this->running;
   }
@@ -138,6 +141,7 @@ namespace mtv {
       return false;
     } else {
       this->modules[module->getInstanceName()] = module;
+      module->setOrdinal(this->modules.count());
       if(this->running) {
         module->start();
       }
@@ -200,9 +204,9 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    * Return a list of all modules
    * ------------------------------------------------------------------------------------------- */
-  void Pipeline::listModules(QList<Module*> &result) {
+  void Pipeline::listModules(QList<Module*> &result) {    
     QHash<QString, Module*>::iterator i;
-    for(i=this->modules.begin();i != this->modules.end();i++) result.append(i.value());
+    for(i=this->modules.begin();i != this->modules.end();i++) result.append(i.value());    
   }
 
 }

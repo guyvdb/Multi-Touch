@@ -10,7 +10,6 @@
 
 #include <QMainWindow>
 #include <QAction>
-//#include <engine/GameEngine.h>
 #include "engine/GameEngine.h"
 #include "map/MapView.h"
 #include "settings/Settings.h"

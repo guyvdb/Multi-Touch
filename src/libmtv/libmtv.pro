@@ -40,7 +40,8 @@ SOURCES += \
     modules/WatershedModule.cpp \
     modules/HarrisCornersModule.cpp \
     modules/FastFeaturesModule.cpp \
-    modules/BrightenModule.cpp
+    modules/BrightenModule.cpp \
+    modules/HistogramModule.cpp
 
 
 HEADERS +=\
@@ -73,7 +74,8 @@ HEADERS +=\
     modules/WatershedModule.h \
     modules/HarrisCornersModule.h \
     modules/FastFeaturesModule.h \
-    modules/BrightenModule.h
+    modules/BrightenModule.h \
+    modules/HistogramModule.h
 
 
 CONFIG   -= app_bundle
@@ -88,3 +90,6 @@ unix {
 win32 {
   DESTDIR += ../../win32
 }
+
+OTHER_FILES += \
+    README.txt

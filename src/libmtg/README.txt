@@ -1,0 +1,3 @@
+LIBMTG
+=================
+MultiTouch Game Library

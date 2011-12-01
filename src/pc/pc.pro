@@ -32,6 +32,7 @@ win32 {
 }
 
 
-LIBS += -L$$DESTDIR -lmt -ltiled -lqjson
+LIBS += -L$$DESTDIR -lmtg -ltiled -lqjson
 
-
+OTHER_FILES += \
+    README.txt

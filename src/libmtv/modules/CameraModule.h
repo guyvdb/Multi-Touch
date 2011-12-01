@@ -38,7 +38,7 @@ namespace mtv {
       QTimer *timer;
       cv::VideoCapture *capture;
       QTime time;
-      int frames;
+      int frameCount;
 
     };
 

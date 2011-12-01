@@ -27,8 +27,8 @@ FORMS    += \
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
-INCLUDEPATH += $$PWD/../libmt
-DEPENDPATH += $$PWD/../libmt
+INCLUDEPATH += $$PWD/../libmtg
+DEPENDPATH += $$PWD/../libmtg
 
 
 unix {
@@ -41,10 +41,7 @@ win32 {
 }
 
 
-LIBS += -L$$DESTDIR -lmt -ltiled -lqjson
+LIBS += -L$$DESTDIR -lmtg -ltiled -lqjson
 
-
-
-
-
-
+OTHER_FILES += \
+    README.txt

@@ -3,7 +3,7 @@
 
 #include "libmtv_global.h"
 #include "pipeline/SimpleIOModule.h"
-
+#include <QTime>
 
 #include <opencv2/opencv.hpp>
 
@@ -35,6 +35,8 @@ namespace mtv {
       bool running;
       QTimer *timer;
       cv::VideoCapture *capture;
+      QTime time;
+      int frameCount;
 
     };
 

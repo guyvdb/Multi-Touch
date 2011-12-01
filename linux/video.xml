@@ -2,12 +2,26 @@
 <pipeline name="test">
 
     <module name="video0" type="video">
-        <setting name="fps" type="integer" value="10"/>
-        <setting name="filename" type="string" value="../doc/RearDI.m4v"/>
+        <setting name="fps" type="integer" value="200"/>
+        <setting name="filename" type="string" value="../doc/rdi.avi"/>
     </module>
 
     <module name="grayscale" type="grayscale">
         <setting name="input" type="frame" value="video0:OUTPUT"/>
+    </module>
+
+    <module name="grayscale-histogram" type="histogram">
+        <setting name="input" type="frame" value="grayscale:OUTPUT"/>
+    </module>
+
+    <module name="grayscale-highpass" type="highpass">
+        <setting name="input" type="frame" value="grayscale:OUTPUT"/>
+        <setting name="size1" type="integer" value="2"/>
+        <setting name="size2" type="integer" value="2"/>
+    </module>
+
+     <module name="grayscale-highpass-fast-features" type="fast-features">
+        <setting name="input" type="frame" value="grayscale-highpass:OUTPUT"/>
     </module>
 
     <module name="foreground" type="foreground">
@@ -15,35 +29,60 @@
         <setting name="learn" type="double" value="0.001"/>
     </module>
 
+    <module name="foreground-histogram" type="histogram">
+        <setting name="input" type="frame" value="foreground:OUTPUT"/>
+    </module>
+
     <module name="blur" type="blur">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
         <setting name="size" type="integer" value="6"/>
     </module>
 
-     <module name="fast-features1" type="fast-features">
+     <module name="video0-fast-features" type="fast-features">
         <setting name="input" type="frame" value="video0:OUTPUT"/>
     </module>
 
 
-     <module name="fast-features2" type="fast-features">
+     <module name="forground-fast-features" type="fast-features">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
     </module>
 
-     <module name="fast-features3" type="fast-features">
-        <setting name="input" type="frame" value="blur:OUTPUT"/>
-    </module>
+
 
      <module name="brighten" type="brighten">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
-        <setting name="threshold" type="integer" value="25"/>
-        <setting name="brighten" type="double" value="2.0"/>
+        <setting name="threshold" type="integer" value="28"/>
+        <setting name="brighten" type="double" value="4.0"/>
         <setting name="dim" type="double" value="0.2"/>
 
 
     </module>
 
+    <module name="forground-highpass" type="highpass">
+        <setting name="input" type="frame" value="foreground:OUTPUT"/>
+        <setting name="size1" type="integer" value="2"/>
+        <setting name="size2" type="integer" value="2"/>
+    </module>
+
+
+
+
+    <module name="foreground-highpass-fast-features" type="fast-features">
+        <setting name="input" type="frame" value="forground-highpass:OUTPUT"/>
+    </module>
+
+
+
 
 <!--
+
+
+  
+     <module name="contours" type="contours">
+        <setting name="input" type="frame" value="blur:OUTPUT"/>
+    </module>
+
+
     <module name="canny" type="canny">
         <setting name="upper-threshold" type="integer" value="100"/>
         <setting name="lower-threshold" type="integer" value="5"/>

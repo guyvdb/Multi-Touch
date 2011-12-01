@@ -20,7 +20,8 @@ FORMS    += PipelineEditorWindow.ui \
     AddModuleDialog.ui
 
 OTHER_FILES += \
-    ../../config/pipelin.xml
+    ../../config/pipelin.xml \
+    README.txt
 
 CONFIG   -= app_bundle
 
