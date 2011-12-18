@@ -12,6 +12,7 @@
 #include <QErrorMessage>
 #include <QFileDialog>
 #include <QResizeEvent>
+#include <QSqlDatabase>
 
 
 #include "utils/FileUtils.h"
@@ -22,15 +23,15 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-MainWindow::MainWindow(MT::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
+MainWindow::MainWindow(MTG::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
 {
     ui->setupUi(this);
     this->ui->closeGameAction->setEnabled(false);
     this->ui->tabs->setGeometry(this->calculateTabRect());
-    this->tableMap = new MT::MapView(this->ui->tabTableMap);
+    this->tableMap = new MTG::MapView(this->ui->tabTableMap);
     this->tableMap->setGeometry(this->calculateTableMapRect());
     this->tableMap->show();
-    this->tableMap->loadMap("/home/guy/Projects/Current/multitable/maps/cave1.tmx");
+    //this->tableMap->loadMap("/home/guy/Projects/Current/multitable/maps/cave1.tmx");
 
 }
 
@@ -87,8 +88,8 @@ void MainWindow::startGame() {
   //enable
   this->ui->closeGameAction->setEnabled(true);
 
-  this->engine = new MT::GameEngine(this->settings,MT::GameEngine::GameServer);
-  this->engine->start();
+  this->engine = new MTG::GameEngine(this->settings,MTG::GameEngine::GameServer);
+  this->engine->start(this->databaseFileName);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -117,7 +118,7 @@ void MainWindow::on_openGameAction_triggered()
   // there is a bug on QAction where it is not getting grayed out on Ubuntu 10.11
   if(this->ui->openGameAction->isEnabled()) {
 
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),MT::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),MTG::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
     qDebug() << "FILE OPEN: " << fileName;
     if(fileName  != "") {
       this->databaseFileName = fileName;
@@ -156,7 +157,7 @@ void MainWindow::on_newGameAction_triggered()
         if(!fileName.endsWith(".game")) {
           fileName = fileName + ".game";
         }
-        fileName = MT::FileUtils::gamesDirectory() + QDir::separator() + fileName;
+        fileName = MTG::FileUtils::gamesDirectory() + QDir::separator() + fileName;
         if(QFile::exists(fileName)) {
           // TODO clean me up. Use a QErrorMessage
           QMessageBox msg;
@@ -176,9 +177,6 @@ void MainWindow::on_newGameAction_triggered()
     qDebug() << "[QT Bug] NEW GAME should be grayed out";
   }
 }
-
-
-
 
 /* -------------------------------------------------------------------------------------------
  *

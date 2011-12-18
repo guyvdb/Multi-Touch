@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
 
    // read the configuration file
 
-   QString config = MT::FileUtils::configDirectory() + QDir::separator() + "multitable.conf";
-   MT::Settings settings(config);
+   QString config = MTG::FileUtils::configDirectory() + QDir::separator() + "multitable.conf";
+   MTG::Settings settings(config);
    qDebug() << "[Configuration] " << config;
    if(!settings.load()) {
      qDebug() << "[FATAL ERROR] Could not load config file: " << config;

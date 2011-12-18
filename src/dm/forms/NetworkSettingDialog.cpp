@@ -16,7 +16,7 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-NetworkSettingDialog::NetworkSettingDialog(MT::Settings *settings, QWidget *parent) : QDialog(parent), ui(new Ui::NetworkSettingDialog), settings(settings)
+NetworkSettingDialog::NetworkSettingDialog(MTG::Settings *settings, QWidget *parent) : QDialog(parent), ui(new Ui::NetworkSettingDialog), settings(settings)
 {
     ui->setupUi(this);
 

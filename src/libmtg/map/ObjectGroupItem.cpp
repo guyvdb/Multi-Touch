@@ -1,7 +1,7 @@
 #include "ObjectGroupItem.h"
 #include "map/MapObjectItem.h"
 
-namespace MT {
+namespace MTG {
 
   /* -------------------------------------------------------------------------------------------
    *

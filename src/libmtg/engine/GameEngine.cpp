@@ -1,22 +1,18 @@
 #include "GameEngine.h"
 #include "message/Message.h"
 
-namespace MT {
+namespace MTG {
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    GameEngine::GameEngine(Settings *settings,  GameEngine::GameMode mode, QObject *parent) : QObject(parent), settings(settings), mode(mode)
+    GameEngine::GameEngine(Settings *settings,  GameEngine::GameMode mode, QObject *parent)
+      : QObject(parent), settings(settings), mode(mode), database(QSqlDatabase::addDatabase("QSQLITE"))
     {
       // set all pointers to null
       this->discovery = 0x0;
       this->datagram = 0x0;
-      /*
-      this->tcpServer = 0x0;
-      this->tcpClient = 0x0;
-      this->udpServer = 0x0;
-      this->udpClient = 0x0;
-      */
+      this->db = 0x0;
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -25,24 +21,24 @@ namespace MT {
     GameEngine::~GameEngine() {
       // delete anything created
       delete this->discovery;
-      delete this->datagram;
-      /*
-      delete this->tcpServer;
-      delete this->tcpClient;
-      delete this->udpServer;
-      delete this->udpClient;
-      */
+      delete this->datagram;      
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::start() {
+    void GameEngine::start(const QString databaseFileName) {
 
       qDebug() << "[Game Engine] Start";
 
       switch(this->mode) {
       case GameServer:
+
+        this->database.setDatabaseName(databaseFileName);
+        this->database.open();
+        this->db = new DBManager(this->database);
+        this->db->initialize();
+
         this->startServer();
         break;
       case GameTable:
@@ -58,6 +54,9 @@ namespace MT {
     void GameEngine::stop() {
       switch(this->mode) {
       case GameServer:
+        if(db != 0x0) delete db;
+        this->db = 0x0;
+        this->database.close();
         this->stopServer();
         break;
       case GameTable:

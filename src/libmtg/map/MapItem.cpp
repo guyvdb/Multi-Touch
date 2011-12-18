@@ -5,7 +5,7 @@
 #include "map/TileLayerItem.h"
 #include "map/ObjectGroupItem.h"
 
-namespace MT {
+namespace MTG {
 
   /* -------------------------------------------------------------------------------------------
    *

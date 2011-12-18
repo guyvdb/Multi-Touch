@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network
+QT       += core gui network sql
 
 TARGET = dm
 TEMPLATE = app

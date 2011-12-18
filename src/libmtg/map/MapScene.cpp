@@ -1,7 +1,8 @@
 #include "MapScene.h"
 #include "tiled/maprenderer.h"
 #include <QDebug>
-namespace MT {
+
+namespace MTG {
 
     /* -------------------------------------------------------------------------------------------
      *

@@ -3,16 +3,21 @@
 
 #include <QObject>
 
-class UdpServer : public QObject
-{
-    Q_OBJECT
-public:
-    explicit UdpServer(QObject *parent = 0);
+namespace MTG {
 
-signals:
 
-public slots:
+  class UdpServer : public QObject
+  {
+      Q_OBJECT
+  public:
+      explicit UdpServer(QObject *parent = 0);
 
-};
+  signals:
+
+  public slots:
+
+  };
+
+}
 
 #endif // UDPSERVER_H

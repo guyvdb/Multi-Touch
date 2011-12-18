@@ -2,17 +2,18 @@
 #define TCPSERVER_H
 
 #include <QObject>
+namespace MTG {
+  class TcpServer : public QObject
+  {
+      Q_OBJECT
+  public:
+      explicit TcpServer(QObject *parent = 0);
 
-class TcpServer : public QObject
-{
-    Q_OBJECT
-public:
-    explicit TcpServer(QObject *parent = 0);
+  signals:
 
-signals:
+  public slots:
 
-public slots:
-
-};
+  };
+}
 
 #endif // TCPSERVER_H

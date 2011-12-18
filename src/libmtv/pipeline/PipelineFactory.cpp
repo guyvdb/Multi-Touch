@@ -11,6 +11,7 @@
 // Add you module include file here in alphabetical order
 //-------------------------------------------------------
 #include "modules/AmplifyModule.h"
+#include "modules/BalanceModule.h"
 #include "modules/BlurModule.h"
 #include "modules/BrightenModule.h"
 #include "modules/CameraModule.h"
@@ -38,6 +39,7 @@ namespace mtv {
   //-------------------------------------------------------
   void PipelineFactory::defineModules() {
     define("amplify",         new AmplifyModuleFactory());
+    define("balance",         new BalanceModuleFactory());
     define("blur",            new BlurModuleFactory());
     define("brighten",        new BrightenModuleFactory());
     define("camera",          new CameraModuleFactory());

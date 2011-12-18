@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network sql webkit xml
+QT       += network webkit xml sql
 
 TARGET = mtg
 TEMPLATE = lib
@@ -27,7 +27,8 @@ SOURCES += \
     net/TcpServer.cpp \
     net/UdpServer.cpp \
     net/TcpClient.cpp \
-    net/UdpClient.cpp
+    net/UdpClient.cpp \
+    database/DBManager.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -46,7 +47,8 @@ HEADERS +=\
     net/UdpServer.h \
     net/TcpClient.h \
     net/UdpClient.h \
-    libmtg_global.h
+    libmtg_global.h \
+    database/DBManager.h
 
 
 FORMS += \

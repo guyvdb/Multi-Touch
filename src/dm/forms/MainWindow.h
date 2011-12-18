@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(MT::Settings *settings, QWidget *parent = 0);
+    explicit MainWindow(MTG::Settings *settings, QWidget *parent = 0);
     ~MainWindow();
 protected:
     void resizeEvent(QResizeEvent *e);
@@ -40,9 +40,9 @@ private:
     QString databaseFileName;
     QRect calculateTabRect();
     QRect calculateTableMapRect();
-    MT::Settings *settings;
-    MT::MapView *tableMap;
-    MT::GameEngine *engine;
+    MTG::Settings *settings;
+    MTG::MapView *tableMap;
+    MTG::GameEngine *engine;
 };
 
 #endif // MAINWINDOW_H

@@ -15,7 +15,7 @@ class TableWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    TableWindow(MT::Settings *settings, QWidget *parent = 0);
+    TableWindow(MTG::Settings *settings, QWidget *parent = 0);
     ~TableWindow();
 
     bool event(QEvent *event);
@@ -23,8 +23,8 @@ private slots:
     void OnNetworkDiscoveryComplete();
 private:
     Ui::TableWindow *ui;
-    MT::Settings *settings;
-    MT::GameEngine *engine;
+    MTG::Settings *settings;
+    MTG::GameEngine *engine;
     StatusDialog *statusDialog;
 };
 

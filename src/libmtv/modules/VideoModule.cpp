@@ -64,10 +64,10 @@ namespace mtv {
       cv::Mat frame;
       *this->capture >> frame;
 
-      std::cout << "T";
+      //std::cout << "T";
 
       if(frame.data != 0x0) {
-        std::cout << "F";
+        //std::cout << "F";
         this->frameCount++;
         emit frameReady(this, "OUTPUT", frame);
       } else {
@@ -78,7 +78,7 @@ namespace mtv {
         this->frameCount = 0;
         this->time.start();
 
-        qDebug() << "FPS (actual) " << actual;
+        //qDebug() << "FPS (actual) " << actual;
 
 
         delete this->capture;

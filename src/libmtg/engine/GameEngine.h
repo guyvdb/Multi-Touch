@@ -6,6 +6,9 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
+
+#include <QSqlDatabase>
+
 #include "libmtg_global.h"
 
 #include "net/Discovery.h"
@@ -15,9 +18,11 @@
 #include "net/UdpClient.h"
 
 
+#include "database/DBManager.h"
+
 #include "settings/Settings.h"
 
-namespace MT {
+namespace MTG {
 
     /*
      * The game engine provides a central class to carry out all game related activity
@@ -37,8 +42,11 @@ namespace MT {
         GameEngine(Settings *settings,  GameEngine::GameMode mode, QObject *parent = 0);
         ~GameEngine();
 
-        void start();
+        void start(const QString databaseFileName);
         void stop();
+
+
+
 
         QString getHost() const {return this->host; }
         int getTCPPort() {return this->tcpPort; }
@@ -61,9 +69,14 @@ namespace MT {
         Discovery *discovery;
         QUdpSocket *datagram;
 
+        DBManager *db;
+
+
         QString host;
         int tcpPort;
         int udpPort;
+
+        QSqlDatabase database;
 
 
 

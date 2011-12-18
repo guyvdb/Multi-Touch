@@ -8,7 +8,7 @@
 #include "libmtg_global.h"
 #include "settings/Settings.h"
 
-namespace MT {
+namespace MTG {
 
 
     class LIBMTG_EXPORT Discovery : public QObject

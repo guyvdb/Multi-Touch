@@ -3,16 +3,19 @@
 
 #include <QObject>
 
-class TcpClient : public QObject
-{
-    Q_OBJECT
-public:
-    explicit TcpClient(QObject *parent = 0);
+namespace MTG {
 
-signals:
+  class TcpClient : public QObject
+  {
+      Q_OBJECT
+  public:
+      explicit TcpClient(QObject *parent = 0);
 
-public slots:
+  signals:
 
-};
+  public slots:
+
+  };
+}
 
 #endif // TCPCLIENT_H

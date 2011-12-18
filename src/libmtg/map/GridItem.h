@@ -9,7 +9,7 @@ namespace Tiled {
     class Map;
 }
 
-namespace MT {
+namespace MTG {
 
     class MapView;
 

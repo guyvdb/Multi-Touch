@@ -4,16 +4,16 @@
 #include <QMessageBox>
 #include <QDebug>
 
-TableWindow::TableWindow(MT::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
+TableWindow::TableWindow(MTG::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
 {
     ui->setupUi(this);
     this->setGeometry(0,0,200,200);
    // this->setWindowState(Qt::WindowMaximized);
-    this->engine = new MT::GameEngine(this->settings,MT::GameEngine::GameTable);
+    this->engine = new MTG::GameEngine(this->settings,MTG::GameEngine::GameTable);
     this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkDiscoveryComplete()));
     this->statusDialog = new StatusDialog(this);
     this->statusDialog->show();
-    this->engine->start();
+    //this->engine->start();
 }
 
 TableWindow::~TableWindow()

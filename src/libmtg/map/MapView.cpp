@@ -14,7 +14,7 @@
 #include "tiled/mapreader.h"
 #include "tiled/orthogonalrenderer.h"
 
-namespace MT {
+namespace MTG {
 
   /* -------------------------------------------------------------------------------------------
    *

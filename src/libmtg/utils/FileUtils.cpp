@@ -13,7 +13,7 @@
 #include <QStringList>
 #include <QTextStream>
 
-namespace MT {
+namespace MTG {
 
    /* -------------------------------------------------------------------------------------------
     *

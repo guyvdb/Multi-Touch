@@ -41,7 +41,8 @@ SOURCES += \
     modules/HarrisCornersModule.cpp \
     modules/FastFeaturesModule.cpp \
     modules/BrightenModule.cpp \
-    modules/HistogramModule.cpp
+    modules/HistogramModule.cpp \
+    modules/BalanceModule.cpp
 
 
 HEADERS +=\
@@ -75,7 +76,8 @@ HEADERS +=\
     modules/HarrisCornersModule.h \
     modules/FastFeaturesModule.h \
     modules/BrightenModule.h \
-    modules/HistogramModule.h
+    modules/HistogramModule.h \
+    modules/BalanceModule.h
 
 
 CONFIG   -= app_bundle

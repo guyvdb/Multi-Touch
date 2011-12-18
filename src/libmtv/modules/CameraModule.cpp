@@ -66,14 +66,14 @@ namespace mtv {
 
 
       if(this->capture->read(frame)) {
-        std::cout << "T";
+        //std::cout << "T";
 
         if(frame.data != 0x0) {
           this->frameCount++;
-          std::cout << "F";
+          //std::cout << "F";
           emit frameReady(this, "OUTPUT", frame);
         } else {
-          std::cout << ".";
+          //std::cout << ".";
         }
 
         if(frameCount > 100) {
@@ -82,11 +82,11 @@ namespace mtv {
           this->frameCount = 0;
           this->time.start();
 
-          qDebug() << "FPS (actual) - reset " << actual;
+          //qDebug() << "FPS (actual) - reset " << actual;
         }
 
       } else {
-        std::cout << "M";
+        //std::cout << "M";
       }
 
     }
