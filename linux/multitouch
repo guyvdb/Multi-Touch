@@ -24,10 +24,6 @@ export LD_LIBRARY_PATH
 
 ##
 # Find and run the application 
-#
-# A command line option must be passed to the script.
-# It must be one of the following [dm, pc, table, editor].
-# This is used to determine which executable to launch
 ##
 if [ $1 = "dm" ] ; then
   $BIN_DIR/dm
@@ -41,6 +37,8 @@ elif [ $1 = "view" ] ; then
   $BIN_DIR/tmxviewer "$2"
 elif [ $1 = "pipeline" ] ; then
   $BIN_DIR/pipeline
+elif [ $1 = "mtv" ] ; then
+  $BIN_DIR/mtv
 else
   echo "-----------------------"
   echo "Error. Invalid command"

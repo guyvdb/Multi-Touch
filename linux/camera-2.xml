@@ -15,7 +15,7 @@
 
 
     <module name="video0" type="camera">
-       <setting name="fps" type="integer" value="200"/>
+       <setting name="fps" type="integer" value="100"/>
         <setting name="device" type="integer" value="0"/>
     </module>
 

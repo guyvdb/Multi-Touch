@@ -2,8 +2,8 @@
 <pipeline name="test">
 
     <module name="video0" type="camera">
-        <setting name="fps" type="integer" value="30"/>
-        <setting name="filename" type="string" value="../doc/rdi.avi"/>
+       <setting name="fps" type="integer" value="30"/>
+        <setting name="device" type="integer" value="0"/>
     </module>
 
     <module name="grayscale" type="grayscale">
@@ -12,13 +12,12 @@
 
     <module name="foreground" type="foreground">
         <setting name="input" type="frame" value="grayscale:OUTPUT"/>
-        <setting name="learn" type="double" value="0.005"/>
+        <setting name="learn" type="double" value="0.0001"/>
     </module>
-
 
     <module name="blur" type="blur">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
-        <setting name="size" type="integer" value="2"/>
+        <setting name="size" type="integer" value="8"/>
     </module>
 
 
@@ -30,16 +29,13 @@
 
     <module name="amplify" type="amplify">
         <setting name="input" type="frame" value="highpass:OUTPUT"/>
-        <setting name="size" type="integer" value="8"/>
+        <setting name="size" type="integer" value="10"/>
     </module>
-
 
     <module name="binary" type="binary">
         <setting name="input" type="frame" value="amplify:OUTPUT"/>
-        <setting name="threshold" type="integer" value="50"/>
+        <setting name="threshold" type="integer" value="70"/>
     </module>
-
-
 
 
 </pipeline>

@@ -18,6 +18,7 @@ namespace mtv {
     CameraModule::CameraModule() : Module() {
       this->setting("device")->set(0);
       this->setting("fps")->set(0);      
+
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -35,6 +36,7 @@ namespace mtv {
       int fps =  this->setting("fps")->asInteger();
       int frequency = 1000 / fps;
 
+      this->frameRate = 0;
       this->frameCount = 0;
       this->time.start();
 
@@ -64,29 +66,19 @@ namespace mtv {
     void CameraModule::tick() {
       cv::Mat frame;
 
-
       if(this->capture->read(frame)) {
-        //std::cout << "T";
-
         if(frame.data != 0x0) {
           this->frameCount++;
-          //std::cout << "F";
           emit frameReady(this, "OUTPUT", frame);
-        } else {
-          //std::cout << ".";
         }
 
         if(frameCount > 100) {
-          int actual = this->frameCount / (this->time.elapsed()/1000);
-
+          // reset the framerate counter
+          this->frameRate = this->frameCount / (this->time.elapsed()/1000);
           this->frameCount = 0;
           this->time.start();
-
-          qDebug() << "FPS (actual) - reset " << actual;
+          qDebug() << "fps: " << this->frameRate;
         }
-
-      } else {
-        //std::cout << "M";
       }
 
     }

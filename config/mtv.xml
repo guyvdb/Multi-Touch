@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mtv>
+  <!-- The multitouch vision application configuration file -->
+
+  <!-- the active desktop -->
+  <desktop id="1"/>
+
+</mtv>

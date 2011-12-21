@@ -40,6 +40,7 @@ namespace mtv {
       cv::VideoCapture *capture;
       QTime time;
       int frameCount;
+      int frameRate;
 
     };
 

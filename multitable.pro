@@ -4,6 +4,5 @@ SUBDIRS     =     src/libmtg \
                   src/pipeline \
                   src/pc \
                   src/table \
-                  src/dm
-
-
+                  src/dm \
+    src/mtv
