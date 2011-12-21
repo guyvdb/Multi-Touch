@@ -24,7 +24,7 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     int CameraModule::capabilities() const {
-        return (Module::CAPOUTPUT | Module::CAPGUI);
+        return (Module::CAP_OUTPUT_FRAME | Module::CAP_GUI);
     }
 
     /* -------------------------------------------------------------------------------------------

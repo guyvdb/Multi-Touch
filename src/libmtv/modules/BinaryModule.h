@@ -9,19 +9,19 @@
 
 namespace mtv {
 
-    class LIBMTV_EXPORT BrightenModule : public SimpleIOModule
+    class LIBMTV_EXPORT BinaryModule : public SimpleIOModule
     {
     public:
-      BrightenModule();
-      virtual QString getModuleName() {return "brighten";}
+      BinaryModule();
+      virtual QString getModuleName() {return "binary";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();
     };
 
-    class BrightenModuleFactory : public ModuleFactory {
+    class BinaryModuleFactory : public ModuleFactory {
     public:
-      virtual Module* createInstance() {return qobject_cast<Module*>(new BrightenModule()); }
+      virtual Module* createInstance() {return qobject_cast<Module*>(new BinaryModule()); }
     };
 
 }

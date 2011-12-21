@@ -8,11 +8,11 @@
 
 namespace mtv {
 
-    class LIBMTV_EXPORT ContoursModule : public SimpleIOModule
+    class LIBMTV_EXPORT ContourModule : public SimpleIOModule
     {
     public:
-      ContoursModule();
-      virtual QString getModuleName() {return "contours";}
+      ContourModule();
+      virtual QString getModuleName() {return "contour";}
     protected:
       virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
       virtual QString outputName();
@@ -21,9 +21,9 @@ namespace mtv {
       int findContours(cv::Mat &matrix, int minArea, int maxArea, int considered, bool findHoles, bool useApproximation);
     };
 
-    class ContoursModuleFactory : public ModuleFactory {
+    class ContourModuleFactory : public ModuleFactory {
     public:
-      virtual Module* createInstance() {return qobject_cast<Module*>(new ContoursModule()); }
+      virtual Module* createInstance() {return qobject_cast<Module*>(new ContourModule()); }
     };
 
 }

@@ -36,13 +36,14 @@ SOURCES += \
     modules/ForegroundModule.cpp \
     modules/VideoModule.cpp \
     modules/HighpassModule.cpp \
-    modules/ContoursModule.cpp \
     modules/WatershedModule.cpp \
     modules/HarrisCornersModule.cpp \
     modules/FastFeaturesModule.cpp \
-    modules/BrightenModule.cpp \
     modules/HistogramModule.cpp \
-    modules/BalanceModule.cpp
+    modules/BalanceModule.cpp \
+    blobs/Blob.cpp \
+    modules/BinaryModule.cpp \
+    modules/ContourModule.cpp
 
 
 HEADERS +=\
@@ -71,13 +72,14 @@ HEADERS +=\
     modules/ForegroundModule.h \
     modules/VideoModule.h \
     modules/HighpassModule.h \
-    modules/ContoursModule.h \
     modules/WatershedModule.h \
     modules/HarrisCornersModule.h \
     modules/FastFeaturesModule.h \
-    modules/BrightenModule.h \
     modules/HistogramModule.h \
-    modules/BalanceModule.h
+    modules/BalanceModule.h \
+    blobs/Blob.h \
+    modules/BinaryModule.h \
+    modules/ContourModule.h
 
 
 CONFIG   -= app_bundle

@@ -33,10 +33,14 @@ namespace mtv {
   public:
 
       enum {
-        CAPNONE     = 0x00000000,
-        CAPINPUT    = 0x00000001,
-        CAPOUTPUT   = 0x00000002,
-        CAPGUI      = 0x00000004
+        CAP_NONE              = 0x00000000,
+        CAP_GUI               = 0x00000001, // can set parameters via the gui
+        CAP_INPUT_FRAME       = 0x00000002, // accepts video frames as input
+        CAP_OUTPUT_FRAME      = 0x00000004, // produces video frames as output
+        CAP_INPUT_POINTS      = 0x00000008, // accepts a vector of vector points as input  - std::vector< std::vector< cv::Point > >
+        CAP_OUTPUT_POINTS     = 0x00000010  // produces a vector of vector points as output - std::vector< std::vector< cv::Point > >
+
+
       };
 
 
@@ -103,6 +107,7 @@ namespace mtv {
       void frameReady(mtv::Module* module, const QString name, cv::Mat &matrix);
   protected slots:
       virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) = 0;
+
   private slots:
       void OnTimerTimedOut();
   };

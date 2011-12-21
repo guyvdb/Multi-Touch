@@ -23,7 +23,7 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     int VideoModule::capabilities() const {
-        return (Module::CAPOUTPUT | Module::CAPGUI);
+        return (Module::CAP_OUTPUT_FRAME | Module::CAP_GUI);
     }
 
     /* -------------------------------------------------------------------------------------------

@@ -13,6 +13,7 @@ namespace mtv {
 
     class LIBMTV_EXPORT CameraModule : public Module
     {
+     // Q_OBJECT
     public:      
       CameraModule();
 

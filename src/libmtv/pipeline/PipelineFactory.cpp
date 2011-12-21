@@ -12,12 +12,13 @@
 //-------------------------------------------------------
 #include "modules/AmplifyModule.h"
 #include "modules/BalanceModule.h"
+#include "modules/BinaryModule.h"
+#include "modules/BlobFinderModule.h"
 #include "modules/BlurModule.h"
-#include "modules/BrightenModule.h"
 #include "modules/CameraModule.h"
 #include "modules/CannyModule.h"
 #include "modules/CirclesModule.h"
-#include "modules/ContoursModule.h"
+#include "modules/ContourModule.h"
 #include "modules/DilateModule.h"
 #include "modules/ErodeModule.h"
 #include "modules/FastFeaturesModule.h"
@@ -40,12 +41,13 @@ namespace mtv {
   void PipelineFactory::defineModules() {
     define("amplify",         new AmplifyModuleFactory());
     define("balance",         new BalanceModuleFactory());
+    define("binary",          new BinaryModuleFactory());
+    //define("blob-finder",      new BlobFinderModuleFactory());
     define("blur",            new BlurModuleFactory());
-    define("brighten",        new BrightenModuleFactory());
     define("camera",          new CameraModuleFactory());
     define("canny",           new CannyModuleFactory());
     define("circles",         new CirclesModuleFactory());
-    define("contours",        new ContoursModuleFactory());
+    define("contour",        new ContourModuleFactory());
     define("dilate",          new DilateModuleFactory());
     define("erode",           new ErodeModuleFactory());
     define("fast-features",   new FastFeaturesModuleFactory());
@@ -60,7 +62,6 @@ namespace mtv {
     define("threshold",       new ThresholdModuleFactory());
     define("video",           new VideoModuleFactory());
     define("watershed",       new WatershedModuleFactory());
-
   }
 
 

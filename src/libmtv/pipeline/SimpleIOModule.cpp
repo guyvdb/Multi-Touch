@@ -13,7 +13,7 @@ namespace mtv {
     }
 
     int SimpleIOModule::capabilities() const {
-        return (Module::CAPINPUT | Module::CAPOUTPUT | Module::CAPGUI);
+        return (Module::CAP_INPUT_FRAME | Module::CAP_OUTPUT_FRAME | Module::CAP_GUI);
     }
 
     void SimpleIOModule::start() {
