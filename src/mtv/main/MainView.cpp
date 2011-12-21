@@ -11,28 +11,54 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
+
+#define SYSTEM_FRAME_WIDTH 200
+
+
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-MainView::MainView(QWidget *parent) : QMainWindow(parent, Qt::FramelessWindowHint)
+MainView::MainView(QWidget *parent) : QMainWindow(parent)
 {
+
   // desktops
   this->desktop = QApplication::desktop();
 
+  // self
+  QRect workspace = this->desktop->availableGeometry(1); //TODO lookup monitor no from config
+  this->setGeometry(QRect(0,0,workspace.width(),workspace.height()));
+
   // scene
-  this->scene = new QGraphicsScene();
+  this->scene = new Scene();
 
   // view
-  this->view = new QGraphicsView(this);
+  this->view = new View(this);
   this->view->show();
   this->view->setBackgroundBrush(QColor::fromRgb(77,77,77));
   this->view->setScene(this->scene);
   this->view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   this->view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+
+  // system frame
+
+  this->systemFrame = new Frame("System");
+  this->systemFrame->setPos(0,0);
+  this->systemFrame->setGeometry(QRect(0,0,SYSTEM_FRAME_WIDTH,workspace.height()));
+  this->scene->addItem(this->systemFrame);
+
+  // video frame
+  this->videoFrame = new Frame("Video");
+  this->videoFrame->setGeometry(QRect(SYSTEM_FRAME_WIDTH,0,workspace.width()-SYSTEM_FRAME_WIDTH,workspace.height()));
+  this->videoFrame->setPos(SYSTEM_FRAME_WIDTH,0);
+  this->scene->addItem(this->videoFrame);
+
+
+
   // TODO config: read the last saved desktop from the config file
   //this->switchDisplay(this->desktop->primaryScreen());
-  this->switchDisplay(1);
+
+  this->view->setGeometry(QRect(0,0,this->geometry().width(), this->geometry().height()));
 
 }
 
@@ -43,22 +69,10 @@ MainView::~MainView()
 {
   delete this->scene;
   delete this->view;
+
+  delete this->videoFrame;
+  delete this->systemFrame;
 }
 
-/* -------------------------------------------------------------------------------------------
- * Window is resizing. Resize the view.
- * ------------------------------------------------------------------------------------------- */
-void MainView::resizeEvent(QResizeEvent *e) {
-  qDebug() << this->geometry();
-  this->view->setGeometry(QRect(0,0,this->geometry().width(), this->geometry().height()));
-}
-
-/* -------------------------------------------------------------------------------------------
- *
- * ------------------------------------------------------------------------------------------- */
-void MainView::switchDisplay(const int screen, bool fullscreen) {
-  qDebug() << "SWITCHING SCREEN to: " << screen;
-  this->setGeometry(this->desktop->availableGeometry(screen));
-}
 
 

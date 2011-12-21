@@ -2,9 +2,16 @@
 #define MAINVIEW_H
 
 #include <QtGui/QMainWindow>
-#include <QGraphicsView>
-#include <QGraphicsScene>
+//#include <QGraphicsView>
+//#include <QGraphicsScene>
 #include <QDesktopWidget>
+#include <QList>
+
+
+#include "widget/View.h"
+#include "widget/Scene.h"
+
+#include "widget/Frame.h"
 
 
 class MainView : public QMainWindow
@@ -14,16 +21,26 @@ class MainView : public QMainWindow
 public:
     MainView(QWidget *parent = 0);
     ~MainView();
-protected:
-    virtual void resizeEvent(QResizeEvent *e);
+
 private:
 
-    void switchDisplay(const int screen, bool fullscreen = true);
 
-
-    QGraphicsView *view;
-    QGraphicsScene *scene;
+    View *view;
+    Scene *scene;
     QDesktopWidget *desktop;
+
+
+    Frame *systemFrame;
+    Frame *videoFrame;
+
+
+
+
+
 };
+
+
+
+
 
 #endif // MAINVIEW_H
