@@ -82,7 +82,7 @@ namespace mtv {
           this->frameCount = 0;
           this->time.start();
 
-          //qDebug() << "FPS (actual) - reset " << actual;
+          qDebug() << "FPS (actual) - reset " << actual;
         }
 
       } else {

@@ -2,7 +2,7 @@
 <pipeline name="test">
 
     <module name="video0" type="video">
-        <setting name="fps" type="integer" value="200"/>
+        <setting name="fps" type="integer" value="15"/>
         <setting name="filename" type="string" value="../doc/rdi.avi"/>
     </module>
 
@@ -47,16 +47,16 @@
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
     </module>
 
-
-
-     <module name="brighten" type="brighten">
+     <module name="binary" type="binary">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
         <setting name="threshold" type="integer" value="28"/>
-        <setting name="brighten" type="double" value="4.0"/>
-        <setting name="dim" type="double" value="0.2"/>
-
-
     </module>
+
+     <module name="contour" type="contour">
+        <setting name="input" type="frame" value="binary:OUTPUT"/>      
+    </module>
+
+
 
     <module name="forground-highpass" type="highpass">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>

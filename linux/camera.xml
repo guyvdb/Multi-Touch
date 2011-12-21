@@ -57,13 +57,9 @@
 
 
 
-     <module name="brighten" type="brighten">
+     <module name="binary" type="binary">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
         <setting name="threshold" type="integer" value="28"/>
-        <setting name="brighten" type="double" value="4.0"/>
-        <setting name="dim" type="double" value="0.2"/>
-
-
     </module>
 
     <module name="forground-highpass" type="highpass">
