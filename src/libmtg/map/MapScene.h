@@ -9,7 +9,7 @@ namespace Tiled {
     class MapRenderer;
 }
 
-namespace MTG {
+namespace mtg {
 
     class MapScene : public QGraphicsScene
     {

@@ -1,7 +1,7 @@
 #include "GameEngine.h"
 #include "message/Message.h"
 
-namespace MTG {
+namespace mtg {
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -13,6 +13,7 @@ namespace MTG {
       this->discovery = 0x0;
       this->datagram = 0x0;
       this->db = 0x0;
+      this->running = false;
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -36,7 +37,7 @@ namespace MTG {
 
         this->database.setDatabaseName(databaseFileName);
         this->database.open();
-        this->db = new DBManager(this->database);
+        this->db = new Repository(this->database);
         this->db->initialize();
 
         this->startServer();
@@ -46,6 +47,8 @@ namespace MTG {
         this->startClient();
         break;
       }
+
+      this->running = true;
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -64,7 +67,31 @@ namespace MTG {
         this->stopClient();
         break;
       }
+
+      this->running = false;
     }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::addMap(mtg::MapModel *map) {
+      this->db->addMap(map);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::deleteMap(mtg::MapModel *map) {
+      this->db->deleteMap(map);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::listMaps(QList<mtg::MapModel*> *result) {
+      this->db->listMaps(result);
+    }
+
 
     /* -------------------------------------------------------------------------------------------
      *

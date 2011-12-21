@@ -1,7 +1,7 @@
 #include "UdpClient.h"
 
 
-namespace MTG {
+namespace mtg {
 UdpClient::UdpClient(QObject *parent) :
     QObject(parent)
 {

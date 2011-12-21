@@ -28,7 +28,8 @@ SOURCES += \
     net/UdpServer.cpp \
     net/TcpClient.cpp \
     net/UdpClient.cpp \
-    database/DBManager.cpp
+    data/Repository.cpp \
+    data/MapModel.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -48,7 +49,8 @@ HEADERS +=\
     net/TcpClient.h \
     net/UdpClient.h \
     libmtg_global.h \
-    database/DBManager.h
+    data/Repository.h \
+    data/MapModel.h
 
 
 FORMS += \

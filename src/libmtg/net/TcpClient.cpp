@@ -1,6 +1,6 @@
 #include "TcpClient.h"
 
-namespace MTG {
+namespace mtg {
 
 TcpClient::TcpClient(QObject *parent) :
     QObject(parent)

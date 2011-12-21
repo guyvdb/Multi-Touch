@@ -1,7 +1,7 @@
 #include "TcpServer.h"
 
 
-namespace MTG {
+namespace mtg {
 
 
 TcpServer::TcpServer(QObject *parent) :

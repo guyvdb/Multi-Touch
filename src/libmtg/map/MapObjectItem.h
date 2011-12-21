@@ -11,7 +11,7 @@
 
 
 
-namespace  MTG {
+namespace  mtg {
 
 
   class LIBMTG_EXPORT MapObjectItem : public QGraphicsItem

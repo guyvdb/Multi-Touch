@@ -1,6 +1,6 @@
 #include "UdpServer.h"
 
-namespace MTG {
+namespace mtg {
 UdpServer::UdpServer(QObject *parent) :
     QObject(parent)
 {

@@ -1,53 +1,67 @@
-#include "DBManager.h"
+#include "Repository.h"
 
 #include <QStringList>
 #include <QDebug>
 #include <QSqlQuery>
 #include <QVariant>
 
-namespace MTG {
+namespace mtg {
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  DBManager::DBManager(QSqlDatabase &database) : QObject(), database(database)
+  Repository::Repository(QSqlDatabase &database) : QObject(), database(database)
   {
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::initialize() {
+  void Repository::initialize() {
     if(!this->schemaExists()) this->createSchema();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::addMap(const QString name, const QString file) {
+  void Repository::addMap(mtg::MapModel *map) {
     QStringList statement;
-    statement << "INSERT INTO maps VALUES (" << quote(name) << "," << quote(file) << ")";
+    statement << "INSERT INTO maps VALUES (" << quote(map->name) << "," << quote(map->file) << ")";
     execSql(statement);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  bool DBManager::schemaExists() {
+  void Repository::deleteMap(mtg::MapModel *map) {
+
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Repository::listMaps(QList<mtg::MapModel*> *result) {
+
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  bool Repository::schemaExists() {
     return this->tableExists("schema");
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::createSchema() {
+  void Repository::createSchema() {
     this->createSchemaV1();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  bool DBManager::tableExists(const QString name) {
+  bool Repository::tableExists(const QString name) {
 
     QSqlQuery query(this->database);
     query.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "'");
@@ -59,7 +73,7 @@ namespace MTG {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  int DBManager::getSchemaVersion() {
+  int Repository::getSchemaVersion() {
     QSqlQuery query(this->database);
     query.exec("SELECT version FROM schema");
     if(query.next()) {
@@ -72,7 +86,7 @@ namespace MTG {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::setSchemaVersion(const int version) {
+  void Repository::setSchemaVersion(const int version) {
     this->execSql("DELETE FROM schema");
     this->execSql("INSERT INTO schema VALUES (" + QString::number(version) + ")");
   }
@@ -80,7 +94,7 @@ namespace MTG {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::execSql(const QString statement) {
+  void Repository::execSql(const QString statement) {
     QSqlQuery query(this->database);
     query.exec(statement);
   }
@@ -88,7 +102,7 @@ namespace MTG {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::execSql(QStringList &statement) {
+  void Repository::execSql(QStringList &statement) {
     this->execSql(statement.join(" "));
   }
 
@@ -96,7 +110,7 @@ namespace MTG {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  QString DBManager::quote(const QString value) {
+  QString Repository::quote(const QString value) {
     QString result = value;
     result.replace("'","''");
     return "'" + result + "'";
@@ -105,7 +119,7 @@ namespace MTG {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void DBManager::createSchemaV1() {
+  void Repository::createSchemaV1() {
     QStringList statement;
 
     // schema
@@ -115,7 +129,7 @@ namespace MTG {
 
     // create the maps table
     statement.clear();
-    statement << "CREATE TABLE maps (name VARCHAR, file VARCHAR)";
+    statement << "CREATE TABLE maps (name VARCHAR, file VARCHAR, PRIMARY KEY(name))";
     this->execSql(statement);
 
   }

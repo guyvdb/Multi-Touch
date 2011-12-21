@@ -2,7 +2,7 @@
 #include "tiled/maprenderer.h"
 #include <QDebug>
 
-namespace MTG {
+namespace mtg {
 
     /* -------------------------------------------------------------------------------------------
      *

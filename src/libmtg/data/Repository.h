@@ -3,20 +3,25 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QList>
+
+#include "data/MapModel.h"
 
 #define SCHEMA_VERSION 1
 
-namespace MTG {
+namespace mtg {
 
-  class DBManager : public QObject
+  class Repository : public QObject
   {
       Q_OBJECT
   public:
-      DBManager(QSqlDatabase &database);
+      Repository(QSqlDatabase &database);
 
       void initialize();
 
-      void addMap(const QString name, const QString file);
+      void addMap(mtg::MapModel *map);
+      void deleteMap(mtg::MapModel *map);
+      void listMaps(QList<mtg::MapModel*> *result);
 
   private:
     QSqlDatabase &database;

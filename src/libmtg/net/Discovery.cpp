@@ -12,7 +12,7 @@
 
 #define BROADCAST_INTERVAL 5 // interval in seconds
 
-namespace MTG {
+namespace mtg {
 
 
     /* -------------------------------------------------------------------------------------------

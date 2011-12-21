@@ -2,7 +2,7 @@
 #define TCPSERVER_H
 
 #include <QObject>
-namespace MTG {
+namespace mtg {
   class TcpServer : public QObject
   {
       Q_OBJECT

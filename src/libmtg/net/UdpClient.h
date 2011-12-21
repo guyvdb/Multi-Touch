@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-namespace MTG {
+namespace mtg {
 
   class UdpClient : public QObject
   {

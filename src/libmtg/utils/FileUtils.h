@@ -13,7 +13,7 @@
 
 #include "libmtg_global.h"
 
-namespace MTG {
+namespace mtg {
 
     class LIBMTG_EXPORT FileUtils
     {
@@ -22,6 +22,7 @@ namespace MTG {
         static QString gamesDirectory();
         static QString mapsDirectory();
         static QString configDirectory();
+        //static QString relativeMapName(const QString filename);
     private:
         static QString getDirectoryOffRoot(const QString name);
     };

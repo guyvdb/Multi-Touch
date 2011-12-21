@@ -8,7 +8,7 @@
 #include "tiled/maprenderer.h"
 
 
-namespace MTG  {
+namespace mtg  {
 
   class LIBMTG_EXPORT TileLayerItem : public QGraphicsItem
   {

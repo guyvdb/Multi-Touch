@@ -8,7 +8,7 @@
 #include "tiled/objectgroup.h"
 #include "tiled/maprenderer.h"
 
-namespace MTG {
+namespace mtg {
 
   class LIBMTG_EXPORT ObjectGroupItem : public QGraphicsItem
   {

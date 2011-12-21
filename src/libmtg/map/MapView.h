@@ -24,7 +24,7 @@ namespace Tiled {
 }
 
 
-namespace MTG {
+namespace mtg {
 
     /**
      * The MapView shows the map scene. It sets some MapScene specific

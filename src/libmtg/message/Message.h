@@ -10,7 +10,7 @@
 #include <QVariant>
 #include <QVariantMap>
 
-namespace MTG {
+namespace mtg {
 
     class Message
     {

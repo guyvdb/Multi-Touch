@@ -13,7 +13,7 @@
 #include <QStringList>
 #include <QTextStream>
 
-namespace MTG {
+namespace mtg {
 
    /* -------------------------------------------------------------------------------------------
     *
@@ -46,6 +46,15 @@ namespace MTG {
      * ------------------------------------------------------------------------------------------- */
     QString FileUtils::configDirectory() {
       return FileUtils::getDirectoryOffRoot("config");
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    QString relativeMapName(const QString filename) {
+      QString result = filename;
+      QString maps = FileUtils::mapsDirectory();
+      return result.right(result.count()-maps.count());
     }
 
     /* -------------------------------------------------------------------------------------------
