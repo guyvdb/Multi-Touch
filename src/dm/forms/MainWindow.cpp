@@ -23,12 +23,12 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-MainWindow::MainWindow(MTG::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
+MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
 {
     ui->setupUi(this);
     this->ui->closeGameAction->setEnabled(false);
     this->ui->tabs->setGeometry(this->calculateTabRect());
-    this->tableMap = new MTG::MapView(this->ui->tabTableMap);
+    this->tableMap = new mtg::MapView(this->ui->tabTableMap);
     this->tableMap->setGeometry(this->calculateTableMapRect());
     this->tableMap->show();
     //this->tableMap->loadMap("/home/guy/Projects/Current/multitable/maps/cave1.tmx");
@@ -88,7 +88,7 @@ void MainWindow::startGame() {
   //enable
   this->ui->closeGameAction->setEnabled(true);
 
-  this->engine = new MTG::GameEngine(this->settings,MTG::GameEngine::GameServer);
+  this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameServer);
   this->engine->start(this->databaseFileName);
 }
 
@@ -118,7 +118,7 @@ void MainWindow::on_openGameAction_triggered()
   // there is a bug on QAction where it is not getting grayed out on Ubuntu 10.11
   if(this->ui->openGameAction->isEnabled()) {
 
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),MTG::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
     qDebug() << "FILE OPEN: " << fileName;
     if(fileName  != "") {
       this->databaseFileName = fileName;
@@ -157,7 +157,7 @@ void MainWindow::on_newGameAction_triggered()
         if(!fileName.endsWith(".game")) {
           fileName = fileName + ".game";
         }
-        fileName = MTG::FileUtils::gamesDirectory() + QDir::separator() + fileName;
+        fileName = mtg::FileUtils::gamesDirectory() + QDir::separator() + fileName;
         if(QFile::exists(fileName)) {
           // TODO clean me up. Use a QErrorMessage
           QMessageBox msg;
@@ -188,3 +188,42 @@ void MainWindow::on_networkSettingsAction_triggered()
   dialog.exec();
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::on_quitAction_triggered()
+{
+  if(this->engine->isRunning()) {
+    this->engine->stop();
+  }
+  exit(1);
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::on_showMapAction_triggered()
+{
+    QList<mtg::MapModel*> maps;
+    this->engine->listMaps(&maps);
+
+    // show
+
+    foreach(mtg::MapModel *map, maps) delete map;
+
+
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::on_addMapAction_triggered()
+{
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
+  qDebug() << "FILE OPEN: " << fileName;
+  if(fileName  != "") {
+    mtg::MapModel *map = new mtg::MapModel("map",fileName);
+    this->engine->addMap(map);
+    delete map;
+  }
+}

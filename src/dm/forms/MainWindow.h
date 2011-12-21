@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(MTG::Settings *settings, QWidget *parent = 0);
+    explicit MainWindow(mtg::Settings *settings, QWidget *parent = 0);
     ~MainWindow();
 protected:
     void resizeEvent(QResizeEvent *e);
@@ -32,6 +32,12 @@ private slots:
   void on_newGameAction_triggered();
   void on_closeGameAction_triggered();
   void on_networkSettingsAction_triggered();
+  void on_quitAction_triggered();
+
+  void on_showMapAction_triggered();
+
+  void on_addMapAction_triggered();
+
 private:
     void startGame();
     void stopGame();
@@ -40,9 +46,9 @@ private:
     QString databaseFileName;
     QRect calculateTabRect();
     QRect calculateTableMapRect();
-    MTG::Settings *settings;
-    MTG::MapView *tableMap;
-    MTG::GameEngine *engine;
+    mtg::Settings *settings;
+    mtg::MapView *tableMap;
+    mtg::GameEngine *engine;
 };
 
 #endif // MAINWINDOW_H

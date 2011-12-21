@@ -12,17 +12,20 @@ TEMPLATE = app
 SOURCES += main.cpp\
     forms/MainWindow.cpp \
     forms/CreateGameDialog.cpp \
-    forms/NetworkSettingDialog.cpp
+    forms/NetworkSettingDialog.cpp \
+    forms/ShowMapDialog.cpp
 
 HEADERS  += \
     forms/MainWindow.h \
     forms/CreateGameDialog.h \
-    forms/NetworkSettingDialog.h
+    forms/NetworkSettingDialog.h \
+    forms/ShowMapDialog.h
 
 FORMS    += \
     forms/MainWindow.ui \
     forms/CreateGameDialog.ui \
-    forms/NetworkSettingDialog.ui
+    forms/NetworkSettingDialog.ui \
+    forms/ShowMapDialog.ui
 
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include

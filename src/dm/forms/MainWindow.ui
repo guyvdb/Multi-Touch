@@ -49,6 +49,8 @@
     <addaction name="newGameAction"/>
     <addaction name="openGameAction"/>
     <addaction name="closeGameAction"/>
+    <addaction name="separator"/>
+    <addaction name="quitAction"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -61,9 +63,17 @@
      <string>Test</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuMaps">
+    <property name="title">
+     <string>Maps</string>
+    </property>
+    <addaction name="addMapAction"/>
+    <addaction name="showMapAction"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
    <addaction name="menuTest"/>
+   <addaction name="menuMaps"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -98,6 +108,21 @@
   <action name="networkSettingsAction">
    <property name="text">
     <string>Network Settings</string>
+   </property>
+  </action>
+  <action name="quitAction">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+  </action>
+  <action name="addMapAction">
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="showMapAction">
+   <property name="text">
+    <string>Show</string>
    </property>
   </action>
  </widget>

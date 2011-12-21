@@ -20,14 +20,14 @@ class NetworkSettingDialog : public QDialog
     Q_OBJECT
 
 public:
-    NetworkSettingDialog(MTG::Settings *settings,  QWidget *parent = 0);
+    NetworkSettingDialog(mtg::Settings *settings,  QWidget *parent = 0);
     ~NetworkSettingDialog();
 private slots:
     void on_buttonBox_accepted();
 private:
     QVariantMap createDefaults();
     Ui::NetworkSettingDialog *ui;
-    MTG::Settings *settings;
+    mtg::Settings *settings;
 };
 
 #endif // NETWORKSETTINGDIALOG_H
