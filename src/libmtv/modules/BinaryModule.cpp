@@ -5,55 +5,25 @@
 
 
 namespace mtv {
-
-  BinaryModule::BinaryModule() : SimpleIOModule() {
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  BinaryModule::BinaryModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
       this->setting("threshold")->set(128);
   }
 
-  cv::Mat &BinaryModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
-
-    // pixels at or above threshold get set to white
-    // pixels below threshold get set to black
-
-    // adaptive threshold
-    // threshold
-    // canny
-    // compare
-    // inRange
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void BinaryModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
     int t = this->setting("threshold")->asInteger();
-
-    cv::threshold(this->output, this->output, t,255,cv::THRESH_BINARY);
-
-
-    // could apply open/close morphological filters here ....
-
-
-
-/*
-    int rows = this->output.rows;
-    int cols = this->output.cols;
-
-    for(int row = 0; row < rows; row++) {
-        uchar * data = this->output.ptr<uchar>(row);
-        for(int col = 0; col < cols; col++) {
-            if(data[col] >= t) {
-                data[col] = 255;
-            } else {
-                data[col] = 0;
-            }
-        }
-    }
-*/
-
-
-    return this->output;
+    cv::threshold(matrix, frame, t,255,cv::THRESH_BINARY);
+    emit frameReady(this,"OUTPUT",frame);
   }
 
-  QString BinaryModule::outputName() {
-    return "OUTPUT";
-  }
+
 
 }
 

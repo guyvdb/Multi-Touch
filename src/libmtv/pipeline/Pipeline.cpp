@@ -36,17 +36,16 @@ namespace mtv {
    *
    * ------------------------------------------------------------------------------------------- */
   void Pipeline::clear() {
-    QHash<QString, Module*>::iterator i;
-    for(i=this->modules.begin(); i != this->modules.end(); i++) delete i.value();
-    this->modules.clear();
+    //QHash<QString, Module*>::iterator i;
+    //for(i=this->modules.begin(); i != this->modules.end(); i++) delete i.value();
+    //this->modules.clear();
+    this->removeAllModules();
   }
 
   /* -------------------------------------------------------------------------------------------
    * Start the pipeline -- starts all the modules and their threads.
    * ------------------------------------------------------------------------------------------- */
   bool Pipeline::start() {
-
-    // start all the modules
     QHash<QString, Module*>::iterator mi;
     for(mi=this->modules.begin(); mi != this->modules.end(); mi++) {
       Module *ptr = mi.value();
@@ -60,13 +59,34 @@ namespace mtv {
    * Stop the pipeline. Stops all the modules and reclaim the threads.
    * ------------------------------------------------------------------------------------------- */
   void Pipeline::stop() {
-    // stop all modules
     QHash<QString, Module*>::iterator mi;
     for(mi=this->modules.begin(); mi != this->modules.end(); mi++) {
       Module *ptr = mi.value();
       ptr->stop();
     }
-    this->running = true;
+    this->running = false;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Pipeline::pause() {
+    QHash<QString, Module*>::iterator mi;
+    for(mi=this->modules.begin(); mi != this->modules.end(); mi++) {
+      Module *ptr = mi.value();
+      ptr->pause();
+    }
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Pipeline::resume() {
+    QHash<QString, Module*>::iterator mi;
+    for(mi=this->modules.begin(); mi != this->modules.end(); mi++) {
+      Module *ptr = mi.value();
+      ptr->resume();
+    }
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -87,18 +107,18 @@ namespace mtv {
    * Go through all the properties of all modules and see what the output of this module
    * is bound to.
    * ------------------------------------------------------------------------------------------- */
-  QStringList Pipeline::getModuleDependants(const QString qualifiedName) {
+  /*QStringList Pipeline::getModuleDependants(const QString qualifiedName) {
     Module *module = this->getModule(qualifiedName);
     return this->getModuleDependants(module);
-  }
+  }*/
 
   /* -------------------------------------------------------------------------------------------
    * Go through all the properties of all modules and see what the output of this module
    * is bound to.
    * ------------------------------------------------------------------------------------------- */
-  QStringList Pipeline::getModuleDependants(Module *module) {
+  /*QStringList Pipeline::getModuleDependants(Module *module) {
 
-  }
+  }*/
 
   /* -------------------------------------------------------------------------------------------
    * If there is nothing that depends on this module, remove it
@@ -119,17 +139,27 @@ namespace mtv {
    * TODO if we are running stop it. If it is the last module on the thread reclaim it
    * ------------------------------------------------------------------------------------------- */
   bool Pipeline::removeModule(Module *module) {
-    QString key = module->getInstanceName();
+    //QString key = module->getInstanceName();
+    //QStringList dependencies = this->getModuleDependants(module->getInstanceName());
+    //if(dependencies.count() == 0) {
 
-    QStringList dependencies = this->getModuleDependants(module->getInstanceName());
-    if(dependencies.count() == 0) {
-      this->modules.remove(key);
+      module->stop();
+      this->modules.remove(module->getInstanceName());
       delete module;
       return true;
-    } else {
-      this->lastError = "Module '" + module->getInstanceName() + "' is a dependancy of other modules.";
-      return false;
-    }
+    //} else {
+    //  this->lastError = "Module '" + module->getInstanceName() + "' is a dependancy of other modules.";
+    //  return false;
+    // }
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Pipeline::removeAllModules() {
+    QList<Module*> modules;
+    this->listModules(modules);
+    foreach(Module* module, modules) this->removeModule(module);
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -142,9 +172,7 @@ namespace mtv {
     } else {
       this->modules[module->getInstanceName()] = module;
       module->setOrdinal(this->modules.count());
-      if(this->running) {
-        module->start();
-      }
+      if(this->isRunning()) module->start();
       return true;
     }
   }
@@ -209,4 +237,37 @@ namespace mtv {
     for(i=this->modules.begin();i != this->modules.end();i++) result.append(i.value());    
   }
 
+  void Pipeline::dumpSettings() {
+    QList<Module*> modules;
+    this->listModules(modules);
+    foreach(Module *module, modules) {
+      qDebug() << "---------------------------" << module->getModuleName() << ":" << module->getInstanceName();
+
+      QHash<QString, Setting*> *settings = module->getSettings();
+      QList<QString> keys = settings->keys();
+      foreach(QString key, keys) {
+        Setting *setting = module->setting(key);
+        qDebug() << "   - setting: " << setting->getName() << ", type: " << setting->getType();
+
+        switch(setting->getType()) {
+        case Setting::NONE:
+          qDebug() << "     - value: " << "none"; break;
+        case Setting::BOOLEAN:
+          qDebug() << "     - value: " << setting->asBool(); break;
+        case Setting::STRING:
+          qDebug() << "     - value: " << setting->asString(); break;
+        case Setting::INTEGER:
+          qDebug() << "     - value: " << setting->asInteger(); break;
+        case Setting::DOUBLE:
+          qDebug() << "     - value: " << setting->asDouble(); break;
+        case Setting::POINTLIST:
+          qDebug() << "     - value: " << "pointlist"; break;
+        case Setting::FRAME:
+          qDebug() << "     - value: " << setting->getFrameName();
+          qDebug() << "     - module pointer: " << setting->getModule();
+          break;
+        }
+      }
+    }
+  }
 }

@@ -4,19 +4,19 @@
 
 
 #include "libmtv_global.h"
-#include "pipeline/SimpleIOModule.h"
+#include "pipeline/SimpleModule.h"
 
 
 namespace mtv {
 
-    class LIBMTV_EXPORT HighpassModule : public SimpleIOModule
+    class LIBMTV_EXPORT HighpassModule : public SimpleModule
     {
     public:
       HighpassModule();
       virtual QString getModuleName() {return "highpass";}
-    protected:
-      virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
-      virtual QString outputName();
+      int capabilities() const { return (Module::CapabilityInputFrame | Module::CapabilityOutputFrame | Module::CapabilityGui); }
+    protected slots:
+      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);
     };
 
     class HighpassModuleFactory : public ModuleFactory {

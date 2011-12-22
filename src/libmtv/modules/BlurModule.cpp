@@ -7,25 +7,26 @@
 
 namespace mtv {
 
-  BlurModule::BlurModule() : SimpleIOModule() {
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  BlurModule::BlurModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
     this->setting("size")->set(4);
     this->setting("size")->setMin(2);
-    this->setting("size")->setMax(10);
-
+    this->setting("size")->setMax(100);
   }
 
-  cv::Mat &BlurModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void BlurModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
     int size = this->setting("size")->asInteger();
     cv::Size box(size, size);
-    cv::blur(this->output, this->output,box);
-    return this->output;
+    cv::blur(matrix, frame, box);
+    emit frameReady(this,"OUTPUT",frame);
   }
-
-  QString BlurModule::outputName() {
-    return "OUTPUT";
-  }
-
 }
 
 

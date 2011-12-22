@@ -12,7 +12,7 @@ namespace mtv {
   {
       Q_OBJECT
   public:
-      enum PropertyType {
+      enum SettingType {
           NONE,
           BOOLEAN,
           STRING,
@@ -23,12 +23,12 @@ namespace mtv {
       };
 
       /* constructors */
-      Setting(const QString name);
-      Setting(const QString name, bool value);
-      Setting(const QString name, const QString value);
-      Setting(const QString name, int value);
-      Setting(const QString name, double value);
-      Setting(const QString name, Module *module, const QString frameName);
+      Setting(Module *owner, const QString name);
+      Setting(Module *owner, const QString name, bool value);
+      Setting(Module *owner, const QString name, const QString value);
+      Setting(Module *owner, const QString name, int value);
+      Setting(Module *owner, const QString name, double value);
+      Setting(Module *owner, const QString name, Module *module, const QString frameName);
 
       /* read only */
       bool isReadOnly();
@@ -52,8 +52,8 @@ namespace mtv {
       QString getChoices();
       void setChoices(const QString value);
 
-      /* property type */
-      PropertyType getPropertyType() {return this->type;}
+      /* setting type */
+      SettingType getType() {return this->type;}
 
       /* set value */
       void set(const QString value);
@@ -68,6 +68,8 @@ namespace mtv {
       double asDouble();
       int asInteger();
 
+      QString displayValue();
+
       /* frame info */
       Module * getModule();
       QString getFrameName() const;
@@ -80,11 +82,12 @@ namespace mtv {
       void beforeSettingChanged(mtv::Setting *setting);
       void afterSettingChanged(mtv::Setting *setting);
   private:
-    PropertyType type;
+    SettingType type;
     QString name;
     QString frameName;
 
 
+    Module *owner;
 
     bool bValue;
     QString sValue;

@@ -3,22 +3,19 @@
 
 
 #include "libmtv_global.h"
-#include "pipeline/SimpleIOModule.h"
+#include "pipeline/SimpleModule.h"
 
 
 namespace mtv {
 
-    class LIBMTV_EXPORT ContourModule : public SimpleIOModule
+    class LIBMTV_EXPORT ContourModule : public SimpleModule
     {
     public:
       ContourModule();
       virtual QString getModuleName() {return "contour";}
-    protected:
-      virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
-      virtual QString outputName();
-
-    private:
-      int findContours(cv::Mat &matrix, int minArea, int maxArea, int considered, bool findHoles, bool useApproximation);
+      int capabilities() const { return (Module::CapabilityInputFrame | Module::CapabilityOutputFrame | Module::CapabilityGui); }
+    protected slots:
+      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);
     };
 
     class ContourModuleFactory : public ModuleFactory {

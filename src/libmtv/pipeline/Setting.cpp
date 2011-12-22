@@ -1,11 +1,13 @@
 #include "Setting.h"
+#include "pipeline/Module.h"
+
 #include <QDebug>
 namespace mtv {
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Setting::Setting(const QString name) {
+  Setting::Setting(Module *owner, const QString name) : QObject(), owner(owner) {
     this->init();
     this->name = name;
 
@@ -14,7 +16,7 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Setting::Setting(const QString name, bool value) {
+  Setting::Setting(Module *owner, const QString name, bool value) : QObject(), owner(owner) {
     this->init();
     this->name = name;
     this->bValue = value;
@@ -24,7 +26,7 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Setting::Setting(const QString name, const QString value) {
+  Setting::Setting(Module *owner, const QString name, const QString value) : QObject(), owner(owner) {
     this->init();
     this->name = name;
     this->sValue = value;
@@ -34,7 +36,7 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Setting::Setting(const QString name, int value) {
+  Setting::Setting(Module *owner, const QString name, int value) : QObject(), owner(owner) {
     this->init();
     this->name = name;
     this->iValue = value;
@@ -44,7 +46,7 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Setting::Setting(const QString name, double value) {
+  Setting::Setting(Module *owner, const QString name, double value) : QObject(), owner(owner) {
     this->init();
     this->name = name;
     this->dValue = value;
@@ -54,7 +56,7 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Setting::Setting(const QString name, Module *module, const QString frameName) {
+  Setting::Setting(Module *owner, const QString name, Module *module, const QString frameName) : QObject(), owner(owner) {
     this->init();
     this->name = name;
     this->mValue = module;
@@ -220,10 +222,17 @@ namespace mtv {
    *
    * ------------------------------------------------------------------------------------------- */
   void Setting::set(Module*module, const QString frameName) {
+
+    if(this->mValue != 0x0) this->owner->unhookFrameHandler(this->mValue);
+
     emit beforeSettingChanged(this);
     this->mValue = module;
     this->frameName = frameName;
     this->type = FRAME;
+
+
+    if(module != 0x0) this->owner->hookFrameHandler(module);
+
     emit afterSettingChanged(this);
   }
 
@@ -258,6 +267,28 @@ namespace mtv {
     Q_ASSERT(this->type == INTEGER);
     return this->iValue;
   }
+
+  QString Setting::displayValue() {
+    switch(this->type) {
+    case NONE:
+      return "none";
+    case BOOLEAN:
+      return this->asBool() ? "true" : "false";
+    case STRING:
+      return this->asString();
+    case INTEGER:
+      return QString::number(this->asInteger());
+    case DOUBLE:
+      return QString::number(this->asDouble());
+    case POINTLIST:
+      return "point-list";
+    case FRAME:
+      return "frame";
+    }
+    return "error";
+  }
+
+
 
   /* -------------------------------------------------------------------------------------------
    *

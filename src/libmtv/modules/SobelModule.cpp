@@ -6,37 +6,22 @@
 
 namespace mtv {
 
-  SobelModule::SobelModule() : SimpleIOModule() {
-        /*
-
-      this->setting("x")
-      this->setting("x")
-      this->setting("x")
-
-      this->setting("y")
-      this->setting("y")
-      this->setting("y")
-
-
-
-      this->setting("size")->set(4);
-      this->setting("size")->setMin(2);
-      this->setting("size")->setMax(10);
-
-      this->setting("scale")->set(1.0);
-
-      */
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  SobelModule::SobelModule() : SimpleModule() {
+    //TODO add settings
+    this->setting("input")->set(0x0,"");    
   }
 
-  cv::Mat &SobelModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
-    cv::Sobel(this->output,this->output,CV_8U,1,0,3,1,128);
-    return this->output;
-  }
-
-  QString SobelModule::outputName() {
-    return "OUTPUT";
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void SobelModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    //TODO use settings
+    cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
+    cv::Sobel(matrix,frame,CV_8U,1,0,3,1,128);
+    emit frameReady(this,"OUTPUT",frame);
   }
 
 }

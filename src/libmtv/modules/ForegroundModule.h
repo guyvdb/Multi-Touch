@@ -1,34 +1,31 @@
 #ifndef FOREGROUNDMODULE_H
 #define FOREGROUNDMODULE_H
 
-
+#include <QTime>
 
 #include "libmtv_global.h"
-#include "pipeline/SimpleIOModule.h"
+#include "pipeline/SimpleModule.h"
 
 
 namespace mtv {
 
-    class LIBMTV_EXPORT ForegroundModule : public SimpleIOModule
-    {
-    public:
-      ForegroundModule();
-      virtual QString getModuleName() {return "foreground";}
-    protected:
-      virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
-      virtual QString outputName();
+  class LIBMTV_EXPORT ForegroundModule : public SimpleModule
+  {
+  public:
+    ForegroundModule();
+    virtual QString getModuleName() {return "foreground";}
+    int capabilities() const { return (Module::CapabilityInputFrame | Module::CapabilityOutputFrame | Module::CapabilityGui); }
+  protected slots:
+    virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);
+  private:
+     cv::Mat accumulated;
+     QTime lastAccumulation;
+  };
 
-    private:
-       cv::Mat gray;
-       cv::Mat background;
-       cv::Mat backImage;
-       cv::Mat foreground;
-    };
-
-    class ForegroundModuleFactory : public ModuleFactory {
-    public:
-      virtual Module* createInstance() {return qobject_cast<Module*>(new ForegroundModule()); }
-    };
+  class ForegroundModuleFactory : public ModuleFactory {
+  public:
+    virtual Module* createInstance() {return qobject_cast<Module*>(new ForegroundModule()); }
+  };
 
 }
 

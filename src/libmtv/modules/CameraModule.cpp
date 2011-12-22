@@ -10,6 +10,10 @@
 #include <iostream>
 
 
+
+#include "pipeline/Pipeline.h"
+
+
 namespace mtv {
 
     /* -------------------------------------------------------------------------------------------
@@ -17,24 +21,25 @@ namespace mtv {
      * ------------------------------------------------------------------------------------------- */
     CameraModule::CameraModule() : Module() {
       this->setting("device")->set(0);
-      this->setting("fps")->set(0);      
+      this->setting("fps")->set(0);
 
+      this->timer = 0x0;
     }
 
-    /* -------------------------------------------------------------------------------------------
-     *
-     * ------------------------------------------------------------------------------------------- */
-    int CameraModule::capabilities() const {
-        return (Module::CAP_OUTPUT_FRAME | Module::CAP_GUI);
-    }
+
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
     void CameraModule::start() {
+
+
+
       int device = this->setting("device")->asInteger();
       int fps =  this->setting("fps")->asInteger();
       int frequency = 1000 / fps;
+
+
 
       this->frameRate = 0;
       this->frameCount = 0;
@@ -44,8 +49,13 @@ namespace mtv {
       qDebug() << "Starting device:" << device << " at " << fps << "fps";
 
       this->capture = new cv::VideoCapture(device);
-      if(this->capture->isOpened()) {
-        this->startTicking(frequency);
+      if(this->capture->isOpened()) {        
+        this->timer = new QTimer();
+        this->timer->setSingleShot(false);
+        this->timer->setInterval(frequency);
+        this->connect(this->timer, SIGNAL(timeout()),this,SLOT(tick()));
+        this->timer->start();
+
         this->running = true;
       } else {
         this->addError("device","Failed to open device (" + QString::number(device) + ")");
@@ -56,8 +66,28 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     void CameraModule::stop() {
-      this->stopTicking();
+      if(this->timer != 0x0) {
+        this->timer->stop();
+        this->disconnect(this->timer, SIGNAL(timeout()),this,SLOT(tick()));
+        delete this->timer;
+        this->timer = 0x0;
+      }
+      delete this->capture;
       this->running = false;
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void CameraModule::pause() {
+      this->timer->stop();
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void CameraModule::resume() {
+      this->timer->start();
     }
 
     /* -------------------------------------------------------------------------------------------

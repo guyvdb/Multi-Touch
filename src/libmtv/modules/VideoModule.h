@@ -2,8 +2,9 @@
 #define VIDEOMODULE_H
 
 #include "libmtv_global.h"
-#include "pipeline/SimpleIOModule.h"
+#include "pipeline/Module.h"
 #include <QTime>
+#include <QTimer>
 
 #include <opencv2/opencv.hpp>
 
@@ -13,31 +14,21 @@ namespace mtv {
     {
     public:
       VideoModule();
-
-      /* capabilities of this module */
-      virtual int capabilities() const;
-
-      /* start and stop this module */
+      virtual QString getModuleName() {return "video";}
+      virtual int capabilities() const {return (Module::CapabilityOutputFrame | Module::CapabilityGui);}
       virtual void start();
       virtual void stop();
-
-      virtual QString getModuleName() {return "video";}
-
-    protected:
-
-      /* tick */
-      virtual void tick();
-
+      virtual void pause();
+      virtual void resume();
     protected slots:
       virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) {}
-
+      void tick();
     private:
       bool running;
       QTimer *timer;
       cv::VideoCapture *capture;
       QTime time;
       int frameCount;
-
     };
 
 

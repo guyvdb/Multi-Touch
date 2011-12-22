@@ -2,19 +2,19 @@
 #define CIRCLEDETECTIONMODULE_H
 
 #include "libmtv_global.h"
-#include "pipeline/SimpleIOModule.h"
+#include "pipeline/SimpleModule.h"
 
 
 namespace mtv {
 
-    class LIBMTV_EXPORT CirclesModule : public SimpleIOModule
+    class LIBMTV_EXPORT CirclesModule : public SimpleModule
     {
     public:
       CirclesModule();
       virtual QString getModuleName() {return "circles";}
-    protected:
-      virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
-      virtual QString outputName();
+      int capabilities() const { return (Module::CapabilityInputFrame | Module::CapabilityOutputFrame | Module::CapabilityGui); }
+    protected slots:
+      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);
     private:
       int methodToCvIndentifier(const QString method);
     };

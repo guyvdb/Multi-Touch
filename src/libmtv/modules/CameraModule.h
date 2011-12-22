@@ -3,6 +3,7 @@
 
 #include <QMetaType>
 #include <QTime>
+#include <QTimer>
 
 #include <opencv2/opencv.hpp>
 
@@ -16,24 +17,16 @@ namespace mtv {
      // Q_OBJECT
     public:      
       CameraModule();
-
-      /* capabilities of this module */
-      virtual int capabilities() const;
-
-      /* start and stop this module */
+      virtual QString getModuleName() {return "camera";}
+      virtual int capabilities() const {return (Module::CapabilityOutputFrame | Module::CapabilityGui);}
+    protected:
       virtual void start();
       virtual void stop();
-
-      virtual QString getModuleName() {return "camera";}
-
-    protected:
-
-      /* tick */
-      virtual void tick();
-
+      virtual void pause();
+      virtual void resume();
     protected slots:
-      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) {}
-
+      virtual void tick();
+      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) {}  
     private:
       bool running;
       QTimer *timer;

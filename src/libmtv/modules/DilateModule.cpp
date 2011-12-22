@@ -5,19 +5,20 @@
 
 
 namespace mtv {
-
-  DilateModule::DilateModule() : SimpleIOModule() {
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  DilateModule::DilateModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
   }
 
-  cv::Mat &DilateModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
-    cv::dilate(this->output,this->output,cv::Mat());
-    return this->output;
-  }
-
-  QString DilateModule::outputName() {
-    return "OUTPUT";
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void DilateModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
+    cv::dilate(matrix,frame,cv::Mat());
+    emit frameReady(this,"OUTPUT",frame);
   }
 
 }

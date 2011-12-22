@@ -7,53 +7,43 @@
 
 namespace mtv {
 
-  HighpassModule::HighpassModule() : SimpleIOModule() {
-    this->setting("size1")->set(5);
-    this->setting("size2")->set(5);
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  HighpassModule::HighpassModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
+    this->setting("threshold")->set(5);
+    this->setting("noise")->set(5);
   }
 
-  cv::Mat &HighpassModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void HighpassModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+
     int size;
     cv::Size box;
-
-    //this->dump("matrix",matrix);
+    cv::Mat frame;
 
     // make a blur copy
     cv::Mat blured;
 
-    //this->dump("start: blured",blured);
-
-
-
-    size = this->setting("size1")->asInteger();
+    size = this->setting("threshold")->asInteger();
     box = cv::Size(size, size);
     cv::blur(matrix, blured,box);
 
-    //this->dump("blur: blured",blured);
-
-
     // matrix - blured  = highpass image
-    cv::absdiff(matrix, blured, this->output);
-
-    //this->dump("absdiff: blured",blured);
-
+    cv::absdiff(matrix, blured, frame);
 
     // blur highpass to remove noise
-    size = this->setting("size2")->asInteger();
+    size = this->setting("threshold")->asInteger();
     box = cv::Size(size, size);
-    cv::blur(blured, this->output, box);
 
+    cv::blur(blured, frame, box);
 
-    //this->dump("output",this->output);
+    emit frameReady(this, "OUTPUT", frame);
 
-
-    return this->output;
   }
-
-  QString HighpassModule::outputName() {
-    return "OUTPUT";
-  }
-
 
 
 

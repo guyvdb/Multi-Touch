@@ -134,7 +134,7 @@ LateBind::LateBind(Setting *setting, const QString instanceName, const QString f
       foreach(Setting *setting, settings) {
         w.writeStartElement("setting");
         w.writeAttribute("name", setting->getName());
-        switch(setting->getPropertyType()) {
+        switch(setting->getType()) {
           case Setting::NONE :
             w.writeAttribute("type","none");
             break;

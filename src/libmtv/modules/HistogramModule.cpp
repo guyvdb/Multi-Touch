@@ -6,41 +6,28 @@
 
 
 namespace mtv {
-
-  HistogramModule::HistogramModule() : SimpleIOModule() {
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  HistogramModule::HistogramModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
   }
 
-  cv::Mat &HistogramModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void HistogramModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
     cv::MatND hist;
     int size[1];
     float hranges[2];
     const float* ranges[1];
     int channels[1];
 
-
-
-
-
     size[0] = 256;
     hranges[0] = 0.0;
     hranges[1] = 255.0;
     channels[0] = 0;
     ranges[0] = hranges;
-
-    /*
-C++: void calcHist(const Mat* arrays, int narrays, const int* channels, InputArray mask, OutputArray
-hist, int dims, const int* histSize, const float** ranges, bool uniform=true, bool accu-
-mulate=false )
-
-C++: void calcHist(const Mat* arrays, int narrays, const int* channels, InputArray mask, SparseMat&
-hist, int dims, const int* histSize, const float** ranges, bool uniform=true, bool accu-
-mulate=false )
-
-
-*/
 
     cv::calcHist(&matrix, 1, channels,cv::Mat(),hist,1,size,ranges);
 
@@ -49,7 +36,7 @@ mulate=false )
     double min = 0;
     cv::minMaxLoc(hist,&min, &max,0,0);
 
-    this->output = cv::Mat(size[0],size[0],CV_8U, cv::Scalar(255));
+    cv::Mat frame(size[0],size[0],CV_8U, cv::Scalar(255));
 
     //set highest to 90%
     int hpt = static_cast<int>(0.9 * size[0]);
@@ -58,20 +45,10 @@ mulate=false )
     for(int h=0; h<size[0]; h++) {
         float binVal = hist.at<float>(h);
         int intensity = static_cast<int>(binVal * hpt / max);
-
-        cv::line(this->output, cv::Point(h,size[0]), cv::Point(h,size[0]-intensity),cv::Scalar::all(0));
+        cv::line(frame, cv::Point(h,size[0]), cv::Point(h,size[0]-intensity),cv::Scalar::all(0));
     }
 
-
-
-
-    //this->save(this->output);
-
-    return this->output;
-  }
-
-  QString HistogramModule::outputName() {
-    return "OUTPUT";
+    emit frameReady(this,"OUTPUT",frame);
   }
 
 }

@@ -18,32 +18,34 @@ SOURCES += \
     pipeline/PipelineFactory.cpp \
     pipeline/PipelineSingleton.cpp \
     pipeline/Setting.cpp \
-    pipeline/SimpleIOModule.cpp \
+    serialize/PipelineSerializer.cpp \
+    blobs/Blob.cpp \
     modules/CameraModule.cpp \
-    modules/AmplifyModule.cpp \
     modules/GrayScaleModule.cpp \
-    modules/CannyModule.cpp \
+    modules/ForegroundModule.cpp \ 
+    modules/VideoModule.cpp \
+    modules/BlurModule.cpp \
+    pipeline/SimpleModule.cpp \
+    modules/WatershedModule.cpp \
+    modules/ThresholdModule.cpp \
+    modules/SobelModule.cpp \
+    modules/MedianModule.cpp \
+    modules/HistogramModule.cpp \
+    modules/HighpassModule.cpp \
+    modules/HarrisCornersModule.cpp \
+    modules/GaussianModule.cpp \
+    modules/FastFeaturesModule.cpp \
     modules/ErodeModule.cpp \
     modules/DilateModule.cpp \
-    serialize/PipelineSerializer.cpp \
-    modules/BlurModule.cpp \
-    modules/GaussianModule.cpp \
-    modules/MedianModule.cpp \
-    modules/SobelModule.cpp \
-    modules/BlobFinderModule.cpp \
-    modules/ThresholdModule.cpp \
+    modules/ContourModule.cpp \
     modules/CirclesModule.cpp \
-    modules/ForegroundModule.cpp \
-    modules/VideoModule.cpp \
-    modules/HighpassModule.cpp \
-    modules/WatershedModule.cpp \
-    modules/HarrisCornersModule.cpp \
-    modules/FastFeaturesModule.cpp \
-    modules/HistogramModule.cpp \
-    modules/BalanceModule.cpp \
-    blobs/Blob.cpp \
+    modules/CannyModule.cpp \
+    modules/BlobFinderModule.cpp \
     modules/BinaryModule.cpp \
-    modules/ContourModule.cpp
+    modules/BalanceModule.cpp \
+    modules/AmplifyModule.cpp \
+    modules/MergeModule.cpp
+
 
 
 HEADERS +=\
@@ -54,33 +56,33 @@ HEADERS +=\
     pipeline/DataType.h \
     pipeline/PipelineFactory.h \
     pipeline/Setting.h \
-    pipeline/SimpleIOModule.h \
-    modules/CameraModule.h \
-    modules/AmplifyModule.h \
-    modules/GrayScaleModule.h \
-    modules/CannyModule.h \
-    modules/ErodeModule.h \
-    modules/DilateModule.h \
     serialize/PipelineSerializer.h \
-    modules/BlurModule.h \
-    modules/GaussianModule.h \
-    modules/MedianModule.h \
-    modules/SobelModule.h \
-    modules/BlobFinderModule.h \
-    modules/ThresholdModule.h \
-    modules/CirclesModule.h \
+    blobs/Blob.h \
+    modules/CameraModule.h \
+    modules/GrayScaleModule.h \
     modules/ForegroundModule.h \
     modules/VideoModule.h \
-    modules/HighpassModule.h \
+    modules/BlurModule.h \
+    pipeline/SimpleModule.h \
     modules/WatershedModule.h \
-    modules/HarrisCornersModule.h \
-    modules/FastFeaturesModule.h \
+    modules/ThresholdModule.h \
+    modules/SobelModule.h \
+    modules/MedianModule.h \
     modules/HistogramModule.h \
-    modules/BalanceModule.h \
-    blobs/Blob.h \
+    modules/HighpassModule.h \
+    modules/HarrisCornersModule.h \
+    modules/GaussianModule.h \
+    modules/FastFeaturesModule.h \
+    modules/ErodeModule.h \
+    modules/DilateModule.h \
+    modules/ContourModule.h \
+    modules/CirclesModule.h \
+    modules/CannyModule.h \
+    modules/BlobFinderModule.h \
     modules/BinaryModule.h \
-    modules/ContourModule.h
-
+    modules/BalanceModule.h \
+    modules/AmplifyModule.h \
+    modules/MergeModule.h
 
 CONFIG   -= app_bundle
 

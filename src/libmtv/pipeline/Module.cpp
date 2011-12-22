@@ -8,18 +8,13 @@ namespace mtv {
    * ------------------------------------------------------------------------------------------- */
   Module::Module() : QObject()
   {
-    this->timer = new QTimer();
-    this->timer->setSingleShot(false);
-    this->connect(this->timer, SIGNAL(timeout()), this, SLOT(OnTimerTimedOut()));
   }
 
   /* -------------------------------------------------------------------------------------------
    * Destructor
    * ------------------------------------------------------------------------------------------- */
   Module::~Module() {
-    // DELETE all errors
     this->clearErrors();
-    delete this->timer;
     QHash<QString, Setting*>::iterator i;
     for(i=this->settings.begin(); i != this->settings.end(); i++) delete i.value();
     this->settings.clear();
@@ -30,7 +25,7 @@ namespace mtv {
    * ------------------------------------------------------------------------------------------- */
   Setting *Module::setting(const QString name) {
     if(!this->settings.contains(name)) {
-      Setting *s = new Setting(name);
+      Setting *s = new Setting(this, name);
       this->settings[name] = s;
     }
     return this->settings[name];
@@ -50,7 +45,6 @@ namespace mtv {
   bool Module::isCapable(int flag) {
     return this->capabilities() & flag;
   }
-
 
   /* -------------------------------------------------------------------------------------------
    *
@@ -79,33 +73,18 @@ namespace mtv {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Module::startTicking(int frequency) {
-    this->timer->setInterval(frequency);
-    this->timer->start();
+  void Module::hookFrameHandler(Module *source) {
+    //qDebug() << "THIS: " << this << " SOURCE: " << source;
+    qDebug() << "HOOK: " << source->getModuleName() << ":" << source->getInstanceName() << " -> " << this->getModuleName() << ":" << this->getInstanceName();
+    this->connect(source,SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrame(mtv::Module*,QString,cv::Mat&)));
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Module::stopTicking() {
-    this->timer->stop();
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  void Module::OnTimerTimedOut() {
-    this->tick();
-  }
-
-  void Module::dump(const QString name, cv::Mat &matrix) {
-    qDebug() << "---" << name << " matrix info ------------------------------------";
-    qDebug() << "Cols: " << matrix.cols;
-    qDebug() << "Rows: " << matrix.rows;
-    qDebug() << "Channels: " << matrix.channels();
-    qDebug() << "Depth: " << matrix.depth();
-    qDebug() << "";
-    qDebug() << "";
+  void Module::unhookFrameHandler(Module *source) {
+    qDebug() << "UNHOOK: " << source->getModuleName() << ":" << source->getInstanceName() << " -> " << this->getModuleName() << ":" << this->getInstanceName();
+    this->disconnect(source,SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrame(mtv::Module*,QString,cv::Mat&)));
   }
 
 }

@@ -6,22 +6,21 @@
 
 namespace mtv {
 
-  WatershedModule::WatershedModule() : SimpleIOModule() {
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  WatershedModule::WatershedModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
   }
 
-  cv::Mat &WatershedModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void WatershedModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame(matrix.size(),CV_32S, cv::Scalar(255));
     cv::Mat temp;
     matrix.convertTo(temp,CV_32S);
-
-    temp.convertTo(this->output, CV_32S);
-    cv::watershed(temp, this->output);
-    return this->output;
+    cv::watershed(temp, frame);
+    emit frameReady(this,"OUTPUT",frame);
   }
-
-  QString WatershedModule::outputName() {
-    return "OUTPUT";
-  }
-
 }

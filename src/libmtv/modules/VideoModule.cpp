@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include "pipeline/Pipeline.h"
+
 namespace mtv {
 
 
@@ -16,15 +18,10 @@ namespace mtv {
      * ------------------------------------------------------------------------------------------- */
     VideoModule::VideoModule() : Module() {
       this->setting("filename")->set("");
-      this->setting("fps")->set(0);
+      this->setting("fps")->set(30);
+      this->timer = 0x0;
     }
 
-    /* -------------------------------------------------------------------------------------------
-     *
-     * ------------------------------------------------------------------------------------------- */
-    int VideoModule::capabilities() const {
-        return (Module::CAP_OUTPUT_FRAME | Module::CAP_GUI);
-    }
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -41,8 +38,12 @@ namespace mtv {
       std::string file(filename.toUtf8().data());
 
       this->capture = new cv::VideoCapture(file);
-      if(this->capture->isOpened()) {
-        this->startTicking(frequency);
+      if(this->capture->isOpened()) {        
+        this->timer = new QTimer();
+        this->timer->setSingleShot(false);
+        this->timer->setInterval(frequency);
+        this->connect(this->timer, SIGNAL(timeout()),this,SLOT(tick()));
+        this->timer->start();
         this->running = true;
       } else {
         this->addError("device","Failed to open file (" +filename + ")");
@@ -53,8 +54,27 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     void VideoModule::stop() {
-      this->stopTicking();
+      if(this->timer != 0x0) {
+        this->timer->stop();
+        this->disconnect(this->timer, SIGNAL(timeout()),this,SLOT(tick()));
+        delete this->timer;
+        this->timer = 0x0;
+      }
       this->running = false;
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void VideoModule::pause() {
+      this->timer->stop();
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void VideoModule::resume() {
+      this->timer->start();
     }
 
     /* -------------------------------------------------------------------------------------------

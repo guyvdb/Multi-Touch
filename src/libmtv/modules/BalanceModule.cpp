@@ -6,27 +6,30 @@
 
 
 namespace mtv {
-
-  BalanceModule::BalanceModule() : SimpleIOModule() {
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  BalanceModule::BalanceModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
     this->balanceCaptured = false;
   }
 
-  cv::Mat &BalanceModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-
-    if(!this->balanceCaptured) { matrix.copyTo(this->output);
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void BalanceModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {    
+    if(!this->balanceCaptured) {
       matrix.copyTo(this->balance);
-      return this->balance;
+      this->balanceCaptured = true;
     } else {
-      cv::absdiff(matrix, this->balance, this->output);
-      return this->output;
+      cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
+      cv::absdiff(matrix, this->balance, frame);
+      cv::absdiff(this->balance, matrix,this->balance);
+
+      emit frameReady(this,"OUTPUT", frame);
     }
-
-
   }
 
-  QString BalanceModule::outputName() {
-    return "OUTPUT";
-  }
 
 }
 

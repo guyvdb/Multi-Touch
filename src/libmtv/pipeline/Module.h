@@ -25,6 +25,9 @@
 
 namespace mtv {
 
+  typedef std::vector < cv::Point > PointsList;
+  typedef std::vector < PointsList > ListOfPointsList;
+
   class Pipeline;
 
   class LIBMTV_EXPORT Module : public QObject
@@ -32,15 +35,20 @@ namespace mtv {
       Q_OBJECT
   public:
 
-      enum {
-        CAP_NONE              = 0x00000000,
-        CAP_GUI               = 0x00000001, // can set parameters via the gui
-        CAP_INPUT_FRAME       = 0x00000002, // accepts video frames as input
-        CAP_OUTPUT_FRAME      = 0x00000004, // produces video frames as output
-        CAP_INPUT_POINTS      = 0x00000008, // accepts a vector of vector points as input  - std::vector< std::vector< cv::Point > >
-        CAP_OUTPUT_POINTS     = 0x00000010  // produces a vector of vector points as output - std::vector< std::vector< cv::Point > >
+      enum CapabilityFlags {
+        CapabilityNone                        = 0x00000000,
+        CapabilityGui                         = 0x00000001, // can set parameters via the gui
+        CapabilityInputFrame                  = 0x00000002, // accepts video frames as input
+        CapabilityOutputFrame                 = 0x00000004, // produces video frames as output
+        CapabilityInputListOfPointsList       = 0x00000008, // accepts a vector of vector points as input  - std::vector< std::vector< cv::Point > >
+        CapabilityOutputListOfPontsList       = 0x00000010  // produces a vector of vector points as output - std::vector< std::vector< cv::Point > >
+      };
 
-
+      enum OutputFlags {
+        OutputNone                            = 0x00000000, // nothing generated from our process call
+        OutputPrimaryFrame                    = 0x00000001, // a frame has been generated
+        OutputSecondaryFrame                  = 0x00000002,
+        OutputListOfPointsList                = 0x00000004  // a points list has been generated
       };
 
 
@@ -53,6 +61,8 @@ namespace mtv {
       /* start and stop this module */
       virtual void start() = 0;
       virtual void stop() = 0;
+      virtual void pause() = 0;
+      virtual void resume() = 0;
 
       /* settings */
       Setting *setting(const QString name);
@@ -68,9 +78,6 @@ namespace mtv {
       QString getInstanceName() {return this->instanceName; }
       void setInstanceName(const QString value) {this->instanceName = value; }
 
-      /* pipline */
-      void setPipeline(Pipeline *pipeline) {this->pipeline = pipeline; }
-
       /* errors */
       void addError(const QString propname, const QString message);
       void addError(const QString message);
@@ -82,34 +89,22 @@ namespace mtv {
       void setOrdinal(int value) {this->ordinal = value;}
       int getOrdinal() {return this->ordinal; }
 
-  protected:
-      /* tick */
-      virtual void tick() = 0;
-      void startTicking(int frequency);
-      void stopTicking();
+      /* eventing of settings */
+      void hookFrameHandler(Module *source);
+      void unhookFrameHandler(Module *source);
 
-      /* debug method */
-      void dump(const QString name, cv::Mat &matrix);
-
-      /* Image Convertion */
-      //TODO test and convert color spaces
-      //void convert(cv::Mat &source, cv::Mat & dest);
-
+      QHash<QString, mtv::Setting*>* getSettings() {return &this->settings; }
   private:
-      QHash<QString, Setting*> settings;
+      QHash<QString, mtv::Setting*> settings;
       QString instanceName;
-      Pipeline *pipeline;
       QList<ModuleError*> errors;
       QString lastError;
-      QTimer *timer;
       int ordinal;
   signals:
       void frameReady(mtv::Module* module, const QString name, cv::Mat &matrix);
   protected slots:
       virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix) = 0;
-
-  private slots:
-      void OnTimerTimedOut();
+      virtual void tick() = 0;
   };
 
 

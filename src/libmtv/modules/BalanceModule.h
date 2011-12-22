@@ -2,20 +2,19 @@
 #define BALANCEMODULE_H
 
 #include "libmtv_global.h"
-#include "pipeline/SimpleIOModule.h"
+#include "pipeline/SimpleModule.h"
 
 
 namespace mtv {
 
-    class LIBMTV_EXPORT BalanceModule : public SimpleIOModule
+    class LIBMTV_EXPORT BalanceModule : public SimpleModule
     {
     public:
       BalanceModule();
       virtual QString getModuleName() {return "balance";}
-    protected:
-      virtual cv::Mat &process(mtv::Module *module, const QString name, cv::Mat &matrix);
-      virtual QString outputName();
-
+      int capabilities() const { return (Module::CapabilityInputFrame | Module::CapabilityOutputFrame | Module::CapabilityGui); }
+    protected slots:
+      virtual void OnFrame(mtv::Module* module, const QString name, cv::Mat &matrix);
     private:
        cv::Mat balance;
        bool balanceCaptured;

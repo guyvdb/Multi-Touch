@@ -8,26 +8,32 @@
 
 namespace mtv {
 
-  FastFeaturesModule::FastFeaturesModule() : SimpleIOModule() {
-    this->setting("amplification")->set(0.2);
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  FastFeaturesModule::FastFeaturesModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
+    //this->setting("amplification")->set(0.2);
   }
 
-  cv::Mat &FastFeaturesModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void FastFeaturesModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame;
     std::vector<cv::KeyPoint> keypoints;
 
     cv::FastFeatureDetector fast(10);
-    fast.detect(this->output,keypoints);
+    fast.detect(matrix,keypoints);
 
-    cv::drawKeypoints(this->output,keypoints,this->output, cv::Scalar(255,255,255), cv::DrawMatchesFlags::DRAW_OVER_OUTIMG);
+    matrix.copyTo(frame);
 
-    return this->output;
+    cv::drawKeypoints(matrix,keypoints,frame, cv::Scalar(255,255,255), cv::DrawMatchesFlags::DRAW_OVER_OUTIMG);
+
+    //TODO emit List of PointList
+    emit frameReady(this,"OUTPUT",frame);
   }
 
-  QString FastFeaturesModule::outputName() {
-    return "OUTPUT";
-  }
 
 }
 

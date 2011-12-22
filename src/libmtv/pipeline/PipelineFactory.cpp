@@ -29,6 +29,7 @@
 #include "modules/HighpassModule.h"
 #include "modules/HistogramModule.h"
 #include "modules/MedianModule.h"
+#include "modules/MergeModule.h"
 #include "modules/SobelModule.h"
 #include "modules/ThresholdModule.h"
 #include "modules/VideoModule.h"
@@ -39,10 +40,10 @@ namespace mtv {
   // Add your module here in alphabetical order
   //-------------------------------------------------------
   void PipelineFactory::defineModules() {
+
     define("amplify",         new AmplifyModuleFactory());
     define("balance",         new BalanceModuleFactory());
     define("binary",          new BinaryModuleFactory());
-    //define("blob-finder",      new BlobFinderModuleFactory());
     define("blur",            new BlurModuleFactory());
     define("camera",          new CameraModuleFactory());
     define("canny",           new CannyModuleFactory());
@@ -58,6 +59,7 @@ namespace mtv {
     define("highpass",        new HighpassModuleFactory());
     define("histogram",       new HistogramModuleFactory());
     define("median",          new MedianModuleFactory());
+    define("merge",           new MergeModuleFactory());
     define("sobel",           new SobelModuleFactory());
     define("threshold",       new ThresholdModuleFactory());
     define("video",           new VideoModuleFactory());

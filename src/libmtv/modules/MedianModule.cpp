@@ -7,24 +7,28 @@
 
 namespace mtv {
 
-  MedianModule::MedianModule() : SimpleIOModule() {
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  MedianModule::MedianModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
       this->setting("size")->set(4);
       this->setting("size")->setMin(2);
       this->setting("size")->setMax(10);
   }
 
-  cv::Mat &MedianModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void MedianModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
     int size = this->setting("size")->asInteger();
     if(size % 2 != 1) size++; //ensure odd
-
-    cv::medianBlur(this->output,this->output,size);
-    return this->output;
+    cv::medianBlur(matrix,frame,size);
+    emit frameReady(this,"OUTPUT",frame);
   }
 
-  QString MedianModule::outputName() {
-    return "OUTPUT";
-  }
+
 
 }
 

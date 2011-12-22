@@ -4,54 +4,47 @@
 
 #include <opencv2/imgproc/imgproc.hpp>
 
-/*
-  This must be hooked to a grayscale image for its input
-
-*/
-
-
 namespace mtv {
 
-    ForegroundModule::ForegroundModule() : SimpleIOModule() {
-        //this->setting("absolute")->set(true);
-        this->setting("learn")->set(0.01);
-        //this->setting("threshold")->set(10);
+ /* -------------------------------------------------------------------------------------------
+  *
+  * ------------------------------------------------------------------------------------------- */
+  ForegroundModule::ForegroundModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
+    this->setting("learn")->set(0.0001);
+    this->setting("timeout")->set(-1);
+
+    this->lastAccumulation.start();
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void ForegroundModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+
+    cv::Mat background, foreground, frame;
+    double learn = this->setting("learn")->asDouble();
+
+    // ensure we have an accumulated image - if the accumulator is older that 1 second replace it
+    if(this->accumulated.empty() ) matrix.convertTo(this->accumulated, CV_32F);
+
+    // our background for this frame
+    this->accumulated.convertTo(background, CV_8U);
+
+    // do a diff
+    cv::absdiff(matrix,background, foreground);
+
+    foreground.copyTo(frame);
+
+    // accumulate the background
+    cv::accumulateWeighted(matrix,this->accumulated,learn,foreground);
+
+    this->lastAccumulation.restart();
+
+    emit frameReady(this,"OUTPUT",frame);
+  }
 
 
-
-    }
-
-    cv::Mat &ForegroundModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-        //matrix.copyTo(this->output);
-
-        // convert to grayscale
-        //cv::cvtColor(matrix, this->gray, CV_BGR2GRAY);
-        matrix.copyTo(this->gray);
-
-        // setup background
-        if(this->background.empty()) {
-            this->gray.convertTo(this->background, CV_32F);
-        }
-
-        // convert to 8U
-        background.convertTo(this->backImage, CV_8U);
-
-        // compute difference
-        cv::absdiff(this->backImage,this->gray,this->foreground);
-
-        // apply threshold
-       // cv::threshold(this->foreground, this->output, this->setting("threshold")->asInteger(), 255, cv::THRESH_BINARY);
-
-        //accumulate the background
-        cv::accumulateWeighted(this->gray, this->background, this->setting("learn")->asDouble(), this->output);
-
-
-        return this->foreground;
-    }
-
-    QString ForegroundModule::outputName() {
-        return "OUTPUT";
-    }
 
 }
 

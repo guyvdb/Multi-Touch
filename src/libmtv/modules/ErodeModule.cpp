@@ -6,17 +6,21 @@
 
 namespace mtv {
 
-  ErodeModule::ErodeModule() : SimpleIOModule() {
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  ErodeModule::ErodeModule() : SimpleModule() {
+    this->setting("input")->set(0x0,"");
   }
 
-  cv::Mat &ErodeModule::process(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    matrix.copyTo(this->output);
-    cv::erode(this->output,this->output,cv::Mat());
-    return this->output;
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void ErodeModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
+    cv::Mat frame(matrix.size(),matrix.depth(), cv::Scalar(255));
+    cv::erode(matrix,frame,cv::Mat());
+    emit frameReady(this,"OUTPUT",frame);
   }
 
-  QString ErodeModule::outputName() {
-    return "OUTPUT";
-  }
 
 }
