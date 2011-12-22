@@ -50,9 +50,9 @@ namespace mtg {
 
 
         // maps
-        void addMap(mtg::MapModel *map);
-        void deleteMap(mtg::MapModel *map);
-        void listMaps(QList<mtg::MapModel*> *result);
+        void addMap(mtg::MapModel &map);
+        void deleteMap(mtg::MapModel &map);
+        void listMaps(QList<mtg::MapModel*> &result);
 
         // network
         QString getHost() const {return this->host; }

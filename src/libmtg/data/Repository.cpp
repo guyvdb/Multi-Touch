@@ -24,24 +24,31 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::addMap(mtg::MapModel *map) {
+  void Repository::addMap(mtg::MapModel &map) {
     QStringList statement;
-    statement << "INSERT INTO maps VALUES (" << quote(map->name) << "," << quote(map->file) << ")";
+    statement << "INSERT INTO maps VALUES (" << quote(map.name) << "," << quote(map.file) << ")";
     execSql(statement);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::deleteMap(mtg::MapModel *map) {
+  void Repository::deleteMap(mtg::MapModel &map) {
+
 
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::listMaps(QList<mtg::MapModel*> *result) {
+  void Repository::listMaps(QList<mtg::MapModel*> &result) {
+    QSqlQuery query(this->database);
+    query.exec("SELECT name, file FROM maps");
+    while(query.next()) {
+      MapModel *model = new MapModel(query.value(0).toString(), query.value(1).toString());
+      result.append(model);
 
+    }
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -77,7 +84,7 @@ namespace mtg {
     QSqlQuery query(this->database);
     query.exec("SELECT version FROM schema");
     if(query.next()) {
-
+      return query.value(0).toInt();
     } else {
       return -1;
     }

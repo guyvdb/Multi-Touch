@@ -71,24 +71,25 @@ namespace mtg {
       this->running = false;
     }
 
+
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::addMap(mtg::MapModel *map) {
+    void GameEngine::addMap(mtg::MapModel &map) {
       this->db->addMap(map);
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::deleteMap(mtg::MapModel *map) {
+    void GameEngine::deleteMap(mtg::MapModel &map) {
       this->db->deleteMap(map);
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::listMaps(QList<mtg::MapModel*> *result) {
+    void GameEngine::listMaps(QList<mtg::MapModel*> &result) {
       this->db->listMaps(result);
     }
 

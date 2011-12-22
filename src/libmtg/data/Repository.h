@@ -19,9 +19,9 @@ namespace mtg {
 
       void initialize();
 
-      void addMap(mtg::MapModel *map);
-      void deleteMap(mtg::MapModel *map);
-      void listMaps(QList<mtg::MapModel*> *result);
+      void addMap(mtg::MapModel &map);
+      void deleteMap(mtg::MapModel &map);
+      void listMaps(QList<mtg::MapModel*> &result);
 
   private:
     QSqlDatabase &database;

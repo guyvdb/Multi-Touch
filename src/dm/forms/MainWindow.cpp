@@ -13,12 +13,13 @@
 #include <QFileDialog>
 #include <QResizeEvent>
 #include <QSqlDatabase>
-
+#include <QDir>
 
 #include "utils/FileUtils.h"
 
 #include "forms/CreateGameDialog.h"
 #include "forms/NetworkSettingDialog.h"
+#include "forms/ShowMapDialog.h"
 
 /* -------------------------------------------------------------------------------------------
  *
@@ -31,8 +32,6 @@ MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(p
     this->tableMap = new mtg::MapView(this->ui->tabTableMap);
     this->tableMap->setGeometry(this->calculateTableMapRect());
     this->tableMap->show();
-    //this->tableMap->loadMap("/home/guy/Projects/Current/multitable/maps/cave1.tmx");
-
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -41,7 +40,6 @@ MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(p
 MainWindow::~MainWindow()
 {
   if(this->engine) this->engine->stop();
-
     delete this->engine;
     delete this->tableMap;
     delete ui;
@@ -115,17 +113,11 @@ void MainWindow::stopGame() {
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_openGameAction_triggered()
 {
-  // there is a bug on QAction where it is not getting grayed out on Ubuntu 10.11
-  if(this->ui->openGameAction->isEnabled()) {
-
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
-    qDebug() << "FILE OPEN: " << fileName;
-    if(fileName  != "") {
-      this->databaseFileName = fileName;
-      this->startGame();
-    }
-  } else {
-    qDebug() << "[QT Bug] OPEN GAME should be grayed out";
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
+  qDebug() << "FILE OPEN: " << fileName;
+  if(fileName  != "") {
+    this->databaseFileName = fileName;
+    this->startGame();
   }
 }
 
@@ -147,34 +139,30 @@ void MainWindow::on_closeGameAction_triggered()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_newGameAction_triggered()
 {
-  if(this->ui->newGameAction->isEnabled()) {
-    CreateGameDialog dialog;
-    dialog.show();
-    dialog.exec();
-    if(dialog.result()) {
-      QString fileName = dialog.getFileName();
-      if(fileName != "") {
-        if(!fileName.endsWith(".game")) {
-          fileName = fileName + ".game";
-        }
-        fileName = mtg::FileUtils::gamesDirectory() + QDir::separator() + fileName;
-        if(QFile::exists(fileName)) {
-          // TODO clean me up. Use a QErrorMessage
-          QMessageBox msg;
-          msg.setText("File Error");
-          msg.setInformativeText("The game " + fileName + "file already exists. Please choose another name.");
-          msg.setStandardButtons(QMessageBox::Ok);
-          msg.setEscapeButton(QMessageBox::Ok);
-          msg.setWindowTitle("MultiTable - [DM]");
-          msg.exec();
-        } else {
-          this->databaseFileName = fileName;
-          this->startGame();
-        }
+  CreateGameDialog dialog;
+  dialog.show();
+  dialog.exec();
+  if(dialog.result()) {
+    QString fileName = dialog.getFileName();
+    if(fileName != "") {
+      if(!fileName.endsWith(".game")) {
+        fileName = fileName + ".game";
+      }
+      fileName = mtg::FileUtils::gamesDirectory() + QDir::separator() + fileName;
+      if(QFile::exists(fileName)) {
+        // TODO clean me up. Use a QErrorMessage
+        QMessageBox msg;
+        msg.setText("File Error");
+        msg.setInformativeText("The game " + fileName + "file already exists. Please choose another name.");
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setEscapeButton(QMessageBox::Ok);
+        msg.setWindowTitle("MultiTable - [DM]");
+        msg.exec();
+      } else {
+        this->databaseFileName = fileName;
+        this->startGame();
       }
     }
-  } else {
-    qDebug() << "[QT Bug] NEW GAME should be grayed out";
   }
 }
 
@@ -205,13 +193,13 @@ void MainWindow::on_quitAction_triggered()
 void MainWindow::on_showMapAction_triggered()
 {
     QList<mtg::MapModel*> maps;
-    this->engine->listMaps(&maps);
+    this->engine->listMaps(maps);
 
-    // show
+    ShowMapDialog dlg;
+    dlg.show();
+    dlg.exec();
 
     foreach(mtg::MapModel *map, maps) delete map;
-
-
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -222,8 +210,7 @@ void MainWindow::on_addMapAction_triggered()
   QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
   qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
-    mtg::MapModel *map = new mtg::MapModel("map",fileName);
+    mtg::MapModel map(QDir(fileName).dirName(),fileName);
     this->engine->addMap(map);
-    delete map;
   }
 }
