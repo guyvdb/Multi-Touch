@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>996</width>
-    <height>645</height>
+    <width>1258</width>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -63,7 +63,7 @@
       <rect>
        <x>10</x>
        <y>90</y>
-       <width>91</width>
+       <width>70</width>
        <height>27</height>
       </rect>
      </property>
@@ -74,9 +74,9 @@
     <widget class="QPushButton" name="btnHideAllModules">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>86</x>
        <y>90</y>
-       <width>91</width>
+       <width>70</width>
        <height>27</height>
       </rect>
      </property>
@@ -108,7 +108,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>91</width>
+       <width>70</width>
        <height>27</height>
       </rect>
      </property>
@@ -119,14 +119,27 @@
     <widget class="QPushButton" name="btnPipelineStop">
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>86</x>
        <y>30</y>
-       <width>91</width>
+       <width>70</width>
        <height>27</height>
       </rect>
      </property>
      <property name="text">
       <string>Stop</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnPause">
+     <property name="geometry">
+      <rect>
+       <x>162</x>
+       <y>30</y>
+       <width>70</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Pause</string>
      </property>
     </widget>
    </widget>
@@ -152,7 +165,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>996</width>
+     <width>1258</width>
      <height>24</height>
     </rect>
    </property>

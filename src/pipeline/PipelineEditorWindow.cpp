@@ -1,5 +1,6 @@
 #include "PipelineEditorWindow.h"
 #include "ui_PipelineEditorWindow.h"
+#include "SettingsWindow.h"
 
 #include <QImage>
 #include <QMessageBox>
@@ -93,6 +94,12 @@ void PipelineEditorWindow::resizeEvent(QResizeEvent *e) {
   QMainWindow::resizeEvent(e);
 }
 
+QAction* PipelineEditorWindow::AddAction(const QString label, int id, QMenu &menu) {
+  QAction *action = menu.addAction(label);
+  action->setData(id);
+  return action;
+}
+
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
@@ -105,30 +112,38 @@ void PipelineEditorWindow::OnShowContextMenu(const QPoint &point) {
 
   QMenu menu;
   QAction *item;
+
   QStringList parts = selected.at(0)->text().split(":");
   mtv::Module *module = mtv::Pipeline::instance()->getModule(parts.at(1));;
 
-  // item menu
-  menu.addAction(selected.at(0)->text());
+  qDebug() << "MODULE: " << module;
+
+  // item menu 
+  this->AddAction(selected.at(0)->text(), NameAction, menu);
   menu.addSeparator();
-  menu.addAction("Remove");
-  item = menu.addAction("View");
+  this->AddAction("Remove",RemoveAction,menu);
+  this->AddAction("Settings",SettingsAction,menu);
+
+  item = this->AddAction("View",ViewAction, menu);
   item->setCheckable(true);
   item->setChecked(this->widgets.contains(module->getInstanceName()));
-
 
   QAction *action = menu.exec(global);
 
   if(action) {
-    if(action->text() == "View") {
-      if(module != 0x0 && !this->widgets.contains(module->getInstanceName())) {
+    qDebug() << "ACTION: " << action->text() << " ID: " << action->data().toInt();
+    switch(action->data().toInt()) {
+    case ViewAction:
+      if(!this->widgets.contains(module->getInstanceName())) {
+        // show it
         VideoWidget *v = new VideoWidget(module);
         this->widgets[module->getInstanceName()] = v;
         this->widgetOrder.append(module->getInstanceName());
         v->setPos(-1000,-1000);
         this->videoScene->addItem(v);
         this->layoutVideoWidgets();
-      } else if(module != 0x0 && this->widgets.contains(module->getInstanceName())) {
+      } else {
+        // hide it
         VideoWidget *v = this->widgets[module->getInstanceName()];
         this->widgets.remove(module->getInstanceName());
         int idx = this->widgetOrder.indexOf(module->getInstanceName());
@@ -137,11 +152,40 @@ void PipelineEditorWindow::OnShowContextMenu(const QPoint &point) {
         delete v;
         this->layoutVideoWidgets();
       }
+
+      break;
+    case RemoveAction:
+       // remove it from the pipeline
+
+
+      break;
+    case SettingsAction:
+      SettingsWindow *win  = new SettingsWindow(module);
+
+      this->connect(win,SIGNAL(finished(int)),this,SLOT(onSettingsWindowClosed(int)));
+
+      win->show();
+      win->raise();
+      win->activateWindow();
+
+
+     // win->exec();
+      break;
     }
 
   }
 
 }
+
+
+void PipelineEditorWindow::onSettingsWindowClosed(int value) {
+  qDebug() << "SETTING WIN CLOSED: " << value;
+  sender()->deleteLater();
+}
+
+/*void PipelineEditorWindow:onSettingsWindowClosed(int value) {
+  qDebug();
+}*/
 
 /* -------------------------------------------------------------------------------------------
  *
@@ -181,6 +225,11 @@ void PipelineEditorWindow::on_actionLoad_triggered()
 {
   QString fileName = QFileDialog::getOpenFileName(this, tr("Open Pipeline"), "./", tr("Pipeline File (*.xml)"));
   if(fileName != "") {
+
+    on_btnHideAllModules_clicked();
+    mtv::Pipeline::instance()->clear();
+
+
     mtv::PipelineSerializer serializer;
     QStringList errors;
     serializer.loadPipeline(fileName,errors);
@@ -197,6 +246,8 @@ void PipelineEditorWindow::on_actionLoad_triggered()
       QString value = module->getModuleName() + ":" + module->getInstanceName();
       ui->listModules->addItem(value);
     }
+
+    mtv::Pipeline::instance()->dumpSettings();
   }
 }
 
@@ -247,3 +298,21 @@ void PipelineEditorWindow::on_btnPipelineStop_clicked()
 
   if(pipeline->isRunning()) pipeline->stop();
 }
+
+void PipelineEditorWindow::on_btnPause_clicked()
+{
+   mtv::Pipeline *pipeline = mtv::Pipeline::instance();
+
+
+   if(pipeline->isRunning()) {
+     if(this->ui->btnPause->text() == "Pause") {
+        pipeline->pause();
+        this->ui->btnPause->setText("Resume");
+      } else {
+        pipeline->resume();
+        this->ui->btnPause->setText("Pause");
+     }
+   }
+}
+
+
