@@ -13,14 +13,15 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    Message::packet_t Message::decode(QByteArray bytes) {
+    Message::DataPacket Message::decode(QByteArray bytes) {
         QJson::Parser parser;
-        packet_t result;
+        DataPacket result;
 
         QVariantMap msg = parser.parse(bytes,&result.ok).toMap();
         if(result.ok) {
             result.data = msg.value("data").toMap();
             result.type = msg.value("type").toString();
+            result.from = msg.value("from").toString();
         }
         return result;
     }
@@ -28,11 +29,12 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    QByteArray Message::encode(QString type, QVariantMap message) {
+    QByteArray Message::encode(QString from, QString type, QVariantMap message) {
         QJson::Serializer serializer;
         QVariantMap msg;
         msg.insert("type",type);
         msg.insert("data",message);
+        msg.insert("from",from);
         return serializer.serialize(msg);
     }
 

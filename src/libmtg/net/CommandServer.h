@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QUdpSocket>
+#include <QUuid>
+#include "message/Message.h"
 
 namespace mtg {
 
@@ -16,8 +18,10 @@ namespace mtg {
 
   private:
     QString name;
+    QString id;
 
   signals:
+    void messageReady(mtg::Message::DataPacket packet);
 
   private slots:
     void process();

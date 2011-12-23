@@ -9,6 +9,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenuBar>
+#include <QMenu>
 #include <QAction>
 #include "engine/GameEngine.h"
 #include "map/MapView.h"
@@ -41,6 +43,10 @@ private slots:
 private:
     void startGame();
     void stopGame();
+
+    QMenuBar *menuBar;
+    QMenu *fileMenu;
+    QMenu *mapMenu;
 
     Ui::MainWindow *ui;
     QString databaseFileName;

@@ -20,7 +20,7 @@ namespace mtg {
         QByteArray datagram;
         datagram.resize(this->pendingDatagramSize());
         this->readDatagram(datagram.data(), datagram.size());
-        Message::packet_t packet = Message::decode(datagram);
+        Message::DataPacket packet = Message::decode(datagram);
         if(packet.ok) {
           if(packet.type == "discovery") {
             QString host = packet.data.value("host").toString();

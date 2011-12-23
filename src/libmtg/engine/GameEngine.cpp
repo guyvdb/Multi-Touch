@@ -63,6 +63,7 @@ namespace mtg {
         // start the three servers command, asset, discovery
         this->commandServer = new CommandServer("DM");
         this->serverCommandPort = this->commandServer->listen(this->serverCommandPort);
+        this->connect(this->commandServer, SIGNAL(messageReady(mtg::Message::DataPacket)),this,SLOT(OnMessageForServer(mtg::Message::DataPacket)));
         this->discoveryServer = new DiscoveryServer(this->serverHost, this->serverDiscoveryPort, this->serverAssetPort, this->serverCommandPort);
 
         break;
@@ -71,15 +72,20 @@ namespace mtg {
         // start the command server
         this->commandServer = new CommandServer("Table");
         this->clientCommandPort = this->commandServer->listen(this->clientCommandPort);
+        this->connect(this->commandServer, SIGNAL(messageReady(mtg::Message::DataPacket)),this,SLOT(OnMessageForClient(mtg::Message::DataPacket)));
 
         // start the discovery client
         this->discoveryClient = new DiscoveryClient(this->serverDiscoveryPort);
         this->connect(this->discoveryClient,SIGNAL(discovered(QString,int,int)),this,SLOT(OnDMServerDiscovered(QString,int,int)));
+        this->discoveryClient->discover();
         break;
       case GameClient:        
 
         break;
       }
+
+      this->commandClient = new CommandClient();
+
       this->running = true;
     }
 
@@ -102,6 +108,11 @@ namespace mtg {
         delete this->commandServer;
         this->commandServer = 0x0;
 
+        // clean up node info
+        foreach(NodeInfo*node, this->nodes) delete node;
+        this->nodes.clear();
+
+
         break;
       case GameTable:
         if(this->discoveryClient) delete this->discoveryClient;
@@ -114,6 +125,9 @@ namespace mtg {
 
         break;
       }
+
+      delete this->commandClient;
+      this->commandClient = 0x0;
 
       this->running = false;
     }
@@ -140,6 +154,25 @@ namespace mtg {
       this->db->listMaps(result);
     }
 
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::mapLoadNotification(const QString id) {
+      // send a registration message
+      QVariantMap data;
+      data.insert("id",id);
+      this->broadcast(mtg::Message::encode(this->commandClient->getId(), "map-loaded", data));
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::broadcast(QByteArray data) {
+      // send this data to all nodes
+      foreach(NodeInfo *node, this->nodes) {
+        this->commandClient->send(node->host,node->port,data);
+      }
+    }
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -149,17 +182,43 @@ namespace mtg {
       this->serverAssetPort = assetPort;
       this->serverCommandPort = commandPort;
 
+      // stop discovery
+      this->discoveryClient->deleteLater();
+
       // send a registration message
       QVariantMap data;
       data.insert("host",mtg::IPAddressLocator::getMachineAddress());
       data.insert("port", QString::number(this->clientCommandPort));
 
-      QByteArray bytes = mtg::Message::encode("registration", data);
-      mtg::CommandClient::send(this->serverHost,this->serverCommandPort, bytes);
+      QByteArray bytes = mtg::Message::encode(this->commandClient->getId(), "registration", data);
+      this->commandClient->send(this->serverHost,this->serverCommandPort, bytes);
 
+      // notify registration complete
       emit networkDiscoveryComplete();
     }
 
+    /* -------------------------------------------------------------------------------------------
+     * A message has arrived for the DM server
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::OnMessageForServer(mtg::Message::DataPacket packet) {
+      qDebug() << "SERVER MESSAGE FROM:  " << packet.from;
+
+      if(packet.type == "registration") {
+        NodeInfo* node = new NodeInfo(packet.data.value("from").toString(), packet.data.value("host").toString(), packet.data.value("port").toInt());
+        this->nodes.append(node);
+        qDebug() << "NODE CREATED" << node;
+        // send all map info to the nodes....
+      }
+
+
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     * A message has arrived for a Client
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::OnMessageForClient(mtg::Message::DataPacket packet) {
+      qDebug() << "CLIENT MESSAGE FROM:  " << packet.from;
+    }
 
 
 }

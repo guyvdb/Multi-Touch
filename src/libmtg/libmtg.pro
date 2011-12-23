@@ -23,7 +23,6 @@ SOURCES += \
     engine/GameEngine.cpp \
     settings/Settings.cpp \
     message/Message.cpp \
-    net/Discovery.cpp \
     data/Repository.cpp \
     data/MapModel.cpp \
     map/FogOfWar.cpp \
@@ -33,7 +32,9 @@ SOURCES += \
     net/CommandServer.cpp \
     net/IPAddressLocator.cpp \
     net/DiscoveryServer.cpp \
-    net/DiscoveryClient.cpp
+    net/DiscoveryClient.cpp \
+    net/NodeInfo.cpp \
+    data/BaseModel.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -47,7 +48,6 @@ HEADERS +=\
     engine/GameEngine.h \
     settings/Settings.h \
     message/Message.h \
-    net/Discovery.h \
     libmtg_global.h \
     data/Repository.h \
     data/MapModel.h \
@@ -58,7 +58,9 @@ HEADERS +=\
     net/CommandServer.h \
     net/IPAddressLocator.h \
     net/DiscoveryServer.h \
-    net/DiscoveryClient.h
+    net/DiscoveryClient.h \
+    net/NodeInfo.h \
+    data/BaseModel.h
 
 
 FORMS += \

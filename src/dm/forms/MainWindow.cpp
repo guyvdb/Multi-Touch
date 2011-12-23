@@ -34,6 +34,13 @@ MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(p
     this->ui->closeGameAction->setEnabled(false);
     this->ui->tabs->setGeometry(this->calculateTabRect());
 
+    this->menuBar = this->ui->menuBar;
+
+    this->mapMenu = new QMenu("Map1");
+    this->menuBar->addMenu(this->mapMenu);
+
+
+
     // TableMap
     this->tableMap = new mtg::MapView(this->ui->tabTableMap);
     this->tableMap->setGeometry(this->calculateMapRect());
@@ -50,10 +57,20 @@ MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(p
  * ------------------------------------------------------------------------------------------- */
 MainWindow::~MainWindow()
 {
-  if(this->engine) this->engine->stop();
-    delete this->engine;
-    delete this->tableMap;
-    delete this->tableMap;
+  if(this->engine && this->engine->isRunning()) this->engine->stop();
+  delete this->engine;
+
+
+  this->menuBar->clear();
+
+  delete this->mapMenu;
+
+
+  delete this->tableMap;
+  delete this->privateMap;
+
+
+
     delete ui;
 }
 
@@ -218,6 +235,7 @@ void MainWindow::on_showMapAction_triggered()
           if(dlg.getTarget() == "table") {
             if(this->tableMap->isLoaded()) this->tableMap->unloadMap();
             this->tableMap->loadMap(map->file);
+            this->engine->mapLoadNotification(map->id);
           } else {
             if(this->privateMap->isLoaded()) this->privateMap->unloadMap();
             this->privateMap->loadMap(map->file);

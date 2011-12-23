@@ -26,7 +26,7 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   void Repository::addMap(mtg::MapModel &map) {
     QStringList statement;
-    statement << "INSERT INTO maps VALUES (" << quote(map.name) << "," << quote(map.file) << ")";
+    statement << "INSERT INTO maps VALUES ("  << quote(map.id) << "," << quote(map.name) << "," << quote(map.file) << ")";
     execSql(statement);
   }
 
@@ -136,7 +136,7 @@ namespace mtg {
 
     // create the maps table
     statement.clear();
-    statement << "CREATE TABLE maps (name VARCHAR, file VARCHAR, PRIMARY KEY(name))";
+    statement << "CREATE TABLE maps (id VARCHAR, name VARCHAR, file VARCHAR, PRIMARY KEY(id))";
     this->execSql(statement);
 
   }

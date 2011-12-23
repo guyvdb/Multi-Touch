@@ -36,6 +36,26 @@
       <string>Private Map</string>
      </attribute>
     </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Player Characters</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Non-Player Characters</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="title">
+      <string>Monsters</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_4">
+     <attribute name="title">
+      <string>Initiative</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -55,15 +75,14 @@
     <addaction name="openGameAction"/>
     <addaction name="closeGameAction"/>
     <addaction name="separator"/>
+    <addaction name="networkSettingsAction"/>
+    <addaction name="separator"/>
     <addaction name="quitAction"/>
    </widget>
-   <widget class="QMenu" name="menuSettings">
-    <property name="title">
-     <string>Settings</string>
-    </property>
-    <addaction name="networkSettingsAction"/>
-   </widget>
    <widget class="QMenu" name="menuMaps">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Maps</string>
     </property>
@@ -79,7 +98,6 @@
     <addaction name="menuHide"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuSettings"/>
    <addaction name="menuMaps"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -123,6 +141,9 @@
    </property>
   </action>
   <action name="addMapAction">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Add</string>
    </property>

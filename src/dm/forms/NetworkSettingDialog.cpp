@@ -28,6 +28,7 @@ NetworkSettingDialog::NetworkSettingDialog(mtg::Settings *settings, QWidget *par
     int discovery = ports.value("discovery",20000).toInt();
     int command = ports.value("command",20001).toInt();
     int asset = ports.value("asset",20002).toInt();
+    int client = ports.value("client",20003).toInt();
 
     // save values back
     ports.clear();
@@ -36,6 +37,7 @@ NetworkSettingDialog::NetworkSettingDialog(mtg::Settings *settings, QWidget *par
     ports["discovery"] = discovery;
     ports["command"] = command;
     ports["asset"] = asset;
+    ports["client"] = client;
 
     network["server"] = host;
     network["ports"] = ports;
@@ -48,6 +50,7 @@ NetworkSettingDialog::NetworkSettingDialog(mtg::Settings *settings, QWidget *par
     this->ui->spinCommandPort->setValue(command);
     this->ui->spinDiscoveryPort->setValue(discovery);
     this->ui->spinAssetPort->setValue(asset);
+    this->ui->spinClientPort->setValue(client);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -71,6 +74,7 @@ void NetworkSettingDialog::on_buttonBox_accepted()
   int discovery = this->ui->spinDiscoveryPort->value();
   int command = this->ui->spinCommandPort->value();
   int asset = this->ui->spinAssetPort->value();
+  int client = this->ui->spinClientPort->value();
 
   if(asset == discovery || asset == command || discovery == command) {
     QMessageBox msg;
@@ -84,15 +88,17 @@ void NetworkSettingDialog::on_buttonBox_accepted()
     ports["discovery"] = discovery;
     ports["command"] = command;
     ports["asset"] = asset;
+    ports["client"] = client;
     network["ports"] = ports;
     this->settings->getMap()->insert("network", network);
     this->settings->save();
   }
 
-
-
-
-
 }
 
 
+
+void NetworkSettingDialog::on_buttonBox_rejected()
+{
+    this->close();
+}

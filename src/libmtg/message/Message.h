@@ -16,16 +16,17 @@ namespace mtg {
     {
     public:
 
-        typedef struct packet {
+        typedef struct Packet {
             bool ok;
             QString type;
+            QString from;
             QVariantMap data;
-        } packet_t;
+        } DataPacket;
 
 
 
-        static Message::packet_t decode(QByteArray bytes);
-        static QByteArray encode(QString type, QVariantMap message);
+        static Message::DataPacket decode(QByteArray bytes);
+        static QByteArray encode(QString from, QString type, QVariantMap message);
 
     };
 
