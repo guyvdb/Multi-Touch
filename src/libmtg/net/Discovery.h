@@ -22,9 +22,11 @@ namespace mtg {
         };
 
         Discovery(Discovery::Action action, Settings *settings, QObject *parent = 0);
+
+
         ~Discovery();
     signals:
-      void discovered(const QString host, int tcpPort, int udpPort);
+      void discovered(const QString host, int assetPort, int commandPort);
     private slots:
         void tick();
         void process();

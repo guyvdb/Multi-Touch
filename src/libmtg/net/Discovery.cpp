@@ -47,8 +47,8 @@ namespace mtg {
 
       QVariantMap data;
       data.insert("host",network.value("server").toString());
-      data.insert("tcp", ports.value("tcp").toInt());
-      data.insert("udp",ports.value("udp").toInt());
+      data.insert("asset", ports.value("asset").toInt());
+      data.insert("command",ports.value("command").toInt());
 
       this->datagram = Message::encode("discovery",data);
 
@@ -96,15 +96,13 @@ namespace mtg {
           QByteArray datagram;
           datagram.resize(this->socket->pendingDatagramSize());
           this->socket->readDatagram(datagram.data(), datagram.size());
-
-
           Message::packet_t packet = Message::decode(datagram);
           if(packet.ok) {
             if(packet.type == "discovery") {
               QString host = packet.data.value("host").toString();
-              int udp = packet.data.value("udp").toInt();
-              int tcp = packet.data.value("tcp").toInt();
-              emit discovered(host,tcp,udp);
+              int command = packet.data.value("command").toInt();
+              int asset = packet.data.value("asset").toInt();
+              emit discovered(host,asset,command);
             } else {
               Q_ASSERT(false); //should never get here
             }

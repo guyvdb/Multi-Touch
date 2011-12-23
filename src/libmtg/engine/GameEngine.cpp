@@ -11,7 +11,7 @@ namespace mtg {
     {
       // set all pointers to null
       this->discovery = 0x0;
-      this->datagram = 0x0;
+      this->commandServer = 0x0;
       this->db = 0x0;
       this->running = false;
     }
@@ -21,8 +21,8 @@ namespace mtg {
      * ------------------------------------------------------------------------------------------- */
     GameEngine::~GameEngine() {
       // delete anything created
-      delete this->discovery;
-      delete this->datagram;      
+      if(this->discovery) delete this->discovery;
+      if(this->commandServer) delete this->commandServer;
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -34,12 +34,10 @@ namespace mtg {
 
       switch(this->mode) {
       case GameServer:
-
         this->database.setDatabaseName(databaseFileName);
         this->database.open();
         this->db = new Repository(this->database);
         this->db->initialize();
-
         this->startServer();
         break;
       case GameTable:
@@ -47,7 +45,6 @@ namespace mtg {
         this->startClient();
         break;
       }
-
       this->running = true;
     }
 
@@ -98,27 +95,19 @@ namespace mtg {
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::startServer() {
-      // startup tcp and udp before we broadcast discovery
 
-
-      // clients get network configuration from discovery
-      // servers need to look it up from config
       QVariantMap network = this->settings->getMap()->value("network").toMap();
       QVariantMap ports = network.value("ports").toMap();
 
-      this->host = network.value("server").toString();
-      this->udpPort = ports.value("udp").toInt();
-      this->tcpPort = ports.value("tcp").toInt();
+      // initial port values
+      this->serverHost = network.value("server").toString();
+      this->serverCommandPort = ports.value("command").toInt();
+      this->serverAssetPort = ports.value("asset").toInt();
 
-      // start listening on UDPdatagram
-      this->datagram = new QUdpSocket();
-      QHostAddress address(this->host);
+      // actual port values
+      this->serverCommandPort = this->startCommandServer("DM Server",this->serverCommandPort);
 
-      this->connect(this->datagram,SIGNAL(readyRead()), this, SLOT(processDatagram()));
-      this->datagram->bind(address,this->udpPort,QUdpSocket::DontShareAddress);
-
-
-      // start broadcasting discovery packets
+      // start descovery
       this->discovery = new Discovery(Discovery::Transmitter, this->settings);
     }
 
@@ -150,28 +139,34 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::OnNetworkDiscovered(const QString host, int tcpPort, int udpPort) {
-      this->host = host;
-      this->tcpPort = tcpPort;
-      this->udpPort = udpPort;
-      this->discovery->deleteLater();
+    void GameEngine::OnNetworkDiscovered(const QString host, int assetPort, int commandPort) {
+      this->serverHost = host;
+      this->serverAssetPort = assetPort;
+      this->serverCommandPort = commandPort;
+      this->discovery->deleteLater();  
+
+      QString name("unknown");
+      switch(this->mode) {
+      case GameServer:
+        name = "DM Server";
+      case GameTable:
+        name = "Game Table";
+      case GameClient:
+        name = "Game Client";
+      }
+
+      this->clientCommandPort = this->startCommandServer(name, this->serverCommandPort);
       emit networkDiscoveryComplete();
     }
 
     /* -------------------------------------------------------------------------------------------
-     * A datagram has arrived
+     *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::processDatagram() {
-      qDebug() << "[UDP] receive";
-      while(this->datagram->hasPendingDatagrams()) {
-          QByteArray buffer;
-          buffer.resize(this->datagram->pendingDatagramSize());
-          this->datagram->readDatagram(buffer.data(), buffer.size());
-          Message::packet_t packet = Message::decode(buffer);
-          if(packet.ok) {
-            qDebug() << "PACKET: " << packet.type;
-          }
-      }
+    int GameEngine::startCommandServer( const QString name, int port) {
+      if(this->commandServer != 0x0) delete this->commandServer;
+      this->commandServer = new CommandServer(name);
+      return this->commandServer->listen(port);
     }
+
 
 }

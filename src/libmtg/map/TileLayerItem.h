@@ -14,6 +14,7 @@ namespace mtg  {
   {
   public:
       TileLayerItem(Tiled::TileLayer *tileLayer, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
+      ~TileLayerItem();
       QRectF boundingRect() const;
       void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
   private:

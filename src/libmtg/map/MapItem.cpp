@@ -5,6 +5,9 @@
 #include "map/TileLayerItem.h"
 #include "map/ObjectGroupItem.h"
 
+
+#include <QDebug>
+
 namespace mtg {
 
   /* -------------------------------------------------------------------------------------------
@@ -13,10 +16,17 @@ namespace mtg {
   MapItem:: MapItem(Tiled::Map *map, Tiled::MapRenderer *renderer, QGraphicsItem *parent) : QGraphicsItem(parent) {
     setFlag(QGraphicsItem::ItemHasNoContents);
     foreach(Tiled::Layer *layer, map->layers()) {
+
+      qDebug() << "LAYER: " << layer->name() << " visible=" << layer->isVisible() << " as tiles=" << layer->asTileLayer();
+
+
+
       if(Tiled::TileLayer *tileLayer = layer->asTileLayer()) {
         new TileLayerItem(tileLayer, renderer, this);
+        qDebug() << "ADDED tiled";
       } else if ( Tiled::ObjectGroup *objectGroup = layer->asObjectGroup()) {
-        new ObjectGroupItem(objectGroup, renderer, this);
+        //new ObjectGroupItem(objectGroup, renderer, this);
+        qDebug() << "ADDED object";
       }
     }
   }

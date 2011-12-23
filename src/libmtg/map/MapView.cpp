@@ -8,6 +8,8 @@
 #include <QEvent>
 #include <QDebug>
 #include <QTime>
+#include <QWheelEvent>
+
 #include "map/MapView.h"
 #include "map/MapItem.h"
 #include "tiled/map.h"
@@ -19,19 +21,10 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  MapView::MapView(QWidget *parent)
-    : QGraphicsView(parent) ,
-      scene(new MapScene(this)),
-      map(0),
-      renderer(0)//,
-      //grid(0)
-  {
-
-
+  MapView::MapView(QWidget *parent) : QGraphicsView(parent), scene(new MapScene(this)), map(0x0), renderer(0x0) {
     this->setScene(this->scene);
     this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     this->setDragMode(QGraphicsView::ScrollHandDrag);
-    //this->setOptimizationFlags();//QGraphicsView::DontAdjustForAntialiasing | QGraphicsView::DontSavePainterState);
     this->setBackgroundBrush(Qt::black);
     this->setFrameStyle(QFrame::NoFrame);
     this->viewport()->setAttribute(Qt::WA_StaticContents);
@@ -39,34 +32,22 @@ namespace mtg {
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    this->map = 0x0;
+    this->mapItem = 0x0;
+    this->renderer = 0x0;
+    this->fogOfWar = new FogOfWar(QRectF(0,0,500,500));
+    this->fogOfWar->setPos(0,0);
+
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   MapView::~MapView() {
-    qDeleteAll(this->map->tilesets());
-    delete this->map;
-    delete this->renderer;
+    this->unloadMap();
+    delete this->fogOfWar;
   }
 
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
- // bool MapView::viewportEvent(QEvent *event) {
-
- //   if(event->type() == QEvent::CursorChange) {
-//      qDebug() << "VIEWPORT EVENT : " << event->type();
- //     this->update();
-      //if(this->grid) this->grid->update();
-  //  }
-  //  return QGraphicsView::viewportEvent(event);
-    //return false;
- // }
 
   /* -------------------------------------------------------------------------------------------
    *
@@ -74,9 +55,6 @@ namespace mtg {
   void MapView::loadMap(const QString &fileName) {
     delete this->renderer;
     this->renderer = 0x0;
-
-    //delete this->grid;
-    //this->grid = 0x0;
 
     this->scene->clear();
     this->centerOn(0,0);
@@ -86,8 +64,65 @@ namespace mtg {
 
 
     this->renderer = new Tiled::OrthogonalRenderer(this->map);
-    this->scene->addItem(new MapItem(this->map, this->renderer));
+    this->mapItem = new MapItem(this->map,this->renderer);
+    this->scene->addItem(this->mapItem);
     this->scene->setRenderer(this->renderer);
+    this->scene->addItem(this->fogOfWar);
+
+    //this->fogOfWar->setBounds(QRectF(0,0,this->map->tileWidth() * this->map->width(), this->map->tileHeight() * this->map->height()));
+
+
+    this->loaded = true;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void MapView::unloadMap() {
+    if(this->map){
+      //this->scene->removeItem(this->mapItem);
+      this->scene->clear();
+      qDeleteAll(this->map->tilesets());
+      delete this->map;
+
+      this->map = 0x0;
+      this->mapItem = 0x0;
+
+    }
+    if(this->renderer) {
+      delete this->renderer;
+      this->renderer = 0x0;
+    }
+    this->loaded = false;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void MapView::wheelEvent(QWheelEvent* event)
+  {
+     qreal factor = 1.2;
+     if (event->delta() < 0)
+       factor = 1.0 / factor;
+     this->scale(factor, factor);
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QSize MapView::getTileSize() {
+    if(this->map == 0x0) return QSize(0,0);
+    return QSize(this->map->tileWidth(), this->map->tileHeight());
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QSize MapView::getMapSizeInTiles() {
+    if(this->map == 0x0) return QSize(0,0);
+    qDebug() << "MAP IS: " << this->map->width() << "x" << this->map->height();
+
+    return QSize(0,0);
   }
 
 }

@@ -1,6 +1,7 @@
 #include <QStyleOptionGraphicsItem>
 #include "TileLayerItem.h"
 
+#include <QDebug>
 
 namespace mtg {
 
@@ -11,6 +12,11 @@ namespace mtg {
     : QGraphicsItem(parent), tileLayer(tileLayer), renderer(renderer)
   {
     this->setFlag(QGraphicsItem::ItemUsesExtendedStyleOption);
+    qDebug() << "Construct TileLayerItem";
+  }
+
+  TileLayerItem::~TileLayerItem() {
+    qDebug() << "Delete TileLayerItem";
   }
 
   /* -------------------------------------------------------------------------------------------

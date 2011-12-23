@@ -24,12 +24,15 @@ SOURCES += \
     settings/Settings.cpp \
     message/Message.cpp \
     net/Discovery.cpp \
-    net/TcpServer.cpp \
-    net/UdpServer.cpp \
-    net/TcpClient.cpp \
-    net/UdpClient.cpp \
     data/Repository.cpp \
-    data/MapModel.cpp
+    data/MapModel.cpp \
+    map/FogOfWar.cpp \
+    net/AssetServer.cpp \
+    net/AssetClient.cpp \
+    net/CommandClient.cpp \
+    net/CommandServer.cpp \
+    net/IPAddressLocator.cpp \
+    net/DiscoveryServer.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -44,13 +47,16 @@ HEADERS +=\
     settings/Settings.h \
     message/Message.h \
     net/Discovery.h \
-    net/TcpServer.h \
-    net/UdpServer.h \
-    net/TcpClient.h \
-    net/UdpClient.h \
     libmtg_global.h \
     data/Repository.h \
-    data/MapModel.h
+    data/MapModel.h \
+    map/FogOfWar.h \
+    net/AssetServer.h \
+    net/AssetClient.h \
+    net/CommandClient.h \
+    net/CommandServer.h \
+    net/IPAddressLocator.h \
+    net/DiscoveryServer.h
 
 
 FORMS += \

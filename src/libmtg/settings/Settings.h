@@ -19,11 +19,8 @@ namespace mtg {
         QVariantMap *getMap();
 
     private:
-       // void recursiveMerge(QVariantMap *source, QVariantMap *dest);
-
         QVariantMap map;
         QString filename;
-
     };
 
 }

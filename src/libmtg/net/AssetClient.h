@@ -4,12 +4,15 @@
 #include <QObject>
 
 namespace mtg {
-
-  class TcpClient : public QObject
+/*
+ * The Asset client connects to an asset server and downloads assets
+ *
+ */
+  class AssetClient : public QObject
   {
       Q_OBJECT
   public:
-      explicit TcpClient(QObject *parent = 0);
+      explicit AssetClient(QObject *parent = 0);
 
   signals:
 

@@ -14,6 +14,8 @@
 
 #include "map/GridItem.h"
 #include "map/MapScene.h"
+#include "map/MapItem.h"
+#include "map/FogOfWar.h"
 
 //#include "libtiled/map.h"
 //#include "libtiled/maprenderer.h"
@@ -38,10 +40,21 @@ namespace mtg {
          MapView(QWidget *parent = 0);
          ~MapView();         
          void loadMap(const QString &fileName);
+         void unloadMap();
+         bool isLoaded() {return this->loaded;}
+    protected:
+         virtual void wheelEvent(QWheelEvent *event);
     private:
+
+         QSize getTileSize();
+         QSize getMapSizeInTiles();
+
+         bool loaded;
          MapScene *scene;
          Tiled::Map *map;
+         MapItem *mapItem;
          Tiled::MapRenderer *renderer;
+         FogOfWar *fogOfWar;
     };
 }
 

@@ -12,10 +12,11 @@
 #include "libmtg_global.h"
 
 #include "net/Discovery.h"
-#include "net/TcpServer.h"
-#include "net/TcpClient.h"
-#include "net/UdpServer.h"
-#include "net/UdpClient.h"
+#include "net/CommandClient.h"
+#include "net/CommandServer.h"
+#include "net/AssetClient.h"
+#include "net/AssetServer.h"
+
 
 
 #include "data/Repository.h"
@@ -55,15 +56,19 @@ namespace mtg {
         void listMaps(QList<mtg::MapModel*> &result);
 
         // network
-        QString getHost() const {return this->host; }
-        int getTCPPort() {return this->tcpPort; }
-        int getUDPPort() {return this->udpPort; }
+        QString getServerHost() const {return this->serverHost; }
+        int getServerAssetPort() {return this->serverAssetPort; }
+        int getServerCommandPort() {return this->serverCommandPort; }
+
+        QString getClientHost() const {return this->clientHost; }
+        int getClientAssetPort() {return this->clientAssetPort; }
+        void setClientCommandPort(int value) {this->clientCommandPort = value; }
+        int getClientCommandPort() {return this->clientCommandPort; }
 
     signals:
         void networkDiscoveryComplete();
     private slots:
-        void OnNetworkDiscovered(const QString host, int tcpPort, int udpPort);
-        void processDatagram();
+        void OnNetworkDiscovered(const QString serverHost, int serverAssetPort, int serverCommandPort);
     private:
 
         void startServer();
@@ -71,29 +76,31 @@ namespace mtg {
         void startClient();
         void stopClient();
 
+
+        int startCommandServer(const QString name, int port);
+
         Settings *settings;
         GameMode mode;
         Discovery *discovery;
-        QUdpSocket *datagram;
+        CommandServer *commandServer;
+
+
 
         Repository *db;
 
 
-        QString host;
-        int tcpPort;
-        int udpPort;
+        QString serverHost;
+        QString clientHost;
+
+        int serverAssetPort;
+        int serverCommandPort;
+
+        int clientAssetPort;
+        int clientCommandPort;
 
         QSqlDatabase database;
 
         bool running;
-
-        /*TcpServer *tcpServer;
-        TcpClient *tcpClient;
-        UdpServer *udpServer;
-        UdpClient *udpClient;*/
-
-
-
 
 
 
