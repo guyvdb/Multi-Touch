@@ -3,29 +3,33 @@
 #include <QPainter>
 #include <QColor>
 
-FogOfWar::FogOfWar(QRectF bounds, QGraphicsItem *parent) :  QGraphicsItem(parent), bounds(bounds)
-{
-  //this->pixmap = new QPixmap(bounds.width(),bounds.height());
-}
+namespace mtg {
 
-FogOfWar::~FogOfWar() {
- // delete this->pixmap;
-}
+  FogOfWar::FogOfWar(QRectF bounds, QGraphicsItem *parent) :  QGraphicsItem(parent), bounds(bounds)
+  {
+    //this->pixmap = new QPixmap(bounds.width(),bounds.height());
+  }
 
-void FogOfWar::setBounds(QRectF value) {
-  this->bounds = value;
-  //delete this->pixmap;
-  //this->pixmap = new QPixmap(bounds.width(), bounds.height());
-}
+  FogOfWar::~FogOfWar() {
+   // delete this->pixmap;
+  }
 
-void FogOfWar::recalculate() {
-  // redraw our pixmap
+  void FogOfWar::setBounds(QRectF value) {
+    this->bounds = value;
+    //delete this->pixmap;
+    //this->pixmap = new QPixmap(bounds.width(), bounds.height());
+  }
 
-}
+  void FogOfWar::recalculate() {
+    // redraw our pixmap
+
+  }
 
 
-void FogOfWar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-  QColor color(0,0,0,128);
-  painter->setBrush(color);
-  painter->drawRect(this->boundingRect());
+  void FogOfWar::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    QColor color(0,0,0,128);
+    painter->setBrush(color);
+    painter->drawRect(this->boundingRect());
+  }
+
 }

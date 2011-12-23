@@ -34,7 +34,10 @@ SOURCES += \
     net/DiscoveryServer.cpp \
     net/DiscoveryClient.cpp \
     net/NodeInfo.cpp \
-    data/BaseModel.cpp
+    data/BaseModel.cpp \
+    map/MapToken.cpp \
+    state/TokenList.cpp \
+    state/Token.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -60,7 +63,10 @@ HEADERS +=\
     net/DiscoveryServer.h \
     net/DiscoveryClient.h \
     net/NodeInfo.h \
-    data/BaseModel.h
+    data/BaseModel.h \
+    map/MapToken.h \
+    state/TokenList.h \
+    state/Token.h
 
 
 FORMS += \

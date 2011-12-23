@@ -38,6 +38,8 @@ namespace mtg {
     this->fogOfWar = new FogOfWar(QRectF(0,0,500,500));
     this->fogOfWar->setPos(0,0);
 
+    this->token = 0x0;
+
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -67,9 +69,18 @@ namespace mtg {
     this->mapItem = new MapItem(this->map,this->renderer);
     this->scene->addItem(this->mapItem);
     this->scene->setRenderer(this->renderer);
+
+    //fog of war
     this->scene->addItem(this->fogOfWar);
 
-    //this->fogOfWar->setBounds(QRectF(0,0,this->map->tileWidth() * this->map->width(), this->map->tileHeight() * this->map->height()));
+    // tokens
+    QSize tileSize(this->map->tileWidth(), this->map->tileHeight());
+    if(this->token != 0x0) delete this->token;
+    this->token = new MapToken(tileSize);
+    this->scene->addItem(this->token);
+    this->token->setPos(128,128);
+
+
 
 
     this->loaded = true;
@@ -93,6 +104,11 @@ namespace mtg {
       delete this->renderer;
       this->renderer = 0x0;
     }
+
+    delete this->token;
+    this->token = 0x0;
+
+
     this->loaded = false;
   }
 
@@ -101,10 +117,14 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   void MapView::wheelEvent(QWheelEvent* event)
   {
+
+
      qreal factor = 1.2;
      if (event->delta() < 0)
        factor = 1.0 / factor;
      this->scale(factor, factor);
+
+     qDebug() << "SQUARE: " << this->map->tileWidth() << "x" << this->map->tileHeight();
   }
 
   /* -------------------------------------------------------------------------------------------

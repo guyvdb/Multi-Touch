@@ -16,9 +16,7 @@
 #include "map/MapScene.h"
 #include "map/MapItem.h"
 #include "map/FogOfWar.h"
-
-//#include "libtiled/map.h"
-//#include "libtiled/maprenderer.h"
+#include "map/MapToken.h"
 
 namespace Tiled {
   class Map;
@@ -55,6 +53,8 @@ namespace mtg {
          MapItem *mapItem;
          Tiled::MapRenderer *renderer;
          FogOfWar *fogOfWar;
+
+         MapToken *token;
     };
 }
 
