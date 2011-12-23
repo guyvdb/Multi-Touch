@@ -18,7 +18,7 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    Discovery::Discovery(Discovery::Action action, Settings *settings, QObject *parent) : QObject(parent), settings(settings), socket(new QUdpSocket(this)), action(action)
+  /*  Discovery::Discovery(Discovery::Action action, Settings *settings, QObject *parent) : QObject(parent), settings(settings), socket(new QUdpSocket(this)), action(action)
     {
       if(this->action == Transmitter) {
         qDebug() << "[Discovery] start transmit";
@@ -27,19 +27,19 @@ namespace mtg {
         qDebug() << "[Discovery] start receive";
         this->receive();
       }
-    }
+    }*/
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    Discovery::~Discovery() {
+  /*  Discovery::~Discovery() {
         delete this->socket;
-    }
+    }*/
 
     /* -------------------------------------------------------------------------------------------
      * Act as a transmitter
      * ------------------------------------------------------------------------------------------- */
-    void Discovery::transmit() {
+ /*   void Discovery::transmit() {
       QVariantMap network = this->settings->getMap()->value("network").toMap();
       QVariantMap ports = network.value("ports").toMap();
       this->discoveryPort = ports.value("discovery").toInt();
@@ -62,35 +62,35 @@ namespace mtg {
       this->timer.start();
 
       this->tick();
-    }
+    }*/
 
     /* -------------------------------------------------------------------------------------------
      * Act as a receiver
      * ------------------------------------------------------------------------------------------- */
-    void Discovery::receive() {
+    /*void Discovery::receive() {
       QVariantMap network = this->settings->getMap()->value("network").toMap();
       QVariantMap ports = network.value("ports").toMap();
       int port = ports.value("discovery").toInt();
       this->socket->bind(port,QUdpSocket::ShareAddress);
       this->connect(this->socket,SIGNAL(readyRead()), this, SLOT(process()));
-    }
+    }*/
 
 
     /* -------------------------------------------------------------------------------------------
      * broadcast our address
      * ------------------------------------------------------------------------------------------- */
-    void Discovery::tick() {
+    /*void Discovery::tick() {
       if(this->action == Transmitter) {
         qDebug() << "[Discovery] Send";
         this->socket->writeDatagram(this->datagram.data(), this->datagram.size(), QHostAddress::Broadcast, this->discoveryPort);
       }
-    }
+    }*/
 
 
     /* -------------------------------------------------------------------------------------------
      * Process an incoming datagram
      * ------------------------------------------------------------------------------------------- */
-    void Discovery::process() {
+    /*void Discovery::process() {
       qDebug() << "[Discovery] receive";
       while(this->socket->hasPendingDatagrams()) {
           QByteArray datagram;
@@ -108,7 +108,7 @@ namespace mtg {
             }
           }
       }
-    }
+    }*/
 
 
 }

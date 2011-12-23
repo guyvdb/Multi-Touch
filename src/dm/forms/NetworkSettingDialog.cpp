@@ -26,16 +26,16 @@ NetworkSettingDialog::NetworkSettingDialog(mtg::Settings *settings, QWidget *par
 
     QString host= network.value("server","127.0.0.1").toString();
     int discovery = ports.value("discovery",20000).toInt();
-    int datagram = ports.value("udp",20001).toInt();
-    int tcp = ports.value("tcp",20002).toInt();
+    int command = ports.value("command",20001).toInt();
+    int asset = ports.value("asset",20002).toInt();
 
     // save values back
     ports.clear();
     network.clear();
 
     ports["discovery"] = discovery;
-    ports["udp"] = datagram;
-    ports["tcp"] = tcp;
+    ports["command"] = command;
+    ports["asset"] = asset;
 
     network["server"] = host;
     network["ports"] = ports;
@@ -45,9 +45,9 @@ NetworkSettingDialog::NetworkSettingDialog(mtg::Settings *settings, QWidget *par
 
     // add to the form
     this->ui->edtHost->setText(host);
-    this->ui->spinUDPPort->setValue(datagram);
+    this->ui->spinCommandPort->setValue(command);
     this->ui->spinDiscoveryPort->setValue(discovery);
-    this->ui->spinTCPPort->setValue(tcp);
+    this->ui->spinAssetPort->setValue(asset);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -69,10 +69,10 @@ void NetworkSettingDialog::on_buttonBox_accepted()
 
 
   int discovery = this->ui->spinDiscoveryPort->value();
-  int datagram = this->ui->spinUDPPort->value();
-  int tcp = this->ui->spinTCPPort->value();
+  int command = this->ui->spinCommandPort->value();
+  int asset = this->ui->spinAssetPort->value();
 
-  if(tcp == discovery || tcp == datagram || discovery == datagram) {
+  if(asset == discovery || asset == command || discovery == command) {
     QMessageBox msg;
     msg.setText("Port Error");
     msg.setInformativeText("The discovery, datagram and tcp ports need to be unique. Setting not saved.");
@@ -82,8 +82,8 @@ void NetworkSettingDialog::on_buttonBox_accepted()
   } else {
     network["server"] = this->ui->edtHost->text();
     ports["discovery"] = discovery;
-    ports["udp"] = datagram;
-    ports["tcp"] = tcp;
+    ports["command"] = command;
+    ports["asset"] = asset;
     network["ports"] = ports;
     this->settings->getMap()->insert("network", network);
     this->settings->save();

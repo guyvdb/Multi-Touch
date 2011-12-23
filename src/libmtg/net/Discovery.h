@@ -9,7 +9,7 @@
 #include "settings/Settings.h"
 
 namespace mtg {
-
+/*
 
     class LIBMTG_EXPORT Discovery : public QObject
     {
@@ -43,6 +43,7 @@ namespace mtg {
         Action action;
 
     };
+    */
 
 }
 

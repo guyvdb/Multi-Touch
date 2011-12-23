@@ -32,7 +32,8 @@ SOURCES += \
     net/CommandClient.cpp \
     net/CommandServer.cpp \
     net/IPAddressLocator.cpp \
-    net/DiscoveryServer.cpp
+    net/DiscoveryServer.cpp \
+    net/DiscoveryClient.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -56,7 +57,8 @@ HEADERS +=\
     net/CommandClient.h \
     net/CommandServer.h \
     net/IPAddressLocator.h \
-    net/DiscoveryServer.h
+    net/DiscoveryServer.h \
+    net/DiscoveryClient.h
 
 
 FORMS += \

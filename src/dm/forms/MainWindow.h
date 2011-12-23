@@ -33,10 +33,10 @@ private slots:
   void on_closeGameAction_triggered();
   void on_networkSettingsAction_triggered();
   void on_quitAction_triggered();
-
   void on_showMapAction_triggered();
-
   void on_addMapAction_triggered();
+  void on_closeTableMapAction_triggered();
+  void on_closePrivateMapAction_triggered();
 
 private:
     void startGame();
@@ -45,9 +45,10 @@ private:
     Ui::MainWindow *ui;
     QString databaseFileName;
     QRect calculateTabRect();
-    QRect calculateTableMapRect();
+    QRect calculateMapRect();
     mtg::Settings *settings;
     mtg::MapView *tableMap;
+    mtg::MapView *privateMap;
     mtg::GameEngine *engine;
 };
 

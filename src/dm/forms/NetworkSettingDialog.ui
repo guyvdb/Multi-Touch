@@ -79,19 +79,19 @@
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>Udp Port</string>
+       <string>Command Port</string>
       </property>
      </widget>
     </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label_4">
       <property name="text">
-       <string>TCP Port</string>
+       <string>Asset Port</string>
       </property>
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="QSpinBox" name="spinUDPPort">
+     <widget class="QSpinBox" name="spinCommandPort">
       <property name="minimum">
        <number>1024</number>
       </property>
@@ -104,7 +104,7 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QSpinBox" name="spinTCPPort">
+     <widget class="QSpinBox" name="spinAssetPort">
       <property name="minimum">
        <number>1024</number>
       </property>

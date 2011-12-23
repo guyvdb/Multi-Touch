@@ -21,6 +21,10 @@
 #include "forms/NetworkSettingDialog.h"
 #include "forms/ShowMapDialog.h"
 
+#include "tiled/map.h"
+#include "tiled/mapreader.h"
+#include "tiled/properties.h"
+
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
@@ -29,9 +33,16 @@ MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(p
     ui->setupUi(this);
     this->ui->closeGameAction->setEnabled(false);
     this->ui->tabs->setGeometry(this->calculateTabRect());
+
+    // TableMap
     this->tableMap = new mtg::MapView(this->ui->tabTableMap);
-    this->tableMap->setGeometry(this->calculateTableMapRect());
+    this->tableMap->setGeometry(this->calculateMapRect());
     this->tableMap->show();
+
+    // PrivateMap
+    this->privateMap = new mtg::MapView(this->ui->tabPrivateMap);
+    this->privateMap->setGeometry(this->calculateMapRect());
+    this->privateMap->show();
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -42,6 +53,7 @@ MainWindow::~MainWindow()
   if(this->engine) this->engine->stop();
     delete this->engine;
     delete this->tableMap;
+    delete this->tableMap;
     delete ui;
 }
 
@@ -50,7 +62,8 @@ MainWindow::~MainWindow()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::resizeEvent(QResizeEvent *e) {
   this->ui->tabs->setGeometry(this->calculateTabRect());
-  this->tableMap->setGeometry(this->calculateTableMapRect());
+  this->tableMap->setGeometry(this->calculateMapRect());
+  this->privateMap->setGeometry(this->calculateMapRect());
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -69,7 +82,7 @@ QRect MainWindow::calculateTabRect() {
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-QRect MainWindow::calculateTableMapRect() {
+QRect MainWindow::calculateMapRect() {
   return QRect(0,0,this->ui->tabs->width(), this->ui->tabs->height());
 }
 
@@ -195,10 +208,23 @@ void MainWindow::on_showMapAction_triggered()
     QList<mtg::MapModel*> maps;
     this->engine->listMaps(maps);
 
-    ShowMapDialog dlg;
+    ShowMapDialog dlg(this);
+    dlg.load(maps);
     dlg.show();
-    dlg.exec();
 
+    if(dlg.exec()) {
+      foreach (mtg::MapModel *map, maps) {
+        if(map->name == dlg.getSelectedMapName()) {
+          if(dlg.getTarget() == "table") {
+            if(this->tableMap->isLoaded()) this->tableMap->unloadMap();
+            this->tableMap->loadMap(map->file);
+          } else {
+            if(this->privateMap->isLoaded()) this->privateMap->unloadMap();
+            this->privateMap->loadMap(map->file);
+          }
+        }
+      }
+    }
     foreach(mtg::MapModel *map, maps) delete map;
 }
 
@@ -210,7 +236,29 @@ void MainWindow::on_addMapAction_triggered()
   QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
   qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
-    mtg::MapModel map(QDir(fileName).dirName(),fileName);
-    this->engine->addMap(map);
+
+    // Get the name of the map
+    Tiled::Map *map;
+    Tiled::MapReader reader;
+    map = reader.readMap(fileName);
+    QString name = map->properties()["name"] == "" ? QDir(fileName).dirName() : map->properties()["name"];
+    delete map;
+
+
+    mtg::MapModel model(name,fileName);
+    this->engine->addMap(model);
   }
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::on_closeTableMapAction_triggered()
+{
+    this->tableMap->unloadMap();
+}
+
+void MainWindow::on_closePrivateMapAction_triggered()
+{
+    this->privateMap->unloadMap();
 }

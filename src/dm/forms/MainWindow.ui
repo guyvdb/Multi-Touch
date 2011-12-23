@@ -17,10 +17,10 @@
    <widget class="QTabWidget" name="tabs">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>1001</width>
-      <height>631</height>
+      <x>50</x>
+      <y>30</y>
+      <width>711</width>
+      <height>401</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -29,6 +29,11 @@
     <widget class="QWidget" name="tabTableMap">
      <attribute name="title">
       <string>Table Map</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tabPrivateMap">
+     <attribute name="title">
+      <string>Private Map</string>
      </attribute>
     </widget>
    </widget>
@@ -62,8 +67,16 @@
     <property name="title">
      <string>Maps</string>
     </property>
+    <widget class="QMenu" name="menuHide">
+     <property name="title">
+      <string>Close</string>
+     </property>
+     <addaction name="closeTableMapAction"/>
+     <addaction name="closePrivateMapAction"/>
+    </widget>
     <addaction name="addMapAction"/>
     <addaction name="showMapAction"/>
+    <addaction name="menuHide"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -117,6 +130,16 @@
   <action name="showMapAction">
    <property name="text">
     <string>Show</string>
+   </property>
+  </action>
+  <action name="closeTableMapAction">
+   <property name="text">
+    <string>Table Map</string>
+   </property>
+  </action>
+  <action name="closePrivateMapAction">
+   <property name="text">
+    <string>Private Map</string>
    </property>
   </action>
  </widget>

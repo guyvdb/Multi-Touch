@@ -23,7 +23,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QRadioButton" name="radioButton">
+  <widget class="QRadioButton" name="rbTable">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -39,7 +39,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QRadioButton" name="radioButton_2">
+  <widget class="QRadioButton" name="rbPrivate">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -65,7 +65,7 @@
     <string>Show Map on Screen:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="btnShow">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -78,7 +78,7 @@
     <string>Show</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="btnCancel">
    <property name="geometry">
     <rect>
      <x>180</x>

@@ -5,6 +5,7 @@
 #include "forms/StatusDialog.h"
 #include "settings/Settings.h"
 #include "engine/GameEngine.h"
+#include "net/CommandServer.h"
 
 namespace Ui {
     class TableWindow;
@@ -25,6 +26,7 @@ private:
     Ui::TableWindow *ui;
     mtg::Settings *settings;
     mtg::GameEngine *engine;
+    mtg::CommandServer *commandServer;
     StatusDialog *statusDialog;
 };
 

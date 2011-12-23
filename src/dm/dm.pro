@@ -27,6 +27,9 @@ FORMS    += \
     forms/NetworkSettingDialog.ui \
     forms/ShowMapDialog.ui
 
+OTHER_FILES += \
+    README.txt
+
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
@@ -46,5 +49,4 @@ win32 {
 
 LIBS += -L$$DESTDIR -lmtg -ltiled -lqjson
 
-OTHER_FILES += \
-    README.txt
+

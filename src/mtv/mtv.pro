@@ -30,8 +30,15 @@ HEADERS  += main/MainView.h \
 
 CONFIG   -= app_bundle
 
-INCLUDEPATH += $$PWD/../libmtv
-DEPENDPATH += $$PWD/../libmtv
+INCLUDEPATH += $$PWD/../../include
+DEPENDPATH += $$PWD/../../include
+
+INCLUDEPATH += $$PWD/../libmtg
+DEPENDPATH += $$PWD/../libmtg
+
+
+#INCLUDEPATH += $$PWD/../libmtv
+#DEPENDPATH += $$PWD/../libmtv
 
 unix {
   DESTDIR += ../../linux

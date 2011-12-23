@@ -3,39 +3,57 @@
 
 #include <QMessageBox>
 #include <QDebug>
+#include <QDesktopWidget>
+#include <QVariantMap>
+
+#include "net/IPAddressLocator.h"
+#include "net/CommandClient.h"
+#include "message/Message.h"
 
 TableWindow::TableWindow(mtg::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
 {
     ui->setupUi(this);
-    this->setGeometry(0,0,200,200);
-   // this->setWindowState(Qt::WindowMaximized);
+    this->commandServer = 0x0;
+
+    QDesktopWidget *desktop = QApplication::desktop();
+    QRect workspace = desktop->availableGeometry(1);
+
+
+    this->setGeometry(workspace);
     this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameTable);
     this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkDiscoveryComplete()));
     this->statusDialog = new StatusDialog(this);
+
+    QSize size = this->statusDialog->size();
+
+    int l = (workspace.width() - size.width()) / 2;
+    int t = (workspace.height() - size.height()) / 2;
+
+    this->statusDialog->setGeometry(QRect(l,t,size.width(),size.height()));
+
     this->statusDialog->show();
-    //this->engine->start();
+    this->engine->start("");
 }
 
 TableWindow::~TableWindow()
 {
-    delete this->statusDialog;
-    delete ui;
+  if(this->commandServer) delete this->commandServer;
+  delete this->statusDialog;
+  delete ui;
 }
 
 void TableWindow::OnNetworkDiscoveryComplete() {
-  QString status = "Found: " + this->engine->getHost() + " udp:" + QString::number(this->engine->getUDPPort()) + " tcp:" + QString::number(this->engine->getTCPPort());
+  // close the dialog
+  QString status = "Found: " + this->engine->getServerHost() + " command:" + QString::number(this->engine->getServerCommandPort()) + " asset:" + QString::number(this->engine->getServerAssetPort());
   this->statusDialog->setStatus(status);
+  this->statusDialog->close();
 
-  //this->discovery->hide();
-  //delete this->discovery;
-  //this->discovery = 0x0;
 }
 
 bool TableWindow::event(QEvent *event) {
 
     if(event->type() == QEvent::MouseButtonDblClick) {
        QMessageBox msg;
-
        msg.setWindowTitle("MultiTable - [TABLE]");
        msg.setText("Exit TABLE application?");
        msg.setInformativeText("Would you like to exit?");

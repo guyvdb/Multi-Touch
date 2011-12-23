@@ -11,13 +11,12 @@
 
 #include "libmtg_global.h"
 
-#include "net/Discovery.h"
+#include "net/DiscoveryServer.h"
+#include "net/DiscoveryClient.h"
 #include "net/CommandClient.h"
 #include "net/CommandServer.h"
 #include "net/AssetClient.h"
 #include "net/AssetServer.h"
-
-
 
 #include "data/Repository.h"
 #include "data/MapModel.h"
@@ -61,29 +60,29 @@ namespace mtg {
         int getServerCommandPort() {return this->serverCommandPort; }
 
         QString getClientHost() const {return this->clientHost; }
-        int getClientAssetPort() {return this->clientAssetPort; }
         void setClientCommandPort(int value) {this->clientCommandPort = value; }
         int getClientCommandPort() {return this->clientCommandPort; }
 
     signals:
         void networkDiscoveryComplete();
     private slots:
-        void OnNetworkDiscovered(const QString serverHost, int serverAssetPort, int serverCommandPort);
+        void OnDMServerDiscovered(const QString serverHost, int serverAssetPort, int serverCommandPort);
     private:
 
-        void startServer();
-        void stopServer();
+
         void startClient();
         void stopClient();
 
 
-        int startCommandServer(const QString name, int port);
 
         Settings *settings;
         GameMode mode;
-        Discovery *discovery;
+
+        DiscoveryServer *discoveryServer;
         CommandServer *commandServer;
 
+        DiscoveryClient *discoveryClient;
+        CommandClient *commandClient;
 
 
         Repository *db;
@@ -92,10 +91,9 @@ namespace mtg {
         QString serverHost;
         QString clientHost;
 
+        int serverDiscoveryPort;
         int serverAssetPort;
         int serverCommandPort;
-
-        int clientAssetPort;
         int clientCommandPort;
 
         QSqlDatabase database;
