@@ -17,6 +17,11 @@
 #include "map/MapItem.h"
 #include "map/FogOfWar.h"
 #include "map/MapToken.h"
+#include "map/ZIndex.h"
+
+
+#include "state/GameToken.h"
+#include "state/GameTokens.h"
 
 namespace Tiled {
   class Map;
@@ -24,7 +29,9 @@ namespace Tiled {
 }
 
 
+
 namespace mtg {
+
 
     /**
      * The MapView shows the map scene. It sets some MapScene specific
@@ -35,16 +42,25 @@ namespace mtg {
     {
         Q_OBJECT
     public:
-         MapView(QWidget *parent = 0);
+         MapView();
          ~MapView();         
          void loadMap(const QString &fileName);
+         void loadMap(const QString &fileName, QList<MapToken*> mapTokens);
+         void recalculateFogOfWar();
          void unloadMap();
          bool isLoaded() {return this->loaded;}
+         QSize getTileSize();
+         MapScene* getScene() {return this->scene;}
     protected:
          virtual void wheelEvent(QWheelEvent *event);
+         //virtual void dragEnterEvent(QDragEnterEvent *event);
+         //virtual void dragLeaveEvent(QDragLeaveEvent *event);
+         //virtual void dragMoveEvent(QDragMoveEvent *event);
+         //virtual void mouseReleaseEvent(QMouseEvent *event);
+
     private:
 
-         QSize getTileSize();
+         //QSize getTileSize();
          QSize getMapSizeInTiles();
 
          bool loaded;
@@ -54,7 +70,7 @@ namespace mtg {
          Tiled::MapRenderer *renderer;
          FogOfWar *fogOfWar;
 
-         MapToken *token;
+
     };
 }
 

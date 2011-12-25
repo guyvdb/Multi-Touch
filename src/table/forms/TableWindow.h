@@ -7,6 +7,8 @@
 #include "engine/GameEngine.h"
 #include "net/CommandServer.h"
 
+#include "map/MapView.h"
+
 namespace Ui {
     class TableWindow;
 }
@@ -28,6 +30,7 @@ private:
     mtg::GameEngine *engine;
     mtg::CommandServer *commandServer;
     StatusDialog *statusDialog;
+
 };
 
 #endif // TABLEWINDOW_H

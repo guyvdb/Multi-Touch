@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QList>
+#include <QModelIndex>
 
 #include "data/MapModel.h"
 
@@ -27,6 +28,8 @@ private slots:
   void on_btnShow_clicked();
 
   void on_btnCancel_clicked();
+
+  void on_lstMaps_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::ShowMapDialog *ui;

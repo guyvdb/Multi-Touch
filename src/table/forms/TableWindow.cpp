@@ -19,6 +19,7 @@ TableWindow::TableWindow(mtg::Settings *settings, QWidget *parent) :  QMainWindo
     QRect workspace = desktop->availableGeometry(1);
 
 
+
     this->setGeometry(workspace);
     this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameTable);
     this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkDiscoveryComplete()));

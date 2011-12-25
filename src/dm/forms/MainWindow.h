@@ -30,6 +30,11 @@ public:
 protected:
     void resizeEvent(QResizeEvent *e);
 private slots:
+  //void onOpenGameActionClicked();
+  //void onNewGameActionClicked();
+  //void onCloseGameActionClicked();
+
+
   void on_openGameAction_triggered();
   void on_newGameAction_triggered();
   void on_closeGameAction_triggered();
@@ -40,22 +45,54 @@ private slots:
   void on_closeTableMapAction_triggered();
   void on_closePrivateMapAction_triggered();
 
+  void on_pushButton_clicked();
+
 private:
-    void startGame();
-    void stopGame();
+  enum GameState {
+    GameOpenState,
+    GameClosedState
+  };
 
-    QMenuBar *menuBar;
-    QMenu *fileMenu;
-    QMenu *mapMenu;
 
-    Ui::MainWindow *ui;
-    QString databaseFileName;
-    QRect calculateTabRect();
-    QRect calculateMapRect();
-    mtg::Settings *settings;
-    mtg::MapView *tableMap;
-    mtg::MapView *privateMap;
-    mtg::GameEngine *engine;
+  void startGame();
+  void stopGame();
+
+  void gameStateChanged(GameState newState);
+  void showError(const QString title, const QString message);
+
+  bool isGameStateValid(GameState requiredState);
+  void showGameStateOpenError();
+  void showGameStateClosedError();
+
+  //QMenuBar *menuBar;
+  //QMenu *fileMenu;
+
+  // Game Menu
+  //QMenu *gameMenu;
+  //QAction *gameNewAction;
+  //QAction *gameOpenAction;
+  //QAction *gameCloseAction;
+  //QAction *gameNetworkAction;
+  //QAction *gameQuitAction;
+
+  // Map Menu
+  //QMenu *mapMenu;
+  ////QAction *mapAddAction;
+  //QAction *mapShowAction;
+  //QAction *mapHideTableMapAction;
+  //QAction *mapHidePrivateMapAction;
+
+
+
+  GameState state;
+
+  Ui::MainWindow *ui;
+  QString databaseFileName;
+  QRect calculateTabRect();
+  QRect calculateMapRect();
+  mtg::Settings *settings;
+  mtg::MapView *dmMap;
+  mtg::GameEngine *engine;
 };
 
 #endif // MAINWINDOW_H

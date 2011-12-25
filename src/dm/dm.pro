@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql
+QT       += core gui network sql opengl
 
 TARGET = dm
 TEMPLATE = app
@@ -13,19 +13,22 @@ SOURCES += main.cpp\
     forms/MainWindow.cpp \
     forms/CreateGameDialog.cpp \
     forms/NetworkSettingDialog.cpp \
-    forms/ShowMapDialog.cpp
+    forms/ShowMapDialog.cpp \
+    forms/ErrorDialog.cpp
 
 HEADERS  += \
     forms/MainWindow.h \
     forms/CreateGameDialog.h \
     forms/NetworkSettingDialog.h \
-    forms/ShowMapDialog.h
+    forms/ShowMapDialog.h \
+    forms/ErrorDialog.h
 
 FORMS    += \
     forms/MainWindow.ui \
     forms/CreateGameDialog.ui \
     forms/NetworkSettingDialog.ui \
-    forms/ShowMapDialog.ui
+    forms/ShowMapDialog.ui \
+    forms/ErrorDialog.ui
 
 OTHER_FILES += \
     README.txt
@@ -49,4 +52,5 @@ win32 {
 
 LIBS += -L$$DESTDIR -lmtg -ltiled -lqjson
 
-
+RESOURCES += \
+    assets.qrc

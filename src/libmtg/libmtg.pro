@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network webkit xml sql
+QT       += network webkit xml sql opengl
 
 TARGET = mtg
 TEMPLATE = lib
@@ -36,8 +36,10 @@ SOURCES += \
     net/NodeInfo.cpp \
     data/BaseModel.cpp \
     map/MapToken.cpp \
-    state/TokenList.cpp \
-    state/Token.cpp
+    state/GameToken.cpp \
+    state/StateEngine.cpp \
+    state/TileStates.cpp \
+    state/GameTokens.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -65,8 +67,11 @@ HEADERS +=\
     net/NodeInfo.h \
     data/BaseModel.h \
     map/MapToken.h \
-    state/TokenList.h \
-    state/Token.h
+    state/GameToken.h \
+    map/ZIndex.h \
+    state/StateEngine.h \
+    state/TileStates.h \
+    state/GameTokens.h
 
 
 FORMS += \

@@ -24,6 +24,14 @@
 
 #include "settings/Settings.h"
 
+#include "state/GameToken.h"
+#include "state/GameTokens.h"
+#include "state/StateEngine.h"
+
+#include "map/MapView.h"
+#include "map/MapScene.h"
+
+
 namespace mtg {
 
   /*
@@ -41,7 +49,7 @@ namespace mtg {
         GameClient
     };
 
-    GameEngine(Settings *settings,  GameEngine::GameMode mode, QObject *parent = 0);
+    GameEngine(Settings *settings,  GameEngine::GameMode mode);
     ~GameEngine();
 
     // start / stop
@@ -49,14 +57,28 @@ namespace mtg {
     void stop();
     bool isRunning() {return this->running;}
 
-    // maps -- to db
-    void addMap(mtg::MapModel &map);
-    void deleteMap(mtg::MapModel &map);
-    void listMaps(QList<mtg::MapModel*> &result);
 
-    // map control
+    Repository* getRepository() {return this->repository; }
+
+    // map control -- move to... ????
+    mtg::MapView *getMapView() {return this->mapView; }
+    void loadMap(const QString filename);
+    void unloadMap();
     void mapLoadNotification(const QString id);
 
+    // token control -- move to a state engine
+    mtg::GameTokens *getGameTokens() {return this->tokens; }
+    mtg::GameToken * addGameToken(mtg::GameToken *token);
+    mtg::GameToken * addGameToken(mtg::GameToken::Type type);
+    mtg::GameToken * findGameToken(const int id);
+    void moveGameToken(const int id, QPoint point);
+    void moveGameToken(const int id, const int row, const int col);
+    void moveGameToken(mtg::GameToken *token, QPoint point);
+    void moveGameToken(mtg::GameToken *token, const int row, const int col);
+
+
+
+    QPoint tileToPixleCordinate(QPoint tileLocation);
 
     // network
     QString getServerHost() const {return this->serverHost; }
@@ -77,19 +99,17 @@ namespace mtg {
   private:
     void broadcast(QByteArray data);
 
+    // General
     Settings *settings;
     GameMode mode;
+    bool running;
 
+    // Networking
     DiscoveryServer *discoveryServer;
     CommandServer *commandServer;
     DiscoveryClient *discoveryClient;
     CommandClient *commandClient;
-
-
-    Repository *db;
     QList<NodeInfo*> nodes;
-
-
 
     QString serverHost;
     QString clientHost;
@@ -99,9 +119,16 @@ namespace mtg {
     int serverCommandPort;
     int clientCommandPort;
 
+
+    // Database
+    Repository *repository;
+
+    // State
+    GameTokens *tokens;
+    MapView *mapView;
     QSqlDatabase database;
 
-    bool running;
+
 
 
 

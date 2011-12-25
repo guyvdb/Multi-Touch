@@ -20,36 +20,31 @@
 #include "forms/CreateGameDialog.h"
 #include "forms/NetworkSettingDialog.h"
 #include "forms/ShowMapDialog.h"
+#include "forms/ErrorDialog.h"
 
 #include "tiled/map.h"
 #include "tiled/mapreader.h"
 #include "tiled/properties.h"
+
+#include "state/GameToken.h"
 
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
 MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
 {
-    ui->setupUi(this);
-    this->ui->closeGameAction->setEnabled(false);
+    ui->setupUi(this);    
     this->ui->tabs->setGeometry(this->calculateTabRect());
 
-    this->menuBar = this->ui->menuBar;
-
-    this->mapMenu = new QMenu("Map1");
-    this->menuBar->addMenu(this->mapMenu);
-
-
-
-    // TableMap
-    this->tableMap = new mtg::MapView(this->ui->tabTableMap);
-    this->tableMap->setGeometry(this->calculateMapRect());
-    this->tableMap->show();
-
     // PrivateMap
-    this->privateMap = new mtg::MapView(this->ui->tabPrivateMap);
-    this->privateMap->setGeometry(this->calculateMapRect());
-    this->privateMap->show();
+    this->dmMap = new mtg::MapView();
+    this->dmMap->setParent(this->ui->tabDMMap);
+    this->dmMap->setGeometry(this->calculateMapRect());
+    this->dmMap->show();
+
+    this->ui->tabs->setVisible(false);
+
+    this->gameStateChanged(GameClosedState);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -59,28 +54,81 @@ MainWindow::~MainWindow()
 {
   if(this->engine && this->engine->isRunning()) this->engine->stop();
   delete this->engine;
-
-
-  this->menuBar->clear();
-
-  delete this->mapMenu;
-
-
-  delete this->tableMap;
-  delete this->privateMap;
-
-
-
-    delete ui;
+  delete this->dmMap;
+  delete ui;
 }
 
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
+void MainWindow::showError(const QString title, const QString message) {
+
+   ErrorDialog dlg;
+   dlg.setMessage(title,message);
+   dlg.show();
+   dlg.exec();
+
+
+  //QMessageBox msgBox;
+  //msgBox.setWindowTitle("Error");
+  //msgBox.setText(title);
+  //msgBox.setInformativeText(message);
+  //msgBox.setStandardButtons(QMessageBox::Ok);
+  //msgBox.exec();
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::showGameStateOpenError() {
+  this->showError("Game is currently open.","Please close the current game first.");
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::showGameStateClosedError() {
+  this->showError("No Game is currently open.","Please open a game first.");
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+bool MainWindow::isGameStateValid(GameState requiredState) {
+  switch(this->state) {
+  case GameOpenState:
+    if(requiredState == GameOpenState) return true;
+    this->showGameStateOpenError();
+    return false;
+    break;
+
+  case GameClosedState:
+    if(requiredState == GameClosedState) return true;
+
+    this->showGameStateClosedError();
+    return false;
+    break;
+  }
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::gameStateChanged(GameState newState) {
+  this->state = newState;
+}
+
+
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void MainWindow::resizeEvent(QResizeEvent *e) {
-  this->ui->tabs->setGeometry(this->calculateTabRect());
-  this->tableMap->setGeometry(this->calculateMapRect());
-  this->privateMap->setGeometry(this->calculateMapRect());
+  this->ui->tabs->setGeometry(this->calculateTabRect()); 
+  this->dmMap->setGeometry(this->calculateMapRect());
+  if(this->engine != 0x0) {
+    this->engine->getMapView()->setGeometry(this->calculateMapRect());
+  }
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -100,7 +148,7 @@ QRect MainWindow::calculateTabRect() {
  *
  * ------------------------------------------------------------------------------------------- */
 QRect MainWindow::calculateMapRect() {
-  return QRect(0,0,this->ui->tabs->width(), this->ui->tabs->height());
+  return QRect(0,0,this->ui->tabs->width()-20, this->ui->tabs->height()-50);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -109,45 +157,120 @@ QRect MainWindow::calculateMapRect() {
 void MainWindow::startGame() {
 
   //disable
-  this->ui->newGameAction->setEnabled(false);
-  this->ui->openGameAction->setEnabled(false);
-  this->ui->networkSettingsAction->setEnabled(false);
+  //this->ui->newGameAction->setEnabled(false);
+  //this->ui->openGameAction->setEnabled(false);
+  //this->ui->networkSettingsAction->setEnabled(false);
 
   //enable
-  this->ui->closeGameAction->setEnabled(true);
+  //this->ui->closeGameAction->setEnabled(true);
 
   this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameServer);
   this->engine->start(this->databaseFileName);
+
+
+  // setup the map view
+  this->engine->getMapView()->setParent(this->ui->tabTableMap);
+  this->engine->getMapView()->setGeometry(this->calculateMapRect());
+  this->engine->getMapView()->show();
+
+  // add a token
+  mtg::GameToken *token;
+
+  // PC
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::green);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::blue);
+
+
+
+
+
+
+
+  // monster
+  token = this->engine->addGameToken(mtg::GameToken::Monster);
+  token->setColor(Qt::yellow);
+
+  this->ui->tabs->setVisible(true);
 }
 
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::stopGame() {
+
+  this->ui->tabs->setVisible(false);
+
   if(this->engine) this->engine->stop();
   delete this->engine;
   this->engine = 0x0;
 
   //enable
-  this->ui->newGameAction->setEnabled(true);
-  this->ui->openGameAction->setEnabled(true);
-  this->ui->networkSettingsAction->setEnabled(true);
+ //this->ui->newGameAction->setEnabled(true);
+  //this->ui->openGameAction->setEnabled(true);
+  //this->ui->networkSettingsAction->setEnabled(true);
 
   //disable
-  this->ui->closeGameAction->setEnabled(false);
+  //this->ui->closeGameAction->setEnabled(false);
 
 }
+
+
 
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_openGameAction_triggered()
-{
+{  
+  if(!this->isGameStateValid(GameClosedState)) return;
+
   QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
-  qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
     this->databaseFileName = fileName;
     this->startGame();
+    this->gameStateChanged(GameOpenState);
   }
 }
 
@@ -156,8 +279,11 @@ void MainWindow::on_openGameAction_triggered()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_closeGameAction_triggered()
 {
+    if(!this->isGameStateValid(GameOpenState)) return;
+
   if(this->ui->closeGameAction->isEnabled()) {
     this->stopGame();
+    this->gameStateChanged(GameClosedState);
   } else {
     qDebug() << "[QT Bug] CLOSE GAME should be grayed out";
   }
@@ -169,6 +295,9 @@ void MainWindow::on_closeGameAction_triggered()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_newGameAction_triggered()
 {
+
+  if(!this->isGameStateValid(GameClosedState)) return;
+
   CreateGameDialog dialog;
   dialog.show();
   dialog.exec();
@@ -191,6 +320,7 @@ void MainWindow::on_newGameAction_triggered()
       } else {
         this->databaseFileName = fileName;
         this->startGame();
+        this->gameStateChanged(GameOpenState);
       }
     }
   }
@@ -222,8 +352,11 @@ void MainWindow::on_quitAction_triggered()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_showMapAction_triggered()
 {
+  if(!this->isGameStateValid(GameOpenState)) return;
+
+
     QList<mtg::MapModel*> maps;
-    this->engine->listMaps(maps);
+    this->engine->getRepository()->listMaps(maps);
 
     ShowMapDialog dlg(this);
     dlg.load(maps);
@@ -233,12 +366,10 @@ void MainWindow::on_showMapAction_triggered()
       foreach (mtg::MapModel *map, maps) {
         if(map->name == dlg.getSelectedMapName()) {
           if(dlg.getTarget() == "table") {
-            if(this->tableMap->isLoaded()) this->tableMap->unloadMap();
-            this->tableMap->loadMap(map->file);
-            this->engine->mapLoadNotification(map->id);
+            this->engine->loadMap(map->file);
           } else {
-            if(this->privateMap->isLoaded()) this->privateMap->unloadMap();
-            this->privateMap->loadMap(map->file);
+            if(this->dmMap->isLoaded()) this->dmMap->unloadMap();
+            this->dmMap->loadMap(map->file);
           }
         }
       }
@@ -251,6 +382,8 @@ void MainWindow::on_showMapAction_triggered()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_addMapAction_triggered()
 {
+  if(!this->isGameStateValid(GameOpenState)) return;
+
   QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
   qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
@@ -263,8 +396,8 @@ void MainWindow::on_addMapAction_triggered()
     delete map;
 
 
-    mtg::MapModel model(name,fileName);
-    this->engine->addMap(model);
+    mtg::MapModel model(name,fileName);    
+    this->engine->getRepository()->addMap(model);
   }
 }
 
@@ -273,10 +406,31 @@ void MainWindow::on_addMapAction_triggered()
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_closeTableMapAction_triggered()
 {
-    this->tableMap->unloadMap();
+  if(!this->isGameStateValid(GameOpenState)) return;
+  this->engine->getMapView()->unloadMap();
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_closePrivateMapAction_triggered()
 {
-    this->privateMap->unloadMap();
+  if(!this->isGameStateValid(GameOpenState)) return;
+  this->dmMap->unloadMap();
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::on_pushButton_clicked()
+{
+  ;
+
+  int i = 1;
+  while(true){
+    mtg::GameToken* token = this->engine->findGameToken(i);
+    if(token == 0x0) break;
+    this->engine->moveGameToken(token,10,5+i);
+    i++;
+  }
 }

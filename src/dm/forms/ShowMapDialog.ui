@@ -26,30 +26,30 @@
   <widget class="QRadioButton" name="rbTable">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>170</x>
      <y>220</y>
-     <width>71</width>
+     <width>101</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Table</string>
+    <string>Table Map</string>
    </property>
    <property name="checked">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QRadioButton" name="rbPrivate">
+  <widget class="QRadioButton" name="rbDM">
    <property name="geometry">
     <rect>
      <x>280</x>
      <y>220</y>
-     <width>107</width>
+     <width>81</width>
      <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>Private</string>
+    <string>DM Map</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">

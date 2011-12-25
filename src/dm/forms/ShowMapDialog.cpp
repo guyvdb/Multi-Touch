@@ -39,3 +39,8 @@ void ShowMapDialog::on_btnCancel_clicked()
 {
   this->reject();
 }
+
+void ShowMapDialog::on_lstMaps_doubleClicked(const QModelIndex &index)
+{
+    this->on_btnShow_clicked();
+}

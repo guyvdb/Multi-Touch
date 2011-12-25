@@ -17,11 +17,14 @@
    <widget class="QTabWidget" name="tabs">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>30</y>
-      <width>711</width>
-      <height>401</height>
+      <x>140</x>
+      <y>220</y>
+      <width>361</width>
+      <height>181</height>
      </rect>
+    </property>
+    <property name="tabShape">
+     <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -31,30 +34,43 @@
       <string>Table Map</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="tabPrivateMap">
+    <widget class="QWidget" name="tabDMMap">
      <attribute name="title">
-      <string>Private Map</string>
+      <string>DM Map</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tabPlayerCharacters">
      <attribute name="title">
       <string>Player Characters</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="tabNonPlayerCharacters">
      <attribute name="title">
       <string>Non-Player Characters</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="tab_3">
+    <widget class="QWidget" name="tabMonsters">
      <attribute name="title">
       <string>Monsters</string>
      </attribute>
     </widget>
-    <widget class="QWidget" name="tab_4">
+    <widget class="QWidget" name="tabInitiative">
      <attribute name="title">
       <string>Initiative</string>
      </attribute>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>80</y>
+        <width>91</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Move Token</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -66,6 +82,9 @@
      <width>1093</width>
      <height>24</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -91,7 +110,7 @@
       <string>Close</string>
      </property>
      <addaction name="closeTableMapAction"/>
-     <addaction name="closePrivateMapAction"/>
+     <addaction name="closeDMMapAction"/>
     </widget>
     <addaction name="addMapAction"/>
     <addaction name="showMapAction"/>
@@ -121,7 +140,7 @@
   </action>
   <action name="closeGameAction">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Close Game</string>
@@ -158,9 +177,9 @@
     <string>Table Map</string>
    </property>
   </action>
-  <action name="closePrivateMapAction">
+  <action name="closeDMMapAction">
    <property name="text">
-    <string>Private Map</string>
+    <string>DM Map</string>
    </property>
   </action>
  </widget>

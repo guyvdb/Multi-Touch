@@ -73,7 +73,7 @@ namespace mtg {
     QSqlQuery query(this->database);
     query.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "'");
     bool exists = query.next();
-    qDebug() << "[TABLE] " << name << " exists = " << exists;
+    //qDebug() << "[TABLE] " << name << " exists = " << exists;
     return exists;
   }
 
