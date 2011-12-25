@@ -177,50 +177,50 @@ void MainWindow::startGame() {
   mtg::GameToken *token;
 
   // PC
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::red);
 
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::red);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::red);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
-  token->setColor(Qt::red);
-
-
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::red);
 
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::red);
 
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
+  token->setColor(Qt::red);
+
+
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::green);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
-  token = this->engine->addGameToken(mtg::GameToken::PlayerCharacter);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::PlayerCharacter);
   token->setColor(Qt::blue);
 
 
@@ -230,7 +230,7 @@ void MainWindow::startGame() {
 
 
   // monster
-  token = this->engine->addGameToken(mtg::GameToken::Monster);
+  token = this->engine->getScene()->addGameToken(mtg::GameToken::Monster);
   token->setColor(Qt::yellow);
 
   this->ui->tabs->setVisible(true);
@@ -428,9 +428,9 @@ void MainWindow::on_pushButton_clicked()
 
   int i = 1;
   while(true){
-    mtg::GameToken* token = this->engine->findGameToken(i);
+    mtg::GameToken* token = this->engine->getScene()->findGameToken(i);
     if(token == 0x0) break;
-    this->engine->moveGameToken(token,10,5+i);
+    this->engine->getScene()->moveGameToken(token,10,5+i);
     i++;
   }
 }

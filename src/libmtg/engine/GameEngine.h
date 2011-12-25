@@ -24,9 +24,9 @@
 
 #include "settings/Settings.h"
 
-#include "engine/GameToken.h"
-#include "engine/GameTokens.h"
-#include "engine/FogOfWarStates.h"
+//#include "engine/GameToken.h"
+//#include "engine/GameTokens.h"
+//#include "engine/CellStates.h"
 
 
 #include "map/MapView.h"
@@ -60,14 +60,17 @@ namespace mtg {
 
 
     Repository* getRepository() {return this->repository; }
+    mtg::MapScene* getScene() {return this->mapView->getScene();}
+    mtg::MapView *getMapView() {return this->mapView; }
 
     // map control -- move to... ????
-    mtg::MapView *getMapView() {return this->mapView; }
+
     void loadMap(const QString filename);
     void unloadMap();
     void mapLoadNotification(const QString id);
 
-    // token control -- move to a state engine
+    // token control -- move to a scene
+    /*
     mtg::GameTokens *getGameTokens() {return this->tokens; }
     mtg::GameToken * addGameToken(mtg::GameToken *token);
     mtg::GameToken * addGameToken(mtg::GameToken::Type type);
@@ -75,11 +78,11 @@ namespace mtg {
     void moveGameToken(const int id, QPoint point);
     void moveGameToken(const int id, const int row, const int col);
     void moveGameToken(mtg::GameToken *token, QPoint point);
-    void moveGameToken(mtg::GameToken *token, const int row, const int col);
+    void moveGameToken(mtg::GameToken *token, const int row, const int col); */
 
 
 
-    QPoint tileToPixleCordinate(QPoint tileLocation);
+    //QPoint tileToPixleCordinate(QPoint tileLocation);
 
     // network
     QString getServerHost() const {return this->serverHost; }
@@ -125,8 +128,6 @@ namespace mtg {
     Repository *repository;
 
     // State
-    CellStates *fogOfWarStates;
-    GameTokens *tokens;
     MapView *mapView;
     QSqlDatabase database;
 

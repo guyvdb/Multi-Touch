@@ -38,7 +38,7 @@ SOURCES += \
     map/MapToken.cpp \
     engine/GameToken.cpp \
     engine/GameTokens.cpp \
-    engine/FogOfWarStates.cpp
+    engine/CellStates.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -69,7 +69,7 @@ HEADERS +=\
     engine/GameToken.h \
     map/ZIndex.h \
     engine/GameTokens.h \
-    engine/FogOfWarStates.h
+    engine/CellStates.h
 
 
 FORMS += \

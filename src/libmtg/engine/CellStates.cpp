@@ -1,4 +1,4 @@
-#include "FogOfWarStates.h"
+#include "CellStates.h"
 
 
 namespace mtg {

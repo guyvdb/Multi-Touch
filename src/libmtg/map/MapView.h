@@ -44,13 +44,13 @@ namespace mtg {
     public:
          MapView();
          ~MapView();         
+         //void loadMap(const QString &fileName);
          void loadMap(const QString &fileName);
-         void loadMap(const QString &fileName, QList<MapToken*> mapTokens);
          void recalculateFogOfWar();
          void unloadMap();
          bool isLoaded() {return this->loaded;}
          QSize getTileSize();
-         MapScene* getScene() {return this->scene;}
+         mtg::MapScene* getScene() {return this->scene;}
     protected:
          virtual void wheelEvent(QWheelEvent *event);
          //virtual void dragEnterEvent(QDragEnterEvent *event);

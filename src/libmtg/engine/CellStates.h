@@ -13,19 +13,20 @@ namespace mtg {
   public:
 
     enum State {
-      Solid,
       Clear,
-      North,
-      NorthWest,
-      West,
-      SouthWest,
-      South,
-      SouthEast,
-      East,
-      NorthEast
+      Solid,
+      // these partial states are solid in the indicated area
+      // ie a cell with NorthSolid means the northern part is solid
+      // and the southern part is clear
+      NorthSolid,
+      NorthWestSolid,
+      WestSolid,
+      SouthWestSolid,
+      SouthSolid,
+      SouthEastSolid,
+      EastSolid,
+      NorthEastSolid
     };
-
-
 
     CellStates(const int rows, const int cols );
     ~CellStates();

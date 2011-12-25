@@ -67,7 +67,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    * used for private map.
    * ------------------------------------------------------------------------------------------- */
-  void MapView::loadMap(const QString &fileName) {
+  /*void MapView::loadMap(const QString &fileName) {
     delete this->renderer;
     this->renderer = 0x0;
 
@@ -87,13 +87,18 @@ namespace mtg {
 
     loaded = true;
   }
+  */
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void MapView::loadMap(const QString &fileName, QList<MapToken*> mapTokens) {
+  void MapView::loadMap(const QString &fileName) {
     delete this->renderer;
     this->renderer = 0x0;
+
+    // get the map tokens
+    QList<MapToken*> maptokens;
+    this->scene->getGameTokens()->getMapTokens(maptokens);
 
 
     //this->scene->clear();
@@ -113,7 +118,7 @@ namespace mtg {
     QSize tileSize = this->getTileSize();
 
     // tokens
-    foreach(MapToken *token, mapTokens) {
+    foreach(MapToken *token, maptokens) {
       token->setTileSize(tileSize);
       token->setZValue(ZINDEX_GAME_TOKEN);
       this->scene->addItem(token);

@@ -5,15 +5,23 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
 
+#include "map/MapView.h"
+
 namespace mtg {
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    MapScene::MapScene(QObject *parent) : QGraphicsScene(parent), renderer(0x0), dragged(0x0), tileSize(QSize(32,32))
+    MapScene::MapScene(MapView *mapView) : QGraphicsScene(), mapView(mapView), renderer(0x0), dragged(0x0), tileSize(QSize(32,32))
     {
-      selected = QPen(Qt::red, 3);
-      selectedBrush = QBrush(Qt::yellow);
+      this->gameTokens = new GameTokens();
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    MapScene::~MapScene() {
+      delete this->gameTokens;
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -21,6 +29,98 @@ namespace mtg {
      * ------------------------------------------------------------------------------------------- */
     void MapScene::setRenderer(Tiled::MapRenderer *renderer) {
         this->renderer = renderer;
+    }
+
+
+
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    mtg::GameToken * MapScene::addGameToken(mtg::GameToken *token) {
+      GameToken *p = this->gameTokens->add(token);
+      p->setMarker(new MapToken());
+      if(this->mapView->isLoaded()) {
+        p->getMarker()->setColor(p->getColor());
+        p->getMarker()->setPos(this->tileToPixleCordinate(p->getLocation()));
+        p->getMarker()->setZValue(ZINDEX_GAME_TOKEN);
+        this->mapView->getScene()->addItem(p->getMarker());
+        this->mapView->recalculateFogOfWar();
+      }
+      return p;
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    mtg::GameToken * MapScene::addGameToken(mtg::GameToken::Type type) {
+      return this->addGameToken(new GameToken(type));
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    mtg::GameToken * MapScene::findGameToken(const int id) {
+      return this->gameTokens->find(id);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void MapScene::moveGameToken(const int id, QPoint point) {
+      GameToken *token = this->gameTokens->find(id);
+      if(token) this->moveGameToken(token, point);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void MapScene::moveGameToken(const int id, const int row, const int col) {
+      GameToken *token = this->gameTokens->find(id);
+      if(token != 0x0) this->moveGameToken(token, row, col);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void MapScene::moveGameToken(mtg::GameToken *token, QPoint point) {
+      token->setLocation(point);
+
+      if(this->mapView->isLoaded()) {
+        token->getMarker()->setPos(this->tileToPixleCordinate(point));
+        token->getMarker()->update();
+        this->mapView->recalculateFogOfWar();
+      }
+
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void MapScene::moveGameToken(mtg::GameToken *token, const int row, const int col) {
+      QPoint p(row,col);
+      this->moveGameToken(token,p);
+    }
+
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    QPoint MapScene::tileToPixleCordinate(QPoint tileLocation) {
+      QSize tileSize = this->mapView->getTileSize();
+
+      if(tileSize.width() == 0) {
+        qDebug() << "*** WARNING *** trying to translate tiles to pixels when no map is loaded";
+        return QPoint(0,0);
+      }
+
+      if(tileLocation.x() == -1) {
+        return QPoint(-100,-100); // off board
+      }
+
+      int x = tileLocation.x() * tileSize.width();
+      int y = tileLocation.y() * tileSize.height();
+      return QPoint(x,y);
     }
 
 
