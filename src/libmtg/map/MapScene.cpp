@@ -23,6 +23,25 @@ namespace mtg {
         this->renderer = renderer;
     }
 
+
+    /* -------------------------------------------------------------------------------------------
+     * Transform a scene point to a cell location
+     * ------------------------------------------------------------------------------------------- */
+    QPoint MapScene::sceneToCellTransform(const QPoint scenePoint) {
+      int row = (int)((scenePoint.y() / this->tileSize.height()));
+      int col = (int)((scenePoint.x() / this->tileSize.width()));
+      return QPoint(row,col);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    QPoint MapScene::cellToSceneTransform(const QPoint cell) {
+      int x = cell.y()  * this->tileSize.width();
+      int y = cell.x() * this->tileSize.height();
+      return QPoint(x,y);
+    }
+
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
@@ -36,7 +55,11 @@ namespace mtg {
       dragged =  itemAt(event->scenePos(),QTransform());
       if(dragged) {
 
-        qDebug() << "POS=" << event->pos() << ", SCENE=" << event->scenePos() << ", SCREEN=" << event->screenPos();
+        QPoint cell = this->sceneToCellTransform(event->scenePos());
+        QPoint back = this->cellToSceneTransform(cell);
+
+        qDebug() << "POS=" << event->pos() << ", SCENE=" << event->scenePos() << ", SCREEN=" << event->screenPos()
+                  << ", CELL=" << cell  << ", BACK="  << back;
 
         if((dragged->flags() & QGraphicsItem::ItemIsFocusable) == QGraphicsItem::ItemIsFocusable) {
           offset = dragged->pos() - event->scenePos();
@@ -65,7 +88,7 @@ namespace mtg {
      * ------------------------------------------------------------------------------------------- */
     void MapScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
       if (dragged) {
-        dragged->setPos(offset + this->getSnapPoint(event->scenePos()));
+        dragged->setPos(this->getSnapPoint(event->scenePos()));
         dragged = 0x0;
       } else {
         QGraphicsScene::mouseReleaseEvent(event);
@@ -77,9 +100,10 @@ namespace mtg {
      * ------------------------------------------------------------------------------------------- */
     QPointF MapScene::getSnapPoint(const QPointF point) {
 
-      int x = (point.x() / this->tileSize.width()) * this->tileSize.width();
-      int y = (point.y() / this->tileSize.height()) * this->tileSize.height();
-      return QPointF(x,y);
+      QPoint cell = this->sceneToCellTransform(point);
+      QPoint back = this->cellToSceneTransform(cell);
+
+      return QPointF(back.x(),back.y());
 
     }
 

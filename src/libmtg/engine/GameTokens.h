@@ -23,7 +23,7 @@ namespace mtg {
     GameToken *find(const int id);
     bool isTokenAtLocation(QPoint &location);
     GameToken *tokenAtLocation(QPoint &location);
-    QList<GameToken*> * list() {return &this->tokens;}
+    QList<GameToken*> & list() {return this->tokens;}
     void getMapTokens(QList<MapToken*> &result);
   private:
     QList<GameToken*> tokens;

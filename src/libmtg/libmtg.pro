@@ -36,10 +36,9 @@ SOURCES += \
     net/NodeInfo.cpp \
     data/BaseModel.cpp \
     map/MapToken.cpp \
-    state/GameToken.cpp \
-    state/StateEngine.cpp \
-    state/TileStates.cpp \
-    state/GameTokens.cpp
+    engine/GameToken.cpp \
+    engine/GameTokens.cpp \
+    engine/FogOfWarStates.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -67,11 +66,10 @@ HEADERS +=\
     net/NodeInfo.h \
     data/BaseModel.h \
     map/MapToken.h \
-    state/GameToken.h \
+    engine/GameToken.h \
     map/ZIndex.h \
-    state/StateEngine.h \
-    state/TileStates.h \
-    state/GameTokens.h
+    engine/GameTokens.h \
+    engine/FogOfWarStates.h
 
 
 FORMS += \

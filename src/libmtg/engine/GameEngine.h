@@ -24,9 +24,10 @@
 
 #include "settings/Settings.h"
 
-#include "state/GameToken.h"
-#include "state/GameTokens.h"
-#include "state/StateEngine.h"
+#include "engine/GameToken.h"
+#include "engine/GameTokens.h"
+#include "engine/FogOfWarStates.h"
+
 
 #include "map/MapView.h"
 #include "map/MapScene.h"
@@ -124,6 +125,7 @@ namespace mtg {
     Repository *repository;
 
     // State
+    CellStates *fogOfWarStates;
     GameTokens *tokens;
     MapView *mapView;
     QSqlDatabase database;

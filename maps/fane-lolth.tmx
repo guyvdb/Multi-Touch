@@ -71,19 +71,19 @@
    <polyline points="0,0 -95,1"/>
   </object>
   <object x="735" y="256">
-   <polyline points="0,0 3,94"/>
+   <polyline points="0,0 0,95"/>
   </object>
   <object x="257" y="286">
    <polyline points="0,0 32,2 31,-31 65,-31 64,-63 129,-62 129,-33"/>
   </object>
   <object x="259" y="381">
-   <polyline points="0,0 30,1 30,34 62,35 61,67 126,68 126,34"/>
+   <polyline points="-1,2 30,1 30,34 62,35 61,67 126,68 126,34"/>
   </object>
   <object x="64" y="572">
    <polyline points="0,0 0,-60 64,-60 63,1 159,2 160,-61 226,-61 226,3"/>
   </object>
   <object x="576" y="291">
-   <polyline points="0,0 2,92"/>
+   <polyline points="0,0 0,93"/>
   </object>
   <object x="478" y="451">
    <polyline points="0,0 2,157 -93,157"/>
@@ -95,13 +95,13 @@
    <polyline points="0,0 -1,30 159,30"/>
   </object>
   <object x="799" y="477">
-   <polyline points="0,0 1,94"/>
+   <polyline points="0,6 1,102"/>
   </object>
   <object x="639" y="631">
    <polyline points="0,0 0,-25"/>
   </object>
  </objectgroup>
- <objectgroup name="lights" width="30" height="20">
+ <objectgroup name="lights" width="30" height="20" visible="0">
   <properties>
    <property name="brightness" value="3"/>
    <property name="type" value="lights"/>
@@ -152,7 +152,7 @@
   <object x="164" y="363"/>
   <object x="493" y="75"/>
  </objectgroup>
- <layer name="test" width="30" height="20">
+ <layer name="test" width="30" height="20" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

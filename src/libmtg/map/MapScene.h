@@ -18,6 +18,9 @@ namespace mtg {
         MapScene(QObject *parent = 0);
         void setRenderer(Tiled::MapRenderer *renderer);
         void setTileSize(QSize value) {this->tileSize = value; }
+        QPoint sceneToCellTransform(const QPoint scenePoint);
+        QPoint sceneToCellTransform(const QPointF scenePoint) {return sceneToCellTransform(QPoint(scenePoint.x(), scenePoint.y()));}
+        QPoint cellToSceneTransform(const QPoint cell);
     protected:
         void drawForeground(QPainter *painter, const QRectF &rect);
         void mousePressEvent(QGraphicsSceneMouseEvent *event);
