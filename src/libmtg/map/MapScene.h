@@ -56,6 +56,8 @@ namespace mtg {
   private:
 
     QPointF getSnapPoint(const QPointF point);
+    //void calculateFogOfWar();
+
 
     Tiled::MapRenderer *renderer;
     QGraphicsItem *dragged;

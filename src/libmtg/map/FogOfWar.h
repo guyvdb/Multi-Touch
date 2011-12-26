@@ -4,6 +4,8 @@
 #include <QGraphicsItem>
 #include <QPixmap>
 
+#include "map/MapScene.h"
+
 namespace mtg {
 
   class FogOfWar : public QGraphicsItem

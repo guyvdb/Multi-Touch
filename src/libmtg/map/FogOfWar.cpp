@@ -8,6 +8,7 @@ namespace mtg {
   FogOfWar::FogOfWar(QRectF bounds, QGraphicsItem *parent) :  QGraphicsItem(parent), bounds(bounds)
   {
     //this->pixmap = new QPixmap(bounds.width(),bounds.height());
+
   }
 
   FogOfWar::~FogOfWar() {
@@ -22,6 +23,10 @@ namespace mtg {
 
   void FogOfWar::recalculate() {
     // redraw our pixmap
+
+    //if(this->scene() != 0x0) {
+    //  MapScene *ms = qobject_cast<MapScene*>(this->scene());
+   // }
 
   }
 
