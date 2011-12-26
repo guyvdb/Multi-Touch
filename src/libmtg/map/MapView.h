@@ -20,9 +20,6 @@
 #include "map/ZIndex.h"
 
 
-#include "map/state/GameToken.h"
-#include "map/state/GameTokens.h"
-
 namespace Tiled {
   class Map;
   class MapRenderer;
@@ -44,31 +41,23 @@ namespace mtg {
     public:
          MapView();
          ~MapView();         
-         //void loadMap(const QString &fileName);
          void loadMap(const QString &fileName);
          void recalculateFogOfWar();
          void unloadMap();
          bool isLoaded() {return this->loaded;}
          QSize getTileSize();
          mtg::MapScene* getScene() {return this->scene;}
+         Tiled::Map * getMap() {return this->map; }
     protected:
          virtual void wheelEvent(QWheelEvent *event);
-         //virtual void dragEnterEvent(QDragEnterEvent *event);
-         //virtual void dragLeaveEvent(QDragLeaveEvent *event);
-         //virtual void dragMoveEvent(QDragMoveEvent *event);
-         //virtual void mouseReleaseEvent(QMouseEvent *event);
-
     private:
-
-         //QSize getTileSize();
          QSize getMapSizeInTiles();
-
          bool loaded;
          MapScene *scene;
          Tiled::Map *map;
          MapItem *mapItem;
          Tiled::MapRenderer *renderer;
-         FogOfWar *fogOfWar;
+
 
 
     };

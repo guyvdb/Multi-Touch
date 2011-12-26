@@ -36,9 +36,7 @@ SOURCES += \
     net/NodeInfo.cpp \
     data/BaseModel.cpp \
     map/MapToken.cpp \
-    map/state/GameToken.cpp \
-    map/state/GameTokens.cpp \
-    map/state/CellStates.cpp
+    map/CellStates.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -66,10 +64,8 @@ HEADERS +=\
     net/NodeInfo.h \
     data/BaseModel.h \
     map/MapToken.h \
-    map/state/GameToken.h \
     map/ZIndex.h \
-    map/state/GameTokens.h \
-    map/state/CellStates.h
+    map/CellStates.h
 
 
 FORMS += \

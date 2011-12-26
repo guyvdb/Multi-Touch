@@ -47,13 +47,9 @@ namespace mtg {
     this->map = 0x0;
     this->mapItem = 0x0;
     this->renderer = 0x0;
-    this->fogOfWar = new FogOfWar(QRectF(0,0,500,500));
-    this->fogOfWar->setPos(0,0);
+
 
     this->loaded = false;
-
-
-
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -61,33 +57,8 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   MapView::~MapView() {
     this->unloadMap();
-    delete this->fogOfWar;
   }
 
-  /* -------------------------------------------------------------------------------------------
-   * used for private map.
-   * ------------------------------------------------------------------------------------------- */
-  /*void MapView::loadMap(const QString &fileName) {
-    delete this->renderer;
-    this->renderer = 0x0;
-
-    this->scene->clear();
-    this->centerOn(0,0);
-
-    Tiled::MapReader reader;
-    this->map = reader.readMap(fileName);
-
-
-    //scene
-    this->renderer = new Tiled::OrthogonalRenderer(this->map);
-    this->mapItem = new MapItem(this->map,this->renderer);
-    //this->mapItem->setZValue(ZINDEX_MAP);
-    this->scene->addItem(this->mapItem);
-    this->scene->setRenderer(this->renderer);
-
-    loaded = true;
-  }
-  */
 
   /* -------------------------------------------------------------------------------------------
    *
@@ -96,17 +67,11 @@ namespace mtg {
     delete this->renderer;
     this->renderer = 0x0;
 
-    // get the map tokens
-    QList<MapToken*> maptokens;
-    this->scene->getGameTokens()->getMapTokens(maptokens);
-
-
     //this->scene->clear();
     this->centerOn(0,0);
 
     Tiled::MapReader reader;
     this->map = reader.readMap(fileName);
-
 
     //scene
     this->renderer = new Tiled::OrthogonalRenderer(this->map);
@@ -117,16 +82,23 @@ namespace mtg {
 
     QSize tileSize = this->getTileSize();
 
+
+    // state --
+    this->scene->initializeMap(this->map);
+
+
+
     // tokens
-    foreach(MapToken *token, maptokens) {
+    for(int i=0;i<this->getScene()->getTokens()->count(); i++) {
+      MapToken *token = this->getScene()->getTokens()->at(i);
       token->setTileSize(tileSize);
       token->setZValue(ZINDEX_GAME_TOKEN);
       this->scene->addItem(token);
     }
 
     //fog of war
-    this->fogOfWar->setZValue(ZINDEX_FOG_OF_WAR);
-    this->scene->addItem(this->fogOfWar);
+    //this->fogOfWar->setZValue(ZINDEX_FOG_OF_WAR);
+    //this->scene->addItem(this->fogOfWar);
 
     // scene
     this->scene->setTileSize(tileSize);
@@ -141,7 +113,7 @@ namespace mtg {
     if(this->map){
 
       this->scene->removeItem(this->mapItem);
-      this->scene->removeItem(this->fogOfWar);
+      //this->scene->removeItem(this->fogOfWar);
 
       // TODO remove all game tokens
 
@@ -187,51 +159,12 @@ namespace mtg {
      this->scale(factor, factor);
   }
 
- // void MapView::mouseReleaseEvent(QMouseEvent *event) {
- //   qDebug() << "MOUSE RELEASE  " << event->pos();
- //   QGraphicsView::mouseReleaseEvent(event);
-  //}
-
-
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
- /* void MapView::dragEnterEvent(QDragEnterEvent *event) {
-    qDebug() << "DRAG ENTER";
-    event->accept();
-  }*/
-
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  /*void MapView::dragLeaveEvent(QDragLeaveEvent *event) {
-    qDebug() << "DRAG LEAVE";
-    event->accept();
-  }*/
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
- /* void MapView::dragMoveEvent(QDragMoveEvent *event) {
-    qDebug() << "DRAG MOVE";
-    QGraphicsItem *item = this->itemAt(event->pos());
-
-    QDrag *drag = new QDrag(this);
-    drag->setParent(this);
-    drag->start();
-  }*/
-
-
-
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   QSize MapView::getMapSizeInTiles() {
     if(this->map == 0x0) return QSize(0,0);
     qDebug() << "MAP IS: " << this->map->width() << "x" << this->map->height();
-
     return QSize(0,0);
   }
 

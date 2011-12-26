@@ -1,16 +1,17 @@
 #include "CellStates.h"
 
+#include <QDebug>
 
 namespace mtg {
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::CellStates(const int rows, const int cols) : rows(rows), cols(cols)
+  CellStates::CellStates() : rows(0), cols(0), visability(0x0), obstruction(0x0), visited(0x0)
   {
-    initializeVector(this->visability,CellStates::Solid);
-    initializeVector(this->obstruction, CellStates::Clear);
-    initializeVector(this->visited,CellStates::Clear);
+    //initializeVector(this->visability,CellStates::Solid);
+    //initializeVector(this->obstruction, CellStates::Clear);
+    //initializeVector(this->visited,CellStates::Clear);
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -27,6 +28,9 @@ namespace mtg {
    *
    * ------------------------------------------------------------------------------------------- */
   void CellStates::resize(const int rows, const int cols) {
+
+    qDebug() << "RESIZE TO: (rows x cols) " << rows << " x " << cols;
+
     freeVector(this->visability);
     freeVector(this->obstruction);
     freeVector(this->visited);
@@ -34,16 +38,16 @@ namespace mtg {
     this->rows = rows;
     this->cols = cols;
 
-    initializeVector(this->visability,CellStates::Solid);
-    initializeVector(this->obstruction, CellStates::Clear);
-    initializeVector(this->visited,CellStates::Clear);
+    this->visability = initializeVector(CellStates::Solid);
+    this->obstruction = initializeVector(CellStates::Clear);
+    this->visited = initializeVector(CellStates::Clear);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::initializeVector(QVector< QVector <CellStates::State> *> *vector, State state) {
-    vector = new QVector<QVector<CellStates::State> * >();
+  QVector< QVector <CellStates::State> *> * CellStates::initializeVector(State state) {
+    QVector< QVector <CellStates::State> *> * vector = new QVector<QVector<CellStates::State> * >();
     for(int row = 0; row < rows; row++) {
       QVector<CellStates::State> *list = new QVector<CellStates::State>();
       vector->append(list);
@@ -51,12 +55,14 @@ namespace mtg {
         list->append(state);
       }
     }
+    return vector;
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   void CellStates::freeVector(QVector< QVector <CellStates::State> *> *vector) {
+    if(vector == 0x0) return;
     for(int row=0; row < vector->count() ; row++) delete vector->at(row);
     delete vector;
   }
@@ -83,16 +89,16 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::State CellStates::getVisability(const int col, const int row) const {
-    Q_ASSERT(contains(col,row));
+  CellStates::State CellStates::getVisability(const int row, const int col) const {
+    Q_ASSERT(contains(row,col));
     return this->visability->at(row)->at(col);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::setVisability(const int col, const int row, CellStates::State value) {
-    Q_ASSERT(contains(col,row));
+  void CellStates::setVisability(const int row, const int col, CellStates::State value) {
+    Q_ASSERT(contains(row,col));
     this->visability->at(row)->replace(col,value);
   }
 
@@ -106,16 +112,16 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::setObstruction(const int col, const int row, CellStates::State value) {
-    Q_ASSERT(contains(col,row));
+  void CellStates::setObstruction(const int row, const int col, CellStates::State value) {
+    Q_ASSERT(contains(row,col));
     this->obstruction->at(row)->replace(col,value);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::State CellStates::getObstruction(const int col, const int row) const {
-    Q_ASSERT(contains(col,row));
+  CellStates::State CellStates::getObstruction(const int row, const int col) const {
+    Q_ASSERT(contains(row,col));
     return this->obstruction->at(row)->at(col);
   }
 
@@ -130,8 +136,8 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::State CellStates::getVisited(const int col, const int row) const {
-    Q_ASSERT(contains(col,row));
+  CellStates::State CellStates::getVisited(const int row, const int col) const {
+    Q_ASSERT(contains(row,col));
     return this->visited->at(row)->at(col);
   }
 
@@ -139,8 +145,8 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::setVisited(const int col, const int row, CellStates::State value) {
-    Q_ASSERT(contains(col,row));
+  void CellStates::setVisited(const int row, const int col, CellStates::State value) {
+    Q_ASSERT(contains(row,col));
     this->visited->at(row)->replace(col,value);
   }
 

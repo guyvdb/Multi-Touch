@@ -3,35 +3,47 @@
 
 #include <QGraphicsItem>
 
+#include "libmtg_global.h"
+
+
 namespace mtg {
 
-class MapToken : public QGraphicsItem
+
+class LIBMTG_EXPORT MapToken : public QGraphicsItem
 {
-   // Q_OBJECT
+  //  Q_OBJECT
 public:
-  explicit MapToken(QSize tileSize);
-  explicit MapToken();
+  enum Type {
+    PlayerCharacter,
+    NonPlayerCharacter,
+    Monster
+  };
+
+  explicit MapToken(mtg::MapToken::Type type, QSize tileSize);
+  explicit MapToken(mtg::MapToken::Type type);
   ~MapToken();
   virtual QRectF boundingRect() const {return this->bounds; }
   void setBounds(QRectF value);
   void recalculate();
-  void setColor(QColor value) {this->color = value; }
-  void setTileSize(QSize value);
 
-  //virtual void setPos(const QPointF &pos);
+  void setTileSize(QSize value);  
+  int getTokenId() const {return this->tokenId; }
+  void setTokenId(const int value) {this->tokenId = value;}
+  QString getEntityId() const {return this->entityId; }
+  void setEntityId(const QString value) {this->entityId = value;}
+  int getVision() const {return this->vision;}
+  void setVision(const int value) {this->vision = value;}
+  int getSpeed() const {return this->speed; }
+  void setSpeed(const int value) {this->speed = value;}
+  QPoint getLocation() {return this->location;}
+  void setLocation(QPoint value) {this->location = value;}
+  QColor getColor() {return  this->color;}
+  void setColor(QColor value) {this->color = value;}
+
+  mtg::MapToken::Type getType() {return this->type;}
 
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-  //virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-  //virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-  //virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-  //virtual void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
-
-
-
-
-
-
 signals:
 public slots:
 private:
@@ -40,12 +52,22 @@ private:
   bool selected;
   bool down;
 
+  int tokenId;
+  QString entityId;
 
+  int vision;
+  int speed;
+  QPoint location;
+
+
+
+  Type type;
   QSize tileSize;
   QRectF bounds;
   QPixmap *pixmap;
   QColor color;
 };
+
 
 
 
