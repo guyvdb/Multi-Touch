@@ -26,7 +26,7 @@
 #include "tiled/mapreader.h"
 #include "tiled/properties.h"
 
-#include "engine/GameToken.h"
+#include "map/state/GameToken.h"
 
 /* -------------------------------------------------------------------------------------------
  *

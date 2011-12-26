@@ -20,8 +20,8 @@
 #include "map/ZIndex.h"
 
 
-#include "engine/GameToken.h"
-#include "engine/GameTokens.h"
+#include "map/state/GameToken.h"
+#include "map/state/GameTokens.h"
 
 namespace Tiled {
   class Map;

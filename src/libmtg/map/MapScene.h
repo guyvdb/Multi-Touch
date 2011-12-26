@@ -5,9 +5,9 @@
 
 
 // TODO move this to map/states folder
-#include "engine/GameToken.h"
-#include "engine/GameTokens.h"
-#include "engine/CellStates.h"
+#include "map/state/GameToken.h"
+#include "map/state/GameTokens.h"
+#include "map/state/CellStates.h"
 
 
 namespace Tiled {
