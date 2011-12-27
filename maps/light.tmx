@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="3" height="3" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="light" tilewidth="32" tileheight="32">
+  <image source="light/light.png" width="96" height="96"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="3" height="3">
+  <properties>
+   <property name="type" value="light"/>
+  </properties>
+  <data encoding="csv">
+1,2,3,
+4,5,6,
+7,8,9
+</data>
+ </layer>
+</map>
