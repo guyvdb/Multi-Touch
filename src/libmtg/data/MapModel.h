@@ -6,7 +6,7 @@
 
 #include "BaseModel.h"
 
-namespace mtg {
+namespace mtdnd {
 
   class LIBMTG_EXPORT MapModel : public BaseModel
   {

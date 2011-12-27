@@ -27,7 +27,7 @@ namespace Tiled {
 
 
 
-namespace mtg {
+namespace mtdnd {
 
 
 
@@ -47,7 +47,7 @@ namespace mtg {
     void unloadMap();
     bool isLoaded() {return this->loaded;}
     QSize getTileSize();
-    mtg::MapScene* getScene() {return this->scene;}
+    mtdnd::MapScene* getScene() {return this->scene;}
     Tiled::Map * getMap() {return this->map; }
   protected:
     virtual void wheelEvent(QWheelEvent *event);

@@ -8,7 +8,7 @@
 //#include "map/MapScene.h"
 #include "map/CellStates.h"
 
-namespace mtg {
+namespace mtdnd {
 
   class FogOfWar : public QGraphicsItem
   {

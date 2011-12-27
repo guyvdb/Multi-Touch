@@ -34,7 +34,7 @@
 #include "map/MapScene.h"
 
 
-namespace mtg {
+namespace mtdnd {
 
   /*
    * The game engine provides a central class to carry out all game related activity
@@ -61,8 +61,8 @@ namespace mtg {
     bool isRunning() {return this->running;}
 
     Repository* getRepository() {return this->repository; }
-    mtg::MapScene* getScene() {return this->mapView->getScene();}
-    mtg::MapView *getMapView() {return this->mapView; }
+    mtdnd::MapScene* getScene() {return this->mapView->getScene();}
+    mtdnd::MapView *getMapView() {return this->mapView; }
     GameMode getGameMode() {return this->mode; }
 
 
@@ -89,8 +89,8 @@ namespace mtg {
      void networkDiscoveryComplete();
   private slots:
     void OnDMServerDiscovered(const QString serverHost, int serverAssetPort, int serverCommandPort);
-    void OnMessageForServer(mtg::Message::DataPacket packet);
-    void OnMessageForClient(mtg::Message::DataPacket packet);
+    void OnMessageForServer(mtdnd::Message::DataPacket packet);
+    void OnMessageForClient(mtdnd::Message::DataPacket packet);
 
   private:
 

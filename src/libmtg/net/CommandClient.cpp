@@ -4,7 +4,7 @@
 #include <QHostAddress>
 #include <QDebug>
 
-namespace mtg {
+namespace mtdnd {
 
   CommandClient::CommandClient():QUdpSocket() , id(QUuid::createUuid().toString())
   {

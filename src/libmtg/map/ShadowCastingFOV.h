@@ -2,7 +2,7 @@
 #define SHADOWCASTINGFOV_H
 
 
-namespace mtg {
+namespace mtdnd {
 
   class ShadowCastingFOV
   {

@@ -4,7 +4,7 @@
 #include <QVector>
 #include <QPoint>
 
-namespace mtg {
+namespace mtdnd {
 
   class StateGrid
   {

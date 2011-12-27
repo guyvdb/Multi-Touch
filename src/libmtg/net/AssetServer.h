@@ -4,7 +4,7 @@
 #include <QObject>
 
 
-namespace mtg {
+namespace mtdnd {
 
   /*
    * The Asset server runs in the dm client and serves assets on request

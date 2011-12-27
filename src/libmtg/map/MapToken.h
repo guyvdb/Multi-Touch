@@ -6,7 +6,7 @@
 #include "libmtg_global.h"
 
 
-namespace mtg {
+namespace mtdnd {
 
 
 class LIBMTG_EXPORT MapToken : public QGraphicsItem
@@ -21,7 +21,7 @@ public:
 
 
 
-  explicit MapToken(mtg::MapToken::Type type, const QString id, const int vision, const int speed);
+  explicit MapToken(mtdnd::MapToken::Type type, const QString id, const int vision, const int speed);
   //explicit MapToken(mtg::MapToken::Type type, QSize tileSize, const int tokenId);
   //explicit MapToken(mtg::MapToken::Type type, QSize tileSize);
   //explicit MapToken(mtg::MapToken::Type type);
@@ -43,7 +43,7 @@ public:
   QColor getColor() {return  this->color;}
   void setColor(QColor value) {this->color = value;}
 
-  mtg::MapToken::Type getType() {return this->type;}
+  mtdnd::MapToken::Type getType() {return this->type;}
 
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

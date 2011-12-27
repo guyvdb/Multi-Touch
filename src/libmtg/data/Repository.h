@@ -9,7 +9,7 @@
 
 #define SCHEMA_VERSION 1
 
-namespace mtg {
+namespace mtdnd {
 
   class Repository : public QObject
   {
@@ -19,9 +19,9 @@ namespace mtg {
 
       void initialize();
 
-      void addMap(mtg::MapModel &map);
-      void deleteMap(mtg::MapModel &map);
-      void listMaps(QList<mtg::MapModel*> &result);
+      void addMap(mtdnd::MapModel &map);
+      void deleteMap(mtdnd::MapModel &map);
+      void listMaps(QList<mtdnd::MapModel*> &result);
 
   private:
     QSqlDatabase &database;

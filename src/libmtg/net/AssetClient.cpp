@@ -1,6 +1,6 @@
 #include "AssetClient.h"
 
-namespace mtg {
+namespace mtdnd {
 
 AssetClient::AssetClient(QObject *parent) :
     QObject(parent)

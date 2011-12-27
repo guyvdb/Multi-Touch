@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVariantMap>
 
-namespace mtg {
+namespace mtdnd {
 
     class Settings : public QObject
     {

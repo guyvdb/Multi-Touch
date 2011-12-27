@@ -3,7 +3,7 @@
 
 #include <QUdpSocket>
 
-namespace mtg {
+namespace mtdnd {
 
 
   class DiscoveryClient : public QUdpSocket

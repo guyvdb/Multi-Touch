@@ -4,7 +4,7 @@
 #include <QStringList>
 #include <QHostAddress>
 
-namespace mtg {
+namespace mtdnd {
   QString IPAddressLocator::getMachineAddress() {
     QString address;
 

@@ -1,7 +1,7 @@
 #include "AssetServer.h"
 
 
-namespace mtg {
+namespace mtdnd {
 
 
   AssetServer::AssetServer(QObject *parent) :  QObject(parent)

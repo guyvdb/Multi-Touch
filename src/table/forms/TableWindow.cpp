@@ -13,7 +13,7 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-TableWindow::TableWindow(mtg::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
+TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
 {
     ui->setupUi(this);
     this->commandServer = 0x0;
@@ -24,7 +24,7 @@ TableWindow::TableWindow(mtg::Settings *settings, QWidget *parent) :  QMainWindo
     //this->setGeometry(QRect(workspace.x(), workspace.y(), 500,500));
     this->setGeometry(workspace);
 
-    this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameTable);
+    this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameTable);
     this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkDiscoveryComplete()));
     this->statusDialog = new StatusDialog(this);
 

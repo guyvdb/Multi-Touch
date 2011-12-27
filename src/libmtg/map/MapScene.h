@@ -17,7 +17,7 @@ namespace Tiled {
     class MapRenderer;
 }
 
-namespace mtg {
+namespace mtdnd {
 
   class MapView;
   class GameEngine;
@@ -38,13 +38,13 @@ namespace mtg {
 
     // sort this out... merge maptoken and gametoken into a single token
    //mtg::GameTokens *getGameTokens() {return this->tokens; }
-    mtg::MapToken * addToken(mtg::MapToken *token);
+    mtdnd::MapToken * addToken(mtdnd::MapToken *token);
     //mtg::MapToken * addToken(mtg::MapToken::Type type);
-    mtg::MapToken * findToken(const QString id);
+    mtdnd::MapToken * findToken(const QString id);
     void moveToken(const QString id, QPoint point);
     void moveToken(const QString id, const int row, const int col);
-    void moveToken(mtg::MapToken *token, QPoint point);
-    void moveToken(mtg::MapToken *token, const int row, const int col);
+    void moveToken(mtdnd::MapToken *token, QPoint point);
+    void moveToken(mtdnd::MapToken *token, const int row, const int col);
 
     // TODO deprecate - use sceneToCell or cellToScene transform
    // QPoint tileToPixleCordinate(QPoint tileLocation);

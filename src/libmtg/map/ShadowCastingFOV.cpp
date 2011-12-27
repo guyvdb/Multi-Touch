@@ -1,7 +1,7 @@
 #include "ShadowCastingFOV.h"
 
 
-namespace mtg {
+namespace mtdnd {
   ShadowCastingFOV::ShadowCastingFOV()
   {
   }

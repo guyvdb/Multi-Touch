@@ -4,7 +4,7 @@
 #include <QString>
 #include <QUuid>
 
-namespace mtg {
+namespace mtdnd {
   class BaseModel
   {
   public:

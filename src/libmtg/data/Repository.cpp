@@ -5,7 +5,7 @@
 #include <QSqlQuery>
 #include <QVariant>
 
-namespace mtg {
+namespace mtdnd {
 
   /* -------------------------------------------------------------------------------------------
    *
@@ -24,7 +24,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::addMap(mtg::MapModel &map) {
+  void Repository::addMap(mtdnd::MapModel &map) {
     QStringList statement;
     statement << "INSERT INTO maps VALUES ("  << quote(map.id) << "," << quote(map.name) << "," << quote(map.file) << ")";
     execSql(statement);
@@ -33,7 +33,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::deleteMap(mtg::MapModel &map) {
+  void Repository::deleteMap(mtdnd::MapModel &map) {
 
 
   }
@@ -41,7 +41,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::listMaps(QList<mtg::MapModel*> &result) {
+  void Repository::listMaps(QList<mtdnd::MapModel*> &result) {
     QSqlQuery query(this->database);
     query.exec("SELECT name, file FROM maps");
     while(query.next()) {

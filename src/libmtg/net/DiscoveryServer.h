@@ -4,7 +4,7 @@
 #include <QUdpSocket>
 #include <QTimer>
 
-namespace mtg {
+namespace mtdnd {
 
   class DiscoveryServer : public QUdpSocket
   {

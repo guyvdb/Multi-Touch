@@ -3,7 +3,7 @@
 
 #include <QString>
 
-namespace mtg {
+namespace mtdnd {
 
   class NodeInfo
   {

@@ -18,7 +18,7 @@
 #include "engine/GameEngine.h"
 #include "message/Message.h"
 
-namespace mtg {
+namespace mtdnd {
 
   /* -------------------------------------------------------------------------------------------
    *
@@ -113,7 +113,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  mtg::MapToken * MapScene::addToken(mtg::MapToken *token) {
+  mtdnd::MapToken * MapScene::addToken(mtdnd::MapToken *token) {
     this->tokens.append(token);
 
     //broadcast
@@ -126,14 +126,14 @@ namespace mtg {
       this->engine->sendClients(data,"ADD_TOKEN");
     }
 
-    if(token->getType() == mtg::MapToken::PlayerCharacter) this->updateFogOfWar();
+    if(token->getType() == mtdnd::MapToken::PlayerCharacter) this->updateFogOfWar();
     return token;
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  mtg::MapToken * MapScene::findToken(const QString id) {
+  mtdnd::MapToken * MapScene::findToken(const QString id) {
     foreach(MapToken *token, this->tokens) {
       if (token->getId() == id) return token;
     }
@@ -159,17 +159,17 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void MapScene::moveToken(mtg::MapToken *token, QPoint point) {
+  void MapScene::moveToken(mtdnd::MapToken *token, QPoint point) {
     token->setLocation(point);
     token->setPos(this->cellToSceneTransform(point));
-    if(token->getType() == mtg::MapToken::PlayerCharacter) this->updateFogOfWar();
+    if(token->getType() == mtdnd::MapToken::PlayerCharacter) this->updateFogOfWar();
     token->update();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void MapScene::moveToken(mtg::MapToken *token, const int row, const int col) {
+  void MapScene::moveToken(mtdnd::MapToken *token, const int row, const int col) {
     QPoint p(row,col);
     this->moveToken(token,p);
   }
@@ -279,7 +279,7 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   bool MapScene::isPlayerCharacter(QGraphicsItem *item) {
     MapToken *token =  (MapToken*)item;//qobject_cast<MapToken*>(item); unsafe cast
-    return token->getType() == mtg::MapToken::PlayerCharacter;
+    return token->getType() == mtdnd::MapToken::PlayerCharacter;
   }
 
   /* -------------------------------------------------------------------------------------------

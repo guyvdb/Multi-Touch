@@ -1,7 +1,7 @@
 #include "DiscoveryClient.h"
 #include "message/Message.h"
 
-namespace mtg {
+namespace mtdnd {
 
   DiscoveryClient::DiscoveryClient(const int discoveryPort) : QUdpSocket(), discoveryPort(discoveryPort)
   {

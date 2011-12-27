@@ -1,6 +1,6 @@
 #include "BaseModel.h"
 
-namespace mtg {
+namespace mtdnd {
 
   BaseModel::BaseModel(const QString id)
   {

@@ -8,7 +8,7 @@
 #include "qjson/json_parser.hh"
 #include "qjson/serializer.h"
 
-namespace mtg {
+namespace mtdnd {
 
     /* -------------------------------------------------------------------------------------------
      *

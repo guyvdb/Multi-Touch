@@ -20,7 +20,7 @@ class NetworkSettingDialog : public QDialog
     Q_OBJECT
 
 public:
-    NetworkSettingDialog(mtg::Settings *settings,  QWidget *parent = 0);
+    NetworkSettingDialog(mtdnd::Settings *settings,  QWidget *parent = 0);
     ~NetworkSettingDialog();
 private slots:
     void on_buttonBox_accepted();
@@ -29,7 +29,7 @@ private slots:
 private:
     QVariantMap createDefaults();
     Ui::NetworkSettingDialog *ui;
-    mtg::Settings *settings;
+    mtdnd::Settings *settings;
 };
 
 #endif // NETWORKSETTINGDIALOG_H

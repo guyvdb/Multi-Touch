@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-namespace mtg {
+namespace mtdnd {
 /*
  * The Asset client connects to an asset server and downloads assets
  *

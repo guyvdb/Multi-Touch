@@ -8,7 +8,7 @@
 
 #define BROADCAST_INTERVAL 5 // interval in seconds
 
-namespace mtg {
+namespace mtdnd {
 
   DiscoveryServer::DiscoveryServer(const QString serverHost, const int discoveryPort, const int assetPort, const int commandPort)
     : QUdpSocket(), serverHost(serverHost), discoveryPort(discoveryPort), assetPort(assetPort), commandPort(commandPort)

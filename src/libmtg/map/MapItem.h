@@ -7,7 +7,7 @@
 #include "tiled/map.h"
 #include "tiled/maprenderer.h"
 
-namespace mtg {
+namespace mtdnd {
 
   class LIBMTG_EXPORT MapItem : public QGraphicsItem
   {

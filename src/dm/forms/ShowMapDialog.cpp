@@ -16,9 +16,9 @@ ShowMapDialog::~ShowMapDialog()
     delete ui;
 }
 
-void ShowMapDialog::load(QList<mtg::MapModel *> maps) {
+void ShowMapDialog::load(QList<mtdnd::MapModel *> maps) {
   this->ui->lstMaps->clear();
-  foreach(mtg::MapModel *map, maps) {
+  foreach(mtdnd::MapModel *map, maps) {
     this->ui->lstMaps->addItem(map->name);
   }
 }

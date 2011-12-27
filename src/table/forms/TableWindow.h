@@ -18,7 +18,7 @@ class TableWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    TableWindow(mtg::Settings *settings, QWidget *parent = 0);
+    TableWindow(mtdnd::Settings *settings, QWidget *parent = 0);
     ~TableWindow();
 
     bool event(QEvent *event);
@@ -29,9 +29,9 @@ private:
     QRect calculateMapRect();
 
     Ui::TableWindow *ui;
-    mtg::Settings *settings;
-    mtg::GameEngine *engine;
-    mtg::CommandServer *commandServer;
+    mtdnd::Settings *settings;
+    mtdnd::GameEngine *engine;
+    mtdnd::CommandServer *commandServer;
     StatusDialog *statusDialog;
 
 };

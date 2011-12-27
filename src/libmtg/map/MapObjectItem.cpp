@@ -3,7 +3,7 @@
 
 #include "tiled/objectgroup.h"
 
-namespace mtg {
+namespace mtdnd {
 
   /* -------------------------------------------------------------------------------------------
    *

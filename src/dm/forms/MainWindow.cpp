@@ -31,7 +31,7 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
+MainWindow::MainWindow(mtdnd::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
 {
     QDesktopWidget *desktop = QApplication::desktop();
     QRect workspace = desktop->availableGeometry(1);
@@ -43,7 +43,7 @@ MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(p
 
 
     // PrivateMap
-    this->dmMap = new mtg::MapView(0x0);
+    this->dmMap = new mtdnd::MapView(0x0);
     this->dmMap->setParent(this->ui->tabDMMap);
     this->dmMap->setGeometry(this->calculateMapRect());
     this->dmMap->show();
@@ -152,7 +152,7 @@ QRect MainWindow::calculateMapRect() {
  *
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::openGame() {
-  this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameServer);
+  this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameServer);
   this->engine->start(this->databaseFileName);
 
 
@@ -183,22 +183,22 @@ void MainWindow::startGame() {
   this->started = true;
 
   // add a token
-  mtg::MapToken *token;
+  mtdnd::MapToken *token;
 
   // PC
-  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  token = new mtdnd::MapToken(mtdnd::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
   this->engine->getScene()->addToken(token);
 
 
-  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  token = new mtdnd::MapToken(mtdnd::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
   this->engine->getScene()->addToken(token);
 
-  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  token = new mtdnd::MapToken(mtdnd::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
   this->engine->getScene()->addToken(token);
 
 
 
-  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  token = new mtdnd::MapToken(mtdnd::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
   this->engine->getScene()->addToken(token);
 
 
@@ -231,7 +231,7 @@ void MainWindow::on_openGameAction_triggered()
 {  
   if(!this->isGameStateValid(GameClosedState)) return;
 
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
   if(fileName  != "") {
     this->databaseFileName = fileName;
     this->openGame();
@@ -272,7 +272,7 @@ void MainWindow::on_newGameAction_triggered()
       if(!fileName.endsWith(".game")) {
         fileName = fileName + ".game";
       }
-      fileName = mtg::FileUtils::gamesDirectory() + QDir::separator() + fileName;
+      fileName = mtdnd::FileUtils::gamesDirectory() + QDir::separator() + fileName;
       if(QFile::exists(fileName)) {
         // TODO clean me up. Use a QErrorMessage
         QMessageBox msg;
@@ -320,7 +320,7 @@ void MainWindow::on_showMapAction_triggered()
   if(!this->isGameStateValid(GameOpenState)) return;
 
 
-    QList<mtg::MapModel*> maps;
+    QList<mtdnd::MapModel*> maps;
     this->engine->getRepository()->listMaps(maps);
 
     ShowMapDialog dlg(this);
@@ -328,7 +328,7 @@ void MainWindow::on_showMapAction_triggered()
     dlg.show();
 
     if(dlg.exec()) {
-      foreach (mtg::MapModel *map, maps) {
+      foreach (mtdnd::MapModel *map, maps) {
         if(map->name == dlg.getSelectedMapName()) {          
           if(dlg.getTarget() == "table") {
             this->engine->loadMap(map->file);
@@ -339,7 +339,7 @@ void MainWindow::on_showMapAction_triggered()
         }
       }
     }
-    foreach(mtg::MapModel *map, maps) delete map;
+    foreach(mtdnd::MapModel *map, maps) delete map;
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -349,11 +349,11 @@ void MainWindow::on_addMapAction_triggered()
 {
   if(!this->isGameStateValid(GameOpenState)) return;
 
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
   qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
 
-    QString relative = mtg::FileUtils::relativeTo(mtg::FileUtils::mapsDirectory(),fileName);
+    QString relative = mtdnd::FileUtils::relativeTo(mtdnd::FileUtils::mapsDirectory(),fileName);
 
     qDebug() << relative;
 
@@ -365,7 +365,7 @@ void MainWindow::on_addMapAction_triggered()
     delete map;
 
 
-    mtg::MapModel model(name,relative);
+    mtdnd::MapModel model(name,relative);
     this->engine->getRepository()->addMap(model);
   }
 }

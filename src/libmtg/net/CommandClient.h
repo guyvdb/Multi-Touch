@@ -8,7 +8,7 @@
 
 #include "libmtg_global.h"
 
-namespace mtg {
+namespace mtdnd {
 
   class LIBMTG_EXPORT CommandClient : public QUdpSocket
   {

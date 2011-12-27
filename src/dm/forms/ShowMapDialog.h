@@ -19,7 +19,7 @@ public:
     explicit ShowMapDialog(QWidget *parent = 0);
     ~ShowMapDialog();
 
-  void load(QList<mtg::MapModel*> maps);
+  void load(QList<mtdnd::MapModel*> maps);
 
   QString  getSelectedMapName() {return this->selectedMapName;}
   QString getTarget() {return this->target;}

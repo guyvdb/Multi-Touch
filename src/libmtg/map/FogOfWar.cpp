@@ -4,7 +4,7 @@
 #include <QColor>
 #include <QDebug>
 
-namespace mtg {
+namespace mtdnd {
 
   FogOfWar::FogOfWar(QRectF bounds, QGraphicsItem *parent) :  QGraphicsItem(parent), bounds(bounds)
   {

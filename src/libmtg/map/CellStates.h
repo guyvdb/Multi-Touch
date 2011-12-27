@@ -6,7 +6,7 @@
 
 //#include "GameToken.h"
 
-namespace mtg {
+namespace mtdnd {
 
   class CellStates
   {

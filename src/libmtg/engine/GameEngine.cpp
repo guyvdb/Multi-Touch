@@ -9,7 +9,7 @@
 
 #include "utils/FileUtils.h"
 
-namespace mtg {
+namespace mtdnd {
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -72,7 +72,7 @@ namespace mtg {
         // start the three servers command, asset, discovery
         this->commandServer = new CommandServer("DM");
         this->serverCommandPort = this->commandServer->listen(this->serverCommandPort);
-        this->connect(this->commandServer, SIGNAL(messageReady(mtg::Message::DataPacket)),this,SLOT(OnMessageForServer(mtg::Message::DataPacket)));
+        this->connect(this->commandServer, SIGNAL(messageReady(mtdnd::Message::DataPacket)),this,SLOT(OnMessageForServer(mtdnd::Message::DataPacket)));
         this->discoveryServer = new DiscoveryServer(this->serverHost, this->serverDiscoveryPort, this->serverAssetPort, this->serverCommandPort);
 
         break;
@@ -81,7 +81,7 @@ namespace mtg {
         // start the command server
         this->commandServer = new CommandServer("Table");
         this->clientCommandPort = this->commandServer->listen(this->clientCommandPort);
-        this->connect(this->commandServer, SIGNAL(messageReady(mtg::Message::DataPacket)),this,SLOT(OnMessageForClient(mtg::Message::DataPacket)));
+        this->connect(this->commandServer, SIGNAL(messageReady(mtdnd::Message::DataPacket)),this,SLOT(OnMessageForClient(mtdnd::Message::DataPacket)));
 
         // start the discovery client
         this->discoveryClient = new DiscoveryClient(this->serverDiscoveryPort);
@@ -161,7 +161,7 @@ namespace mtg {
 
         QVariantMap data;
         data.insert("filename",filename);
-        this->sendClients(mtg::Message::encode(this->commandClient->getId(), "SHOW_MAP", data));
+        this->sendClients(mtdnd::Message::encode(this->commandClient->getId(), "SHOW_MAP", data));
       } else {
         // ensure it exists and open or retreive
         QFile f(file);
@@ -186,7 +186,7 @@ namespace mtg {
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendClients(QVariantMap &data, const QString type) {
-      this->sendClients(mtg::Message::encode(this->commandClient->getId(),type, data));
+      this->sendClients(mtdnd::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -202,7 +202,7 @@ namespace mtg {
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendServer(QVariantMap &data, const QString type) {
-      this->sendServer(mtg::Message::encode(this->commandClient->getId(),type, data));
+      this->sendServer(mtdnd::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -216,7 +216,7 @@ namespace mtg {
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendClient(const QString nodeId, QVariantMap &data, const QString type) {
-      this->sendClient(nodeId, mtg::Message::encode(this->commandClient->getId(),type, data));
+      this->sendClient(nodeId, mtdnd::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -245,10 +245,10 @@ namespace mtg {
 
       // send a registration message
       QVariantMap data;
-      data.insert("host",mtg::IPAddressLocator::getMachineAddress());
+      data.insert("host",mtdnd::IPAddressLocator::getMachineAddress());
       data.insert("port", QString::number(this->clientCommandPort));
 
-      QByteArray bytes = mtg::Message::encode(this->commandClient->getId(), "REGISTRATION", data);
+      QByteArray bytes = mtdnd::Message::encode(this->commandClient->getId(), "REGISTRATION", data);
       this->commandClient->send(this->serverHost,this->serverCommandPort, bytes);
 
       // notify registration complete
@@ -258,7 +258,7 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      * A message has arrived for the DM server
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::OnMessageForServer(mtg::Message::DataPacket packet) {
+    void GameEngine::OnMessageForServer(mtdnd::Message::DataPacket packet) {
       qDebug() << "Message For Server from: " << packet.from << " DATA: " << packet.data;
 
 
@@ -275,7 +275,7 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      * A message has arrived for a Client
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::OnMessageForClient(mtg::Message::DataPacket packet) {
+    void GameEngine::OnMessageForClient(mtdnd::Message::DataPacket packet) {
       qDebug() << "Message For Client from: " << packet.from << " DATA: " << packet.data;
 
       if(packet.type == "SHOW_MAP") {
