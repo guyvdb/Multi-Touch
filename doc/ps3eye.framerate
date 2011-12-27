@@ -1,0 +1,7 @@
+Linux 3.0.0-13 Hack the PS3Eye Driver
+=========================================
+
+I did this on ubuntu 11.10 64bit. I downloaded the ubutu kernel sources and build a stock ubuntu kernel. You must do
+this as the driver will not compile correctly unless the kernel has been built.
+
+
