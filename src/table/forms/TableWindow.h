@@ -25,6 +25,9 @@ public:
 private slots:
     void OnNetworkDiscoveryComplete();
 private:
+
+    QRect calculateMapRect();
+
     Ui::TableWindow *ui;
     mtg::Settings *settings;
     mtg::GameEngine *engine;

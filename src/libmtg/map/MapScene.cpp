@@ -2,24 +2,32 @@
 #include "tiled/maprenderer.h"
 #include "tiled/layer.h"
 #include "tiled/mapobject.h"
+#include "tiled/tilelayer.h"
+#include "tiled/properties.h"
+#include "tiled/tile.h"
+
 
 #include <QDebug>
+#include <QVariantMap>
 
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsItem>
 
 #include "map/MapView.h"
 #include "map/ZIndex.h"
+#include "engine/GameEngine.h"
+#include "message/Message.h"
 
 namespace mtg {
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  MapScene::MapScene(MapView *mapView) : QGraphicsScene(), mapView(mapView), renderer(0x0), dragged(0x0), tileSize(QSize(32,32)), mapSize(QSize(0,0))
+  MapScene::MapScene(GameEngine *engine,MapView *mapView)
+    : QGraphicsScene(), engine(engine), mapView(mapView), renderer(0x0), dragged(0x0), tileSize(QSize(32,32)), mapSize(QSize(0,0))
   {
     this->cellStates = new CellStates();
-    this->nextTokenId = 0;
+    //this->nextTokenId = 0;
     this->fogOfWar = new FogOfWar(QRect(0,0,0,0));
     this->fogOfWar->setPos(0,0);
     this->fogOfWar->setZValue(ZINDEX_FOG_OF_WAR);
@@ -43,23 +51,35 @@ namespace mtg {
 
     this->cellStates->resize(map->height(), map->width());
 
+    // find any markers
     foreach(Tiled::Layer *layer, map->layers()) {
-      if ( Tiled::ObjectGroup *objectGroup = layer->asObjectGroup()) {
-        qDebug() << "FOUND OBJECT LAYER: " << objectGroup->name();
-
-        // add obstructions
-        if(objectGroup->name() == "walls") {
-          addObstructions(objectGroup);
+      if ( Tiled::TileLayer *tiledLayer = layer->asTileLayer()) {
+        Tiled::Properties props = tiledLayer->properties();
+        if(props["type"] == "walls") {
+          qDebug() << "FOUND WALLS";
+          this->addObstructions(map,tiledLayer);
         }
-
       }
     }
+
+    // tokens
+    for(int i=0;i<this->tokens.count(); i++) {
+      MapToken *token = this->tokens.at(i);
+      token->setTileSize(this->tileSize);
+      token->setZValue(ZINDEX_GAME_TOKEN);
+      this->addItem(token);
+    }
+
 
     // fog of war
     this->fogOfWar->setPos(0,0);
     this->fogOfWar->setMapSize(QSize(map->width() * map->tileWidth(), map->height() * map->tileHeight()));
 
     this->addItem(this->fogOfWar);
+
+    if(engine->getGameMode() == GameEngine::GameServer) {
+      this->fogOfWar->setOverlayColor(QColor(0,0,0,180));
+    }
 
 
     this->updateFogOfWar();
@@ -68,7 +88,9 @@ namespace mtg {
 
   // the objects will not be placed on boundries correctly. snap them to the nearest boundry
 
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   void MapScene::finalizeMap() {
     this->removeItem(this->fogOfWar);
   }
@@ -76,11 +98,16 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void MapScene::addObstructions(Tiled::ObjectGroup *group) {
-    foreach(Tiled::MapObject *object, group->objects()) {
-      //qDebug() << "OBJECT: " << object->x() << "," << object->y();
+  void MapScene::addObstructions(Tiled::Map *map, Tiled::TileLayer *layer) {
+    this->cellStates->clearObstructions();
+    for (int row=0; row < map->height(); row++) {
+      for(int col=0; col < map->width(); col ++) {
+        Tiled::Cell cell = layer->cellAt(col,row);
+        if(cell.tile != 0x0) {
+          this->cellStates->setObstruction(row,col,(CellStates::State) cell.tile->id());
+        }
+      }
     }
-
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -88,8 +115,17 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   mtg::MapToken * MapScene::addToken(mtg::MapToken *token) {
     this->tokens.append(token);
-    token->setTokenId(this->nextTokenId);
-    nextTokenId++;
+
+    //broadcast
+    if(this->engine->getGameMode() == GameEngine::GameServer) {     
+      QVariantMap data;
+      data.insert("id",token->getId());
+      data.insert("tokenType",(int)token->getType());
+      data.insert("vision",token->getVision());
+      data.insert("speed",token->getSpeed());
+      this->engine->sendClients(data,"ADD_TOKEN");
+    }
+
     if(token->getType() == mtg::MapToken::PlayerCharacter) this->updateFogOfWar();
     return token;
   }
@@ -97,16 +133,9 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  mtg::MapToken * MapScene::addToken(mtg::MapToken::Type type) {
-    return this->addToken(new MapToken(type));
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  mtg::MapToken * MapScene::findToken(const int id) {
+  mtg::MapToken * MapScene::findToken(const QString id) {
     foreach(MapToken *token, this->tokens) {
-      if (token->getTokenId() == id) return token;
+      if (token->getId() == id) return token;
     }
     return 0x0;
   }
@@ -114,7 +143,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void MapScene::moveToken(const int id, QPoint point) {
+  void MapScene::moveToken(const QString id, QPoint point) {
     MapToken *token = this->findToken(id);
     if(token) this->moveToken(token, point);
   }
@@ -122,7 +151,7 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void MapScene::moveToken(const int id, const int row, const int col) {
+  void MapScene::moveToken(const QString id, const int row, const int col) {
     MapToken *token = this->findToken(id);
     if(token != 0x0) this->moveToken(token, row, col);
   }
@@ -132,6 +161,7 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   void MapScene::moveToken(mtg::MapToken *token, QPoint point) {
     token->setLocation(point);
+    token->setPos(this->cellToSceneTransform(point));
     if(token->getType() == mtg::MapToken::PlayerCharacter) this->updateFogOfWar();
     token->update();
   }
@@ -175,13 +205,6 @@ namespace mtg {
   void MapScene::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     dragged =  itemAt(event->scenePos(),QTransform());
     if(dragged) {
-
-     // QPoint cell = this->sceneToCellTransform(event->scenePos());
-     // QPoint back = this->cellToSceneTransform(cell); // grid is oppisite
-
-     // qDebug() << "POS=" << event->pos() << ", SCENE=" << event->scenePos() << ", SCREEN=" << event->screenPos()
-     //           << ", CELL=" << cell  << ", BACK="  << back;
-
       if((dragged->flags() & QGraphicsItem::ItemIsFocusable) == QGraphicsItem::ItemIsFocusable) {
         offset = dragged->pos() - event->scenePos();
       } else {
@@ -213,11 +236,25 @@ namespace mtg {
       QPoint grid = this->sceneToCellTransform(snap);
 
       dragged->setPos(snap);
-      ((MapToken*)dragged)->setLocation(grid);
+
+      MapToken *token =(MapToken*)dragged; //unsafe cast... fix me
+      token->setLocation(grid);
+
+      QVariantMap data;
+      data.insert("id",token->getId());
+      data.insert("row",grid.x());
+      data.insert("col",grid.y());
+
+      if(this->engine->getGameMode() == GameEngine::GameServer) {
+        this->engine->sendClients(data,"MOVE_TOKEN");
+      } else {
+        this->engine->sendServer(data,"MOVE_TOKEN");
+      }
 
       if(this->isPlayerCharacter(dragged)) {
         this->updateFogOfWar();
       }
+
       dragged = 0x0;
 
     } else {
@@ -262,11 +299,6 @@ namespace mtg {
     this->cellStates->clearVisability();
     foreach(MapToken *token, this->tokens) {
       // find the cell the token is located on
-
-     // qDebug() << "TOKEN: " << token->getTokenId() << " location " << token->getLocation();
-
-
-
       int currentRow = token->getLocation().x();
       int currentCol = token->getLocation().y();
 
@@ -282,42 +314,32 @@ namespace mtg {
       int startCol = currentCol - ev;
       int endCol = currentCol + ev;
 
+
+
+      // block directions
+      bool btop = false;
+      bool bbottom = false;
+      bool bleft = false;
+      bool bright = false;
+
       for(int row = startRow; row <= endRow; row++) {
+
+
+
+
         for(int col = startCol; col <= endCol; col++){
+
+
+
           if(this->cellStates->contains(row,col)){
             this->cellStates->setVisability(row,col,CellStates::Clear);
+            switch(this->cellStates->getObstruction(row,col)) {
+            case
+
+            }
           }
         }
       }
-
-
-/*
-      // north
-      for(int i=1; i <= token->getVision(); i++) {
-        int x = currentRow - i;
-        if(x >= 0) {
-          this->cellStates->setVisability(x,currentCol,CellStates::Clear);
-        }
-      }
-
-      //south
-      for(int i=1; i <= token->getVision(); i++) {
-        int x = currentRow + i;
-        if(x < this->mapSize.width()) {
-          this->cellStates->setVisability(x,currentCol,CellStates::Clear);
-        }
-      }
-      */
-
-
-
-      // find the tokens vision
-
-      // find the light conditions
-
-      // mark the cells n,s,e,w
-
-
     }
 
     this->fogOfWar->recalculate(this->tileSize, this->cellStates->visabilityList());

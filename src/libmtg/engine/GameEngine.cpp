@@ -4,9 +4,10 @@
 #include "net/IPAddressLocator.h"
 
 #include "map/MapToken.h"
-
 #include "map/ZIndex.h"
 
+
+#include "utils/FileUtils.h"
 
 namespace mtg {
 
@@ -14,8 +15,10 @@ namespace mtg {
      *
      * ------------------------------------------------------------------------------------------- */
     GameEngine::GameEngine(Settings *settings,  GameEngine::GameMode mode)
-      : QObject(), settings(settings), mode(mode), mapView(new MapView()), database(QSqlDatabase::addDatabase("QSQLITE"))
+      : QObject(), settings(settings), mode(mode), database(QSqlDatabase::addDatabase("QSQLITE"))
     {
+      this->mapView = new MapView(this);
+
       // set all pointers to null
       this->discoveryServer = 0x0;
       this->commandServer = 0x0;
@@ -25,8 +28,6 @@ namespace mtg {
 
       this->repository = 0x0;
       this->running = false;
-
-
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -119,6 +120,7 @@ namespace mtg {
         // clean up node info
         foreach(NodeInfo*node, this->nodes) delete node;
         this->nodes.clear();
+        this->nodesIndex.clear();
 
 
         break;
@@ -146,10 +148,32 @@ namespace mtg {
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::loadMap(const QString filename) {
       if(this->mapView->isLoaded()) this->mapView->unloadMap();
-      this->mapView->loadMap(filename);
+
+
+      // figure out absolute path
+      QString dir = this->mode == GameServer ? FileUtils::mapsDirectory() : FileUtils::cachedMapsDirectory();
+      QString file = FileUtils::join(dir, filename);
+
+
+      if(this->mode == GameServer) {
+        // open and broadcast
+        this->mapView->loadMap(file);
+
+        QVariantMap data;
+        data.insert("filename",filename);
+        this->sendClients(mtg::Message::encode(this->commandClient->getId(), "SHOW_MAP", data));
+      } else {
+        // ensure it exists and open or retreive
+        QFile f(file);
+        if(f.exists()) {
+          this->mapView->loadMap(file);
+        } else {
+          // cache it here..
+          qDebug() << "CLIENT LOAD MAP... NO Exists" << file;
+        }
+      }
+
     }
-
-
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -161,22 +185,52 @@ namespace mtg {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::mapLoadNotification(const QString id) {
-      // send a registration message
-      QVariantMap data;
-      data.insert("id",id);
-      this->broadcast(mtg::Message::encode(this->commandClient->getId(), "map-loaded", data));
+    void GameEngine::sendClients(QVariantMap &data, const QString type) {
+      this->sendClients(mtg::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::broadcast(QByteArray data) {
-      // send this data to all nodes
+    void GameEngine::sendClients(QByteArray data) {
       foreach(NodeInfo *node, this->nodes) {
         this->commandClient->send(node->host,node->port,data);
       }
     }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendServer(QVariantMap &data, const QString type) {
+      this->sendServer(mtg::Message::encode(this->commandClient->getId(),type, data));
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendServer(QByteArray data) {
+      this->commandClient->send(this->serverHost, this->serverCommandPort, data);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendClient(const QString nodeId, QVariantMap &data, const QString type) {
+      this->sendClient(nodeId, mtg::Message::encode(this->commandClient->getId(),type, data));
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendClient(const QString nodeId, QByteArray data) {
+      if(this->nodesIndex.contains(nodeId)) {
+        NodeInfo *node = this->nodesIndex[nodeId];
+        this->commandClient->send(node->host, node->port,data);
+      } else {
+        qDebug() << "*** WARNING *** sendClient() with non-existant Id";
+      }
+    }
+
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -194,7 +248,7 @@ namespace mtg {
       data.insert("host",mtg::IPAddressLocator::getMachineAddress());
       data.insert("port", QString::number(this->clientCommandPort));
 
-      QByteArray bytes = mtg::Message::encode(this->commandClient->getId(), "registration", data);
+      QByteArray bytes = mtg::Message::encode(this->commandClient->getId(), "REGISTRATION", data);
       this->commandClient->send(this->serverHost,this->serverCommandPort, bytes);
 
       // notify registration complete
@@ -205,24 +259,45 @@ namespace mtg {
      * A message has arrived for the DM server
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::OnMessageForServer(mtg::Message::DataPacket packet) {
-      qDebug() << "SERVER MESSAGE FROM:  " << packet.from;
+      qDebug() << "Message For Server from: " << packet.from << " DATA: " << packet.data;
 
-      if(packet.type == "registration") {
+
+      // Register a new node
+      if(packet.type == "REGISTRATION") {
         NodeInfo* node = new NodeInfo(packet.data.value("from").toString(), packet.data.value("host").toString(), packet.data.value("port").toInt());
         this->nodes.append(node);
-        qDebug() << "NODE CREATED" << node;
-        // send all map info to the nodes....
+        this->nodesIndex[node->id] = node;
+      } else if(packet.type == "MOVE_TOKEN") {
+        this->OnMoveTokenRequest(packet.data);
       }
-
-
     }
 
     /* -------------------------------------------------------------------------------------------
      * A message has arrived for a Client
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::OnMessageForClient(mtg::Message::DataPacket packet) {
-      qDebug() << "CLIENT MESSAGE FROM:  " << packet.from;
+      qDebug() << "Message For Client from: " << packet.from << " DATA: " << packet.data;
+
+      if(packet.type == "SHOW_MAP") {
+        QString filename = packet.data.value("filename").toString();
+        this->loadMap(filename);
+      } else if (packet.type == "ADD_TOKEN") {
+        MapToken::Type type = (MapToken::Type)packet.data.value("tokenType").toInt();
+        MapToken *token = new MapToken(type, packet.data.value("id").toString(), packet.data.value("vision").toInt(), packet.data.value("speed").toInt());
+        this->mapView->getScene()->addToken(token);
+      } else if (packet.type == "MOVE_TOKEN") {
+        this->OnMoveTokenRequest(packet.data);
+      }
+
     }
 
+    /* -------------------------------------------------------------------------------------------
+     * Move a token
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::OnMoveTokenRequest(QVariantMap &data) {
+      qDebug() << "MOVE TOKEN " << data;
+      this->getScene()->moveToken(data.value("id").toString(), data.value("row").toInt(), data.value("col").toInt());
+
+    }
 
 }

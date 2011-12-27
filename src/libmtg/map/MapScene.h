@@ -10,6 +10,7 @@
 #include "map/MapToken.h"
 #include "map/FogOfWar.h"
 
+
 #include "libmtg_global.h"
 
 namespace Tiled {
@@ -19,12 +20,13 @@ namespace Tiled {
 namespace mtg {
 
   class MapView;
+  class GameEngine;
 
   class LIBMTG_EXPORT MapScene : public QGraphicsScene
   {
       Q_OBJECT
   public:
-    MapScene(MapView *mapView);
+    MapScene(GameEngine *engine, MapView *mapView);
     ~MapScene();
     void setRenderer(Tiled::MapRenderer *value) {this->renderer = value; }
     void setTileSize(QSize value) {this->tileSize = value; }
@@ -37,10 +39,10 @@ namespace mtg {
     // sort this out... merge maptoken and gametoken into a single token
    //mtg::GameTokens *getGameTokens() {return this->tokens; }
     mtg::MapToken * addToken(mtg::MapToken *token);
-    mtg::MapToken * addToken(mtg::MapToken::Type type);
-    mtg::MapToken * findToken(const int id);
-    void moveToken(const int id, QPoint point);
-    void moveToken(const int id, const int row, const int col);
+    //mtg::MapToken * addToken(mtg::MapToken::Type type);
+    mtg::MapToken * findToken(const QString id);
+    void moveToken(const QString id, QPoint point);
+    void moveToken(const QString id, const int row, const int col);
     void moveToken(mtg::MapToken *token, QPoint point);
     void moveToken(mtg::MapToken *token, const int row, const int col);
 
@@ -65,7 +67,7 @@ namespace mtg {
     //void calculateFogOfWar();
 
     bool isPlayerCharacter(QGraphicsItem *item);
-    void addObstructions(Tiled::ObjectGroup *group);
+    void addObstructions(Tiled::Map *map, Tiled::TileLayer *layer);
 
 
     Tiled::MapRenderer *renderer;
@@ -74,13 +76,14 @@ namespace mtg {
     QSize mapSize;
     QPointF offset;
     MapView *mapView;
+    GameEngine *engine;
 
     FogOfWar *fogOfWar;
 
     CellStates *cellStates;
     QList<MapToken*> tokens;
 
-    int nextTokenId;
+   // int nextTokenId;
 
 
   signals:

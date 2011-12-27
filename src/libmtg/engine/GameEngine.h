@@ -7,6 +7,7 @@
 #include <QTcpSocket>
 #include <QByteArray>
 #include <QList>
+#include <QHash>
 #include <QSqlDatabase>
 
 #include "libmtg_global.h"
@@ -45,6 +46,7 @@ namespace mtg {
   public:
 
     enum GameMode {
+        GameModeUnknown,
         GameServer,
         GameTable,
         GameClient
@@ -53,36 +55,19 @@ namespace mtg {
     GameEngine(Settings *settings,  GameEngine::GameMode mode);
     ~GameEngine();
 
-    // start / stop
+
     void start(const QString databaseFileName);
     void stop();
     bool isRunning() {return this->running;}
 
-
     Repository* getRepository() {return this->repository; }
     mtg::MapScene* getScene() {return this->mapView->getScene();}
     mtg::MapView *getMapView() {return this->mapView; }
+    GameMode getGameMode() {return this->mode; }
 
-    // map control -- move to... ????
 
     void loadMap(const QString filename);
     void unloadMap();
-    void mapLoadNotification(const QString id);
-
-    // token control -- move to a scene
-    /*
-    mtg::GameTokens *getGameTokens() {return this->tokens; }
-    mtg::GameToken * addGameToken(mtg::GameToken *token);
-    mtg::GameToken * addGameToken(mtg::GameToken::Type type);
-    mtg::GameToken * findGameToken(const int id);
-    void moveGameToken(const int id, QPoint point);
-    void moveGameToken(const int id, const int row, const int col);
-    void moveGameToken(mtg::GameToken *token, QPoint point);
-    void moveGameToken(mtg::GameToken *token, const int row, const int col); */
-
-
-
-    //QPoint tileToPixleCordinate(QPoint tileLocation);
 
     // network
     QString getServerHost() const {return this->serverHost; }
@@ -93,6 +78,13 @@ namespace mtg {
     void setClientCommandPort(int value) {this->clientCommandPort = value; }
     int getClientCommandPort() {return this->clientCommandPort; }
 
+    void sendClients(QVariantMap &data, const QString type);
+    void sendClients(QByteArray data);
+    void sendClient(const QString nodeId, QVariantMap &data, const QString type);
+    void sendClient(const QString nodeId, QByteArray data);
+    void sendServer(QVariantMap &data, const QString type);
+    void sendServer(QByteArray data);
+
   signals:
      void networkDiscoveryComplete();
   private slots:
@@ -101,7 +93,9 @@ namespace mtg {
     void OnMessageForClient(mtg::Message::DataPacket packet);
 
   private:
-    void broadcast(QByteArray data);
+
+    void OnMoveTokenRequest(QVariantMap &data);
+
 
     // General
     Settings *settings;
@@ -114,6 +108,7 @@ namespace mtg {
     DiscoveryClient *discoveryClient;
     CommandClient *commandClient;
     QList<NodeInfo*> nodes;
+    QHash<QString, NodeInfo*> nodesIndex;
 
     QString serverHost;
     QString clientHost;

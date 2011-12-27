@@ -15,14 +15,13 @@ namespace mtg {
 
 
   void DiscoveryClient::process() {
-    qDebug() << "[Discovery] receive";
     while(this->hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(this->pendingDatagramSize());
         this->readDatagram(datagram.data(), datagram.size());
         Message::DataPacket packet = Message::decode(datagram);
         if(packet.ok) {
-          if(packet.type == "discovery") {
+          if(packet.type == "DISCOVERY") {
             QString host = packet.data.value("host").toString();
             int command = packet.data.value("command").toInt();
             int asset = packet.data.value("asset").toInt();

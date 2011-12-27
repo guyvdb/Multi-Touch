@@ -94,6 +94,8 @@
     <addaction name="openGameAction"/>
     <addaction name="closeGameAction"/>
     <addaction name="separator"/>
+    <addaction name="startGameAction"/>
+    <addaction name="separator"/>
     <addaction name="networkSettingsAction"/>
     <addaction name="separator"/>
     <addaction name="quitAction"/>
@@ -107,17 +109,34 @@
     </property>
     <widget class="QMenu" name="menuHide">
      <property name="title">
-      <string>Close</string>
+      <string>Hide</string>
      </property>
      <addaction name="closeTableMapAction"/>
      <addaction name="closeDMMapAction"/>
     </widget>
     <addaction name="addMapAction"/>
+    <addaction name="actionRemove"/>
+    <addaction name="separator"/>
     <addaction name="showMapAction"/>
     <addaction name="menuHide"/>
    </widget>
+   <widget class="QMenu" name="menuTable">
+    <property name="title">
+     <string>Table</string>
+    </property>
+    <widget class="QMenu" name="menuMove_to">
+     <property name="title">
+      <string>Move to</string>
+     </property>
+     <addaction name="actionTableScreen1"/>
+     <addaction name="actionTableScreen2"/>
+    </widget>
+    <addaction name="menuMove_to"/>
+    <addaction name="actionTableClose"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMaps"/>
+   <addaction name="menuTable"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -180,6 +199,31 @@
   <action name="closeDMMapAction">
    <property name="text">
     <string>DM Map</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="startGameAction">
+   <property name="text">
+    <string>Start Game</string>
+   </property>
+  </action>
+  <action name="actionTableClose">
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </action>
+  <action name="actionTableScreen1">
+   <property name="text">
+    <string>Screen 1</string>
+   </property>
+  </action>
+  <action name="actionTableScreen2">
+   <property name="text">
+    <string>Screen 2</string>
    </property>
   </action>
  </widget>

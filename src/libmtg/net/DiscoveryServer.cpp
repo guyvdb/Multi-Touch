@@ -24,18 +24,12 @@ namespace mtg {
     data.insert("host",this->serverHost);
     data.insert("asset", this->assetPort);
     data.insert("command",this->commandPort);
-    this->datagram = Message::encode("DISCOVERY","discovery",data);
-
-
-    qDebug() << "[Discovery Server] Datagram: " << this->datagram;
-
-    // tick once right away
+    this->datagram = Message::encode("DISCOVERY","DISCOVERY",data);
     this->tick();
   }
 
 
   void DiscoveryServer::tick() {
-    //qDebug() << "[Discovery] Send";
     this->writeDatagram(this->datagram, QHostAddress::Broadcast, this->discoveryPort);
   }
 

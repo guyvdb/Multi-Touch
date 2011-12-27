@@ -12,6 +12,7 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
+
 #include "engine/GameEngine.h"
 #include "map/MapView.h"
 #include "settings/Settings.h"
@@ -30,10 +31,6 @@ public:
 protected:
     void resizeEvent(QResizeEvent *e);
 private slots:
-  //void onOpenGameActionClicked();
-  //void onNewGameActionClicked();
-  //void onCloseGameActionClicked();
-
 
   void on_openGameAction_triggered();
   void on_newGameAction_triggered();
@@ -44,8 +41,7 @@ private slots:
   void on_addMapAction_triggered();
   void on_closeTableMapAction_triggered();
   void on_closePrivateMapAction_triggered();
-
-  void on_pushButton_clicked();
+  void on_startGameAction_triggered();
 
 private:
   enum GameState {
@@ -54,6 +50,7 @@ private:
   };
 
 
+  void openGame();
   void startGame();
   void stopGame();
 
@@ -64,27 +61,9 @@ private:
   void showGameStateOpenError();
   void showGameStateClosedError();
 
-  //QMenuBar *menuBar;
-  //QMenu *fileMenu;
-
-  // Game Menu
-  //QMenu *gameMenu;
-  //QAction *gameNewAction;
-  //QAction *gameOpenAction;
-  //QAction *gameCloseAction;
-  //QAction *gameNetworkAction;
-  //QAction *gameQuitAction;
-
-  // Map Menu
-  //QMenu *mapMenu;
-  ////QAction *mapAddAction;
-  //QAction *mapShowAction;
-  //QAction *mapHideTableMapAction;
-  //QAction *mapHidePrivateMapAction;
-
-
-
   GameState state;
+  bool started;
+
 
   Ui::MainWindow *ui;
   QString databaseFileName;

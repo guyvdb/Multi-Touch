@@ -22,6 +22,15 @@ namespace mtg {
         static QString gamesDirectory();
         static QString mapsDirectory();
         static QString configDirectory();
+
+        static QString cacheDirectory();
+        static QString cachedMapsDirectory();
+
+        static QString relativeTo(const QString directory, const QString filename);
+        static QString join(const QString p1, const QString p2);
+        static QString join(const QString p1, const QString p2, const QString p3);
+
+
         //static QString relativeMapName(const QString filename);
     private:
         static QString getDirectoryOffRoot(const QString name);

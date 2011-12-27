@@ -9,9 +9,7 @@ namespace mtg {
    * ------------------------------------------------------------------------------------------- */
   CellStates::CellStates() : rows(0), cols(0), visability(0x0), obstruction(0x0), visited(0x0)
   {
-    //initializeVector(this->visability,CellStates::Solid);
-    //initializeVector(this->obstruction, CellStates::Clear);
-    //initializeVector(this->visited,CellStates::Clear);
+
   }
 
   /* -------------------------------------------------------------------------------------------

@@ -36,7 +36,9 @@ SOURCES += \
     net/NodeInfo.cpp \
     data/BaseModel.cpp \
     map/MapToken.cpp \
-    map/CellStates.cpp
+    map/CellStates.cpp \
+    map/StateGrid.cpp \
+    map/ShadowCastingFOV.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -65,7 +67,9 @@ HEADERS +=\
     data/BaseModel.h \
     map/MapToken.h \
     map/ZIndex.h \
-    map/CellStates.h
+    map/CellStates.h \
+    map/StateGrid.h \
+    map/ShadowCastingFOV.h
 
 
 FORMS += \

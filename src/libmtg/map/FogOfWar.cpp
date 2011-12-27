@@ -10,6 +10,7 @@ namespace mtg {
   {
     this->tileSize = QSize(0,0);
     this->state = 0x0;
+    this->overlayColor = Qt::black;
   }
 
   FogOfWar::~FogOfWar() {
@@ -37,8 +38,8 @@ namespace mtg {
 
     if(this->state == 0x0) return;
 
-    QColor color(0,0,0,200);
-    painter->setBrush(color);
+
+    painter->setBrush(this->overlayColor);
 
     int l = 0;
     int t = 0;

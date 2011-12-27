@@ -20,7 +20,7 @@ namespace mtg {
     void setBounds(QRectF value);
     void setMapSize(QSize value);
     void recalculate(QSize tileSize, QVector< QVector<CellStates::State> *> *state);
-
+    void setOverlayColor(QColor value) {this->overlayColor = value; }
   protected:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -31,9 +31,9 @@ namespace mtg {
 
   private:
     QRectF bounds;
-    QPixmap *pixmap;
     QSize tileSize;
     QSize mapSize;
+    QColor overlayColor;
     QVector< QVector<CellStates::State> *> *state;
 
   };

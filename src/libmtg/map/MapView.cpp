@@ -14,11 +14,11 @@
 
 #include <QGLWidget>
 
+#include "engine/GameEngine.h"
+
 #include "map/MapView.h"
 #include "map/MapItem.h"
 #include "map/MapToken.h"
-
-
 
 #include "tiled/map.h"
 #include "tiled/mapreader.h"
@@ -29,20 +29,27 @@ namespace mtg {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  MapView::MapView() : QGraphicsView(), scene(new MapScene(this)), map(0x0), renderer(0x0) {
+  MapView::MapView(GameEngine *engine) : QGraphicsView(), engine(engine), map(0x0), renderer(0x0) {
+
+    this->scene = new MapScene(engine, this);
     this->setScene(this->scene);
-    //this->setViewport(new QGLWidget());
 
     this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    //this->setDragMode(QGraphicsView::ScrollHandDrag);
     this->setBackgroundBrush(Qt::black);
     this->setFrameStyle(QFrame::NoFrame);
     this->viewport()->setAttribute(Qt::WA_StaticContents);
     this->setRenderHint(QPainter::Antialiasing);
 
 
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    if( engine == 0x0 || engine->getGameMode() == GameEngine::GameServer) {
+      this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+      this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    } else {
+     // this->setDragMode(QGraphicsView::ScrollHandDrag);
+      this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+      this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    }
+
 
     this->map = 0x0;
     this->mapItem = 0x0;
@@ -72,38 +79,24 @@ namespace mtg {
 
     Tiled::MapReader reader;
     this->map = reader.readMap(fileName);
-
-    //scene
-    this->renderer = new Tiled::OrthogonalRenderer(this->map);
-    this->mapItem = new MapItem(this->map,this->renderer);
-    this->mapItem->setZValue(ZINDEX_MAP);
-    this->scene->addItem(this->mapItem);
-    this->scene->setRenderer(this->renderer);
-
     QSize tileSize = this->getTileSize();
 
+    this->renderer = new Tiled::OrthogonalRenderer(this->map);
+    this->scene->setRenderer(this->renderer);
 
-    // state --
+    this->scene->setTileSize(tileSize);
+
+    this->loaded = true;
+
+
     this->scene->initializeMap(this->map);
 
 
 
-    // tokens
-    for(int i=0;i<this->getScene()->getTokens()->count(); i++) {
-      MapToken *token = this->getScene()->getTokens()->at(i);
-      token->setTileSize(tileSize);
-      token->setZValue(ZINDEX_GAME_TOKEN);
-      this->scene->addItem(token);
-    }
-
-    //fog of war
-    //this->fogOfWar->setZValue(ZINDEX_FOG_OF_WAR);
-    //this->scene->addItem(this->fogOfWar);
-
-    // scene
-    this->scene->setTileSize(tileSize);
-
-    this->loaded = true;
+    //scene
+    this->mapItem = new MapItem(this->map,this->renderer);
+    this->mapItem->setZValue(ZINDEX_MAP);
+    this->scene->addItem(this->mapItem);
   }
 
   /* -------------------------------------------------------------------------------------------
@@ -113,10 +106,6 @@ namespace mtg {
     if(this->map){
 
       this->scene->removeItem(this->mapItem);
-      //this->scene->removeItem(this->fogOfWar);
-
-      // TODO remove all game tokens
-
 
       qDeleteAll(this->map->tilesets());
       delete this->map;
@@ -126,6 +115,8 @@ namespace mtg {
       this->mapItem = 0x0;
 
     }
+
+    // Renderer should be owned by scene
     if(this->renderer) {
       delete this->renderer;
       this->renderer = 0x0;

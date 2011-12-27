@@ -13,19 +13,34 @@ namespace mtg {
   public:
 
     enum State {
-      Clear,
-      Solid,
+      Clear               = 100,
+      Solid               = 101,
+
       // these partial states are solid in the indicated area
       // ie a cell with NorthSolid means the northern part is solid
       // and the southern part is clear
-      NorthSolid,
-      NorthWestSolid,
-      WestSolid,
-      SouthWestSolid,
-      SouthSolid,
-      SouthEastSolid,
-      EastSolid,
-      NorthEastSolid
+      NorthSolid          = 0,
+      NorthWestSolid      = 1,
+      WestSolid           = 2,
+      SouthWestSolid      = 3,
+      SouthSolid          = 4,
+      SouthEastSolid      = 5,
+      EastSolid           = 6,
+      NorthEastSolid      = 7,
+
+      // these are wall states used by obstructions
+      // the values come from the walls.png marker
+      // tileset
+
+      LeftTopWall          = 0,
+      TopWall              = 1,
+      RightTopWall         = 2,
+      LeftWall             = 3,
+      SolidWall            = 4,
+      RightWall            = 5,
+      LeftBottomWall       = 6,
+      BottomWall           = 7,
+      RightBottomWall      = 8
     };
 
     CellStates( );

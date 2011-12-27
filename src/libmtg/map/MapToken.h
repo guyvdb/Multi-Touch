@@ -19,18 +19,21 @@ public:
     Monster
   };
 
-  explicit MapToken(mtg::MapToken::Type type, QSize tileSize);
-  explicit MapToken(mtg::MapToken::Type type);
+
+
+  explicit MapToken(mtg::MapToken::Type type, const QString id, const int vision, const int speed);
+  //explicit MapToken(mtg::MapToken::Type type, QSize tileSize, const int tokenId);
+  //explicit MapToken(mtg::MapToken::Type type, QSize tileSize);
+  //explicit MapToken(mtg::MapToken::Type type);
   ~MapToken();
   virtual QRectF boundingRect() const {return this->bounds; }
   void setBounds(QRectF value);
   void recalculate();
 
+  QSize getTileSize() {return this->tileSize;}
   void setTileSize(QSize value);  
-  int getTokenId() const {return this->tokenId; }
-  void setTokenId(const int value) {this->tokenId = value;}
-  QString getEntityId() const {return this->entityId; }
-  void setEntityId(const QString value) {this->entityId = value;}
+  QString getId() const {return this->id; }
+  void setId(const QString value) {this->id = value;}
   int getVision() const {return this->vision;}
   void setVision(const int value) {this->vision = value;}
   int getSpeed() const {return this->speed; }
@@ -49,17 +52,15 @@ public slots:
 private:
   void initialize();
 
-  bool selected;
-  bool down;
+  //bool selected;
+  //bool down;
 
-  int tokenId;
-  QString entityId;
+
+  QString id;
 
   int vision;
   int speed;
   QPoint location;
-
-
 
   Type type;
   QSize tileSize;

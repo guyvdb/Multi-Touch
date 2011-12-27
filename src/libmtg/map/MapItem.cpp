@@ -1,7 +1,10 @@
 #include "MapItem.h"
+
 #include "tiled/tilelayer.h"
 #include "tiled/objectgroup.h"
 #include "tiled/layer.h"
+#include "tiled/properties.h"
+
 #include "map/TileLayerItem.h"
 #include "map/ObjectGroupItem.h"
 
@@ -17,11 +20,12 @@ namespace mtg {
     setFlag(QGraphicsItem::ItemHasNoContents);
     foreach(Tiled::Layer *layer, map->layers()) {
       if(Tiled::TileLayer *tileLayer = layer->asTileLayer()) {
-        new TileLayerItem(tileLayer, renderer, this);
-      } //else if ( Tiled::ObjectGroup *objectGroup = layer->asObjectGroup()) {
-        //new ObjectGroupItem(objectGroup, renderer, this);
-
-      //}
+        // do not paint tiles that are of type marker
+        Tiled::Properties props = tileLayer->properties();
+        if(props["marker"] != "yes") {
+          new TileLayerItem(tileLayer, renderer, this);
+        }
+      }
     }
   }
 

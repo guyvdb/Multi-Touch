@@ -7,6 +7,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
+#include <QDesktopWidget>
 #include <QDebug>
 #include <QMessageBox>
 #include <QErrorMessage>
@@ -32,11 +33,17 @@
  * ------------------------------------------------------------------------------------------- */
 MainWindow::MainWindow(mtg::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
 {
-    ui->setupUi(this);    
+    QDesktopWidget *desktop = QApplication::desktop();
+    QRect workspace = desktop->availableGeometry(1);
+    this->setGeometry(workspace);
+    ui->setupUi(this);
     this->ui->tabs->setGeometry(this->calculateTabRect());
 
+
+
+
     // PrivateMap
-    this->dmMap = new mtg::MapView();
+    this->dmMap = new mtg::MapView(0x0);
     this->dmMap->setParent(this->ui->tabDMMap);
     this->dmMap->setGeometry(this->calculateMapRect());
     this->dmMap->show();
@@ -66,14 +73,6 @@ void MainWindow::showError(const QString title, const QString message) {
    dlg.setMessage(title,message);
    dlg.show();
    dlg.exec();
-
-
-  //QMessageBox msgBox;
-  //msgBox.setWindowTitle("Error");
-  //msgBox.setText(title);
-  //msgBox.setInformativeText(message);
-  //msgBox.setStandardButtons(QMessageBox::Ok);
-  //msgBox.exec();
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -117,8 +116,6 @@ void MainWindow::gameStateChanged(GameState newState) {
   this->state = newState;
 }
 
-
-
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
@@ -150,19 +147,11 @@ QRect MainWindow::calculateMapRect() {
   return QRect(0,0,this->ui->tabs->width()-20, this->ui->tabs->height()-50);
 }
 
+
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-void MainWindow::startGame() {
-
-  //disable
-  //this->ui->newGameAction->setEnabled(false);
-  //this->ui->openGameAction->setEnabled(false);
-  //this->ui->networkSettingsAction->setEnabled(false);
-
-  //enable
-  //this->ui->closeGameAction->setEnabled(true);
-
+void MainWindow::openGame() {
   this->engine = new mtg::GameEngine(this->settings,mtg::GameEngine::GameServer);
   this->engine->start(this->databaseFileName);
 
@@ -172,64 +161,51 @@ void MainWindow::startGame() {
   this->engine->getMapView()->setGeometry(this->calculateMapRect());
   this->engine->getMapView()->show();
 
+  this->started = false;
+
+  this->ui->tabs->setVisible(true);
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::startGame() {
+
+  if(this->state == GameClosedState) {
+    this->showGameStateClosedError();
+    return;
+  } else if (this->started) {
+    this->showError("Game is already running.","To stop the game, close it.");
+    return;
+  }
+
+
+  this->started = true;
+
   // add a token
   mtg::MapToken *token;
 
   // PC
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::red);
-  token->setVision(3);
+  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  this->engine->getScene()->addToken(token);
 
 
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::red);
-  token->setVision(1);
+  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  this->engine->getScene()->addToken(token);
 
-/*
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::red);
-
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::red);
+  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  this->engine->getScene()->addToken(token);
 
 
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::red);
+
+  token = new mtg::MapToken(mtg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  this->engine->getScene()->addToken(token);
 
 
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::red);
 
 
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
 
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::green);
 
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
-
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
-
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
-
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
-
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
-
-  token = this->engine->getScene()->addToken(mtg::MapToken::PlayerCharacter);
-  token->setColor(Qt::blue);
-
-  // monster
-  token = this->engine->getScene()->addToken(mtg::MapToken::Monster);
-  token->setColor(Qt::yellow);
-*/
-  this->ui->tabs->setVisible(true);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -237,20 +213,13 @@ void MainWindow::startGame() {
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::stopGame() {
 
+  // TODO boardcast a game stop event
+
   this->ui->tabs->setVisible(false);
 
   if(this->engine) this->engine->stop();
   delete this->engine;
   this->engine = 0x0;
-
-  //enable
- //this->ui->newGameAction->setEnabled(true);
-  //this->ui->openGameAction->setEnabled(true);
-  //this->ui->networkSettingsAction->setEnabled(true);
-
-  //disable
-  //this->ui->closeGameAction->setEnabled(false);
-
 }
 
 
@@ -265,7 +234,7 @@ void MainWindow::on_openGameAction_triggered()
   QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtg::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
   if(fileName  != "") {
     this->databaseFileName = fileName;
-    this->startGame();
+    this->openGame();
     this->gameStateChanged(GameOpenState);
   }
 }
@@ -360,7 +329,7 @@ void MainWindow::on_showMapAction_triggered()
 
     if(dlg.exec()) {
       foreach (mtg::MapModel *map, maps) {
-        if(map->name == dlg.getSelectedMapName()) {
+        if(map->name == dlg.getSelectedMapName()) {          
           if(dlg.getTarget() == "table") {
             this->engine->loadMap(map->file);
           } else {
@@ -384,6 +353,10 @@ void MainWindow::on_addMapAction_triggered()
   qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
 
+    QString relative = mtg::FileUtils::relativeTo(mtg::FileUtils::mapsDirectory(),fileName);
+
+    qDebug() << relative;
+
     // Get the name of the map
     Tiled::Map *map;
     Tiled::MapReader reader;
@@ -392,7 +365,7 @@ void MainWindow::on_addMapAction_triggered()
     delete map;
 
 
-    mtg::MapModel model(name,fileName);    
+    mtg::MapModel model(name,relative);
     this->engine->getRepository()->addMap(model);
   }
 }
@@ -415,18 +388,8 @@ void MainWindow::on_closePrivateMapAction_triggered()
   this->dmMap->unloadMap();
 }
 
-/* -------------------------------------------------------------------------------------------
- *
- * ------------------------------------------------------------------------------------------- */
-void MainWindow::on_pushButton_clicked()
-{
-  ;
 
-  int i = 1;
-  while(true){
-    mtg::MapToken* token = this->engine->getScene()->findToken(i);
-    if(token == 0x0) break;
-    this->engine->getScene()->moveToken(token,10,5+i);
-    i++;
-  }
+void MainWindow::on_startGameAction_triggered()
+{
+    this->startGame();
 }

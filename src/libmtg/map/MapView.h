@@ -30,37 +30,39 @@ namespace Tiled {
 namespace mtg {
 
 
-    /**
-     * The MapView shows the map scene. It sets some MapScene specific
-     * properties and also implements zooming and scrolling
-     *
-     */
-    class LIBMTG_EXPORT MapView : public QGraphicsView
-    {
-        Q_OBJECT
-    public:
-         MapView();
-         ~MapView();         
-         void loadMap(const QString &fileName);
-         void recalculateFogOfWar();
-         void unloadMap();
-         bool isLoaded() {return this->loaded;}
-         QSize getTileSize();
-         mtg::MapScene* getScene() {return this->scene;}
-         Tiled::Map * getMap() {return this->map; }
-    protected:
-         virtual void wheelEvent(QWheelEvent *event);
-    private:
-         QSize getMapSizeInTiles();
-         bool loaded;
-         MapScene *scene;
-         Tiled::Map *map;
-         MapItem *mapItem;
-         Tiled::MapRenderer *renderer;
+
+  /**
+   * The MapView shows the map scene. It sets some MapScene specific
+   * properties and also implements zooming and scrolling
+   *
+   */
+  class LIBMTG_EXPORT MapView : public QGraphicsView
+  {
+      Q_OBJECT
+  public:
+    MapView(GameEngine *engine);
+    ~MapView();
+    void loadMap(const QString &fileName);
+    void recalculateFogOfWar();
+    void unloadMap();
+    bool isLoaded() {return this->loaded;}
+    QSize getTileSize();
+    mtg::MapScene* getScene() {return this->scene;}
+    Tiled::Map * getMap() {return this->map; }
+  protected:
+    virtual void wheelEvent(QWheelEvent *event);
+  private:
+    QSize getMapSizeInTiles();
+    bool loaded;
+    MapScene *scene;
+    GameEngine *engine;
+    Tiled::Map *map;
+    MapItem *mapItem;
+    Tiled::MapRenderer *renderer;
 
 
 
-    };
+  };
 }
 
 #endif // MAPVIEW_H
