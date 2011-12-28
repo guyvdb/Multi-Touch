@@ -18,9 +18,9 @@ HEADERS  += UdpWindow.h
 FORMS    += UdpWindow.ui
 
 
-unix {
-  DESTDIR += ../../linux
-}
+
+DESTDIR += ../../bin
+
 
 OTHER_FILES += \
     README \

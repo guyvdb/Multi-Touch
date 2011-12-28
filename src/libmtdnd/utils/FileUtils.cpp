@@ -27,14 +27,15 @@
 #include <QStringList>
 #include <QTextStream>
 
+#include <QCoreApplication>
+
 namespace mtdnd {
 
    /* -------------------------------------------------------------------------------------------
     *
     * ------------------------------------------------------------------------------------------- */
     QString FileUtils::binDirectory() {
-      return "/home/guy/Projects/Current/multitable/linux";
-      qDebug() << "[File Utils] !!! WARNING !!! Bin is hard coded";
+      return QCoreApplication::applicationDirPath();
     }
 
     /* -------------------------------------------------------------------------------------------

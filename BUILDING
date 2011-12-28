@@ -40,14 +40,10 @@ Things will get better as I add more hours to the project!
 
 Gotachs
 --------------------
-1) Turn of shadow builds (for now) else the linker cannot find the libraries. In QtCreator in 
-   the multitable.pro project select Projects and on the Build Settings tab under General turn
-   off Shadow build
+1) Set your shadow build directory to ROOT/build for both debug and release builds
+2) In QtCreator under projects on the Run Settings tab for each Run configuration modify 
+   the run environment. Add a variable LD_LIBRARY_PATH = ../bin
 
-2) One path is still hard coded in the source. You need to change it according to your directory 
-   structure. This will be removed soon. In the file:
-      ROOT/src/libmtdnd/utils/FileUtils.cpp in the function binDirectory(). This function should
-      return the fully qualified path to ROOT/linux
 
 
 

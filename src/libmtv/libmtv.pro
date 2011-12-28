@@ -86,16 +86,15 @@ HEADERS +=\
 
 CONFIG   -= app_bundle
 
+DESTDIR += ../../bin
+
 unix {
     CONFIG += link_pkgconfig
     PKGCONFIG += opencv
-    DESTDIR += ../../linux
+
 }
 
-
-win32 {
-  DESTDIR += ../../win32
-}
+## TODO add pkgconfig equiv for win32
 
 OTHER_FILES += \
     COPYING \

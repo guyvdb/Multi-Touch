@@ -28,32 +28,6 @@ HEADERS  += main/MainView.h \
     widget/Button.h
 
 
-CONFIG   -= app_bundle
-
-INCLUDEPATH += $$PWD/../../include
-DEPENDPATH += $$PWD/../../include
-
-INCLUDEPATH += $$PWD/../libmtg
-DEPENDPATH += $$PWD/../libmtg
-
-
-#INCLUDEPATH += $$PWD/../libmtv
-#DEPENDPATH += $$PWD/../libmtv
-
-unix {
-  DESTDIR += ../../linux
-
-  CONFIG += link_pkgconfig
-  PKGCONFIG += opencv
-  LIBS += -L$$DESTDIR -lqjson -lmtv
-
-}
-
-
-win32 {
-  DESTDIR += ../../win32
-  LIBS += -L$$DESTDIR  -lqjson
-}
 
 OTHER_FILES += \
     ../../config/mtv.xml \
@@ -61,3 +35,25 @@ OTHER_FILES += \
     README \
     COPYING \
     AUTHORS
+
+CONFIG   -= app_bundle
+
+INCLUDEPATH += $$PWD/../../include
+DEPENDPATH += $$PWD/../../include
+
+INCLUDEPATH += $$PWD/../libmtdnd
+DEPENDPATH += $$PWD/../libmtdnd
+
+
+
+DESTDIR += ../../bin
+
+unix {
+  CONFIG += link_pkgconfig
+  PKGCONFIG += opencv
+  LIBS += -L$$DESTDIR -lqjson -lmtv
+}
+
+
+
+## TODO add pkgconfig equiv for win32

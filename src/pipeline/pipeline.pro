@@ -33,17 +33,16 @@ CONFIG   -= app_bundle
 INCLUDEPATH += $$PWD/../libmtv
 DEPENDPATH += $$PWD/../libmtv
 
-unix {
-  DESTDIR += ../../linux
+DESTDIR += ../../bin
 
+unix {
   CONFIG += link_pkgconfig
   PKGCONFIG += opencv
-  LIBS += -L$$DESTDIR -lqjson -lmtv
-
 }
 
 
-win32 {
-  DESTDIR += ../../win32
-  LIBS += -L$$DESTDIR  -lqjson
-}
+## TODO add pkgconfig equiv for win32
+
+LIBS += -L$$DESTDIR -lqjson -lmtv
+
+

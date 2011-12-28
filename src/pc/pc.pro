@@ -21,16 +21,7 @@ FORMS    +=
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
-
-unix {
-  DESTDIR += ../../linux
-}
-
-
-win32 {
-  DESTDIR += ../../win32
-}
-
+DESTDIR += ../../bin
 
 LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson
 
