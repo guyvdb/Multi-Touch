@@ -23,6 +23,8 @@
 #include <QString>
 #include <QFile>
 #include <QTextStream>
+#include <QDebug>
+#include "utils/FileUtils.h"
 
 namespace mtdnd {
 
@@ -82,9 +84,9 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Matrix::set(const int row, const int col, const short value) {
-    Q_ASSERT(contains(row,col));
+  void Matrix::set(const int row, const int col, const short value) {    
     Q_ASSERT(this->grid != 0x0);
+    Q_ASSERT(contains(row,col));
     this->grid->at(row)->replace(col,value);
   }
 
@@ -92,8 +94,12 @@ namespace mtdnd {
    *
    * ------------------------------------------------------------------------------------------- */
   short Matrix::get(const int row, const int col) const {
-    Q_ASSERT(contains(row,col));
     Q_ASSERT(this->grid != 0x0);
+
+   // qDebug() << "MATRIX GET REQUEST: " << row << "," << col;
+
+    Q_ASSERT(contains(row,col));
+
     return this->grid->at(row)->at(col);
   }
 
@@ -137,7 +143,8 @@ namespace mtdnd {
    * ------------------------------------------------------------------------------------------- */
   // debug method
   void Matrix::save(const QString filename) {
-    QString fn("/home/guy/Projects/Current/multitable/output/");
+    QString fn(FileUtils::debugDirectory());
+    fn.append(QDir::separator());
     fn.append(filename);
 
     QFile file(fn);

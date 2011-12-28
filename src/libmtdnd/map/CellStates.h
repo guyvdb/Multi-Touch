@@ -35,34 +35,34 @@ namespace mtdnd {
   public:
 
     enum State {
-      Clear               = -1,
-      Solid               = -2,
+      Clear               = 0,
+      //Solid               = -2,
 
       // these partial states are solid in the indicated area
       // ie a cell with NorthSolid means the northern part is solid
       // and the southern part is clear
-      NorthSolid          = 0,
-      NorthWestSolid      = 1,
-      WestSolid           = 2,
-      SouthWestSolid      = 3,
-      SouthSolid          = 4,
-      SouthEastSolid      = 5,
-      EastSolid           = 6,
-      NorthEastSolid      = 7,
+      NorthSolid          = 1,
+      NorthWestSolid      = 2,
+      WestSolid           = 3,
+      SouthWestSolid      = 4,
+      SouthSolid          = 5,
+      SouthEastSolid      = 6,
+      EastSolid           = 7,
+      NorthEastSolid      = 8,
 
       // these are wall states used by obstructions
       // the values come from the walls.png marker
       // tileset
 
-      LeftTopWall          = 0,
-      TopWall              = 1,
-      RightTopWall         = 2,
-      LeftWall             = 3,
-      SolidWall            = 4,
-      RightWall            = 5,
-      LeftBottomWall       = 6,
-      BottomWall           = 7,
-      RightBottomWall      = 8
+      LeftTopWall          = 1,
+      TopWall              = 2,
+      RightTopWall         = 3,
+      LeftWall             = 4,
+      SolidWall            = 5,
+      RightWall            = 6,
+      LeftBottomWall       = 7,
+      BottomWall           = 8,
+      RightBottomWall      = 9
     };
 
     CellStates(const int rows, const int cols );

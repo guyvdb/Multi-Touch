@@ -48,8 +48,12 @@ namespace mtdnd {
       int ceiling(const double value);
       int max(const int i1, const int i2);
 
+      bool inRange(QPoint center, QPoint point, int vision);
 
-      void inspectNNW(int viewx, int viewy, int depth, int startSlope, int endSlope);
+
+    //  void cast()
+
+      void inspectNNW(QPoint character, QPoint current, int vision, int width);
 
       //void castLight(const int cx, const int cy, const int row, const int start, const int end, const int radius, const int xx, const int xy, const int yx, const int yy, const int id);
 

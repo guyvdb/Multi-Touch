@@ -49,13 +49,14 @@ namespace mtdnd {
   MapScene::MapScene(GameEngine *engine,MapView *mapView)
     : QGraphicsScene(), engine(engine), mapView(mapView), renderer(0x0), dragged(0x0), tileSize(QSize(32,32)), mapSize(QSize(0,0))
   {
-
     this->cellStates = 0x0;
-
-    //this->nextTokenId = 0;
     this->fogOfWar = new FogOfWar(QRect(0,0,0,0));
     this->fogOfWar->setPos(0,0);
     this->fogOfWar->setZValue(ZINDEX_FOG_OF_WAR);
+
+    this->grid = new GridItem(QRect(0,0,0,0));
+    this->grid->setPos(0,0);
+    this->grid->setZValue(ZINDEX_GRID);
 
   }
 
@@ -64,6 +65,7 @@ namespace mtdnd {
    * ------------------------------------------------------------------------------------------- */
   MapScene::~MapScene() {
     delete this->fogOfWar;
+    delete this->grid;
     delete this->cellStates;
   }
 
@@ -96,6 +98,7 @@ namespace mtdnd {
       MapToken *token = this->tokens.at(i);
       token->setTileSize(this->tileSize);
       token->setZValue(ZINDEX_GAME_TOKEN);
+      token->setPos(this->cellToSceneTransform(token->getLocation()));
       this->addItem(token);
     }
 
@@ -103,8 +106,16 @@ namespace mtdnd {
     // fog of war
     this->fogOfWar->setPos(0,0);
     this->fogOfWar->setMapSize(QSize(map->width() * map->tileWidth(), map->height() * map->tileHeight()));
-
     this->addItem(this->fogOfWar);
+
+
+    // grid
+    this->grid->setMapSize(QSize(map->width() * map->tileWidth(), map->height() * map->tileHeight()));
+    this->grid->setTileSize(QSize(this->tileSize));
+    this->addItem(this->grid);
+
+
+
 
     if(engine->getGameMode() == GameEngine::GameServer) {
       this->fogOfWar->setOverlayColor(QColor(0,0,0,180));
@@ -133,7 +144,7 @@ namespace mtdnd {
       for(int col=0; col < map->width(); col ++) {
         Tiled::Cell cell = layer->cellAt(col,row);
         if(cell.tile != 0x0) {
-          this->cellStates->setObstruction(row,col,(CellStates::State) cell.tile->id());
+          this->cellStates->setObstruction(row,col,(CellStates::State) (cell.tile->id()+1)); // +1 because 0 is Clear marker
         }
       }
     }
@@ -266,8 +277,11 @@ namespace mtdnd {
 
       dragged->setPos(snap);
 
+
       MapToken *token =(MapToken*)dragged; //unsafe cast... fix me
       token->setLocation(grid);
+
+      qDebug() << "SET LOCATION: row,col: " << grid.x() << "," << grid.y();
 
       QVariantMap data;
       data.insert("id",token->getId());
@@ -323,8 +337,11 @@ namespace mtdnd {
    * ------------------------------------------------------------------------------------------- */
   void MapScene::updateFogOfWar() {
 
+    qDebug() << "UPDATE FOG OF WAR";
+
     if(!this->mapView->isLoaded()) return;
 
+    /*
     this->cellStates->clearVisability();
     foreach(MapToken *token, this->tokens) {
       // find the cell the token is located on
@@ -346,34 +363,28 @@ namespace mtdnd {
 
 
       // block directions
-      bool btop = false;
-      bool bbottom = false;
-      bool bleft = false;
-      bool bright = false;
+      //bool btop = false;
+      //bool bbottom = false;
+      //bool bleft = false;
+      //bool bright = false;
 
       for(int row = startRow; row <= endRow; row++) {
-
-
-
-
         for(int col = startCol; col <= endCol; col++){
-
-
-
           if(this->cellStates->contains(row,col)){
             this->cellStates->setVisability(row,col,CellStates::Clear);
-           /* switch(this->cellStates->getObstruction(row,col)) {
-            case
-
-            }*/
           }
         }
       }
     }
 
+
+
+
+
     Matrix *visability = this->cellStates->getVisabilityMatrix();
     visability->save("visability");
 
+     */
 
     Matrix *obstruction = this->cellStates->getObstructionMatrix();
     obstruction->save("obstruction");
@@ -385,10 +396,11 @@ namespace mtdnd {
       Matrix *computed = v.pointOfView(t->getLocation().x(),t->getLocation().y(),4);
       computed->save("computed");
 
+      this->fogOfWar->recalculate(this->tileSize,computed);
     }
 
 
-   this->fogOfWar->recalculate(this->tileSize,visability);
+
 
 
   }

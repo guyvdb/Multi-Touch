@@ -36,9 +36,11 @@ namespace mtdnd {
         static QString gamesDirectory();
         static QString mapsDirectory();
         static QString configDirectory();
+        static QString debugDirectory();
 
         static QString cacheDirectory();
         static QString cachedMapsDirectory();
+
 
         static QString relativeTo(const QString directory, const QString filename);
         static QString join(const QString p1, const QString p2);

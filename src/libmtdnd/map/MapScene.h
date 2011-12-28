@@ -29,6 +29,7 @@
 #include "map/CellStates.h"
 #include "map/MapToken.h"
 #include "map/FogOfWar.h"
+#include "map/GridItem.h"
 
 
 #include "libmtg_global.h"
@@ -55,24 +56,16 @@ namespace mtdnd {
     void initializeMap(Tiled::Map *map);
     void finalizeMap();
 
-
-    // sort this out... merge maptoken and gametoken into a single token
-   //mtg::GameTokens *getGameTokens() {return this->tokens; }
     mtdnd::MapToken * addToken(mtdnd::MapToken *token);
-    //mtg::MapToken * addToken(mtg::MapToken::Type type);
     mtdnd::MapToken * findToken(const QString id);
     void moveToken(const QString id, QPoint point);
     void moveToken(const QString id, const int row, const int col);
     void moveToken(mtdnd::MapToken *token, QPoint point);
     void moveToken(mtdnd::MapToken *token, const int row, const int col);
 
-    // TODO deprecate - use sceneToCell or cellToScene transform
-   // QPoint tileToPixleCordinate(QPoint tileLocation);
-
 
     QPoint sceneToCellTransform(const QPoint scenePoint);
     QPoint sceneToCellTransform(const QPointF scenePoint) {return sceneToCellTransform(QPoint(scenePoint.x(), scenePoint.y()));}
-    //QPoint cellToSceneTransform(const int x, const int y) {return this->cellToSceneTransform(QPoint(x,y)); }
     QPoint cellToSceneTransform(const QPoint cell);
   protected:
     void drawForeground(QPainter *painter, const QRectF &rect);
@@ -84,7 +77,6 @@ namespace mtdnd {
     QPointF getSnapPoint(const QPointF point);
     int visualRange(const int vision);
     void updateFogOfWar();
-    //void calculateFogOfWar();
 
     bool isPlayerCharacter(QGraphicsItem *item);
     void addObstructions(Tiled::Map *map, Tiled::TileLayer *layer);
@@ -99,12 +91,10 @@ namespace mtdnd {
     GameEngine *engine;
 
     FogOfWar *fogOfWar;
+    GridItem *grid;
 
     CellStates *cellStates;
     QList<MapToken*> tokens;
-
-   // int nextTokenId;
-
 
   signals:
 

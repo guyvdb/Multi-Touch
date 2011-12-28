@@ -53,9 +53,6 @@ MainWindow::MainWindow(mtdnd::Settings *settings, QWidget *parent) : QMainWindow
     ui->setupUi(this);
     this->ui->tabs->setGeometry(this->calculateTabRect());
 
-
-
-
     // PrivateMap
     this->dmMap = new mtdnd::MapView(0x0);
     this->dmMap->setParent(this->ui->tabDMMap);
@@ -201,6 +198,7 @@ void MainWindow::startGame() {
 
   // PC
   token = new mtdnd::MapToken(mtdnd::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  token->setLocation(QPoint(9,24));
   this->engine->getScene()->addToken(token);
 
 
@@ -304,18 +302,9 @@ void MainWindow::on_newGameAction_triggered()
         this->engine->getMapView()->show();
 
         this->started = false;
-
         this->ui->tabs->setVisible(true);
-
         this->gameStateChanged(GameOpenState);
 
-
-
-
-        //this->startGame();
-        //
-        //this->startGame();
-        //
       }
     }
   }

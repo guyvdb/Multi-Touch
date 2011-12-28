@@ -22,6 +22,7 @@
 #define GRIDITEM_H
 
 #include <QGraphicsItem>
+#include <QFont>
 //#include "map/MapView.h"
 //#include "libtiled/map.h"
 
@@ -36,17 +37,18 @@ namespace mtdnd {
     class GridItem : public QGraphicsItem
     {
     public:
-        GridItem(Tiled::Map *map, MapView *view , QGraphicsItem *parent=0);
-        QRectF boundingRect() const;
+        explicit GridItem(QRectF bounds, QGraphicsItem *parent = 0);
+      ~GridItem();
+        QRectF boundingRect() const {return this->bounds;}
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        void setMapSize(QSize value);
+        void setTileSize(QSize value);
 
     private:
-        int gridWidth();
-        int gridHeight();
-
-
-        Tiled::Map *map;
-        MapView *view;
+        QRectF bounds;
+        QSize tileSize;
+        QSize mapSize;
+        QFont *font;
 
     };
 

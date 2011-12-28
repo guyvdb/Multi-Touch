@@ -22,73 +22,84 @@
 #include "FieldOfVision.h"
 #include "MapToken.h"
 
+#include <QDebug>
+
 namespace mtdnd {
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   FieldOfVision::FieldOfVision(Matrix *obsticals) : obsticals(obsticals)
   {
-
-    //this->initializeMultipliers();
     this->matrix = new Matrix(obsticals->rowCount(), obsticals->colCount());
-
-
-
-
   }
 
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   FieldOfVision::~FieldOfVision(){
     for(int i=0; i < this->multipliers.count(); i++) delete this->multipliers.at(i);
   }
 
-
-  //void FieldOfVision::initializeMultipliers() {
-    /*
-    [1,  0,  0, -1, -1,  0,  0,  1],
-    [0,  1, -1,  0,  0, -1,  1,  0],
-    [0,  1,  1,  0,  0, -1, -1,  0],
-    [1,  0,  0,  1, -1,  0,  0, -1],
-    */
-
-  /*
-    // create a multiplication matrix
-    for(int i=0; i < 4; i++ ) this->multipliers.append(new QList<int>);
-
-    *multipliers.at(0) << 1 << 0 << 0 << -1 << -1 << 0 << 0 << 1;
-    *multipliers.at(1) << 0 << 1 << -1 << 0 << 0 << -1 << 1 << 0;
-    *multipliers.at(2) << 0 << 1 << 1 << 0 << 0 << -1 << -1 << 0;
-    *multipliers.at(3) << 1 << 0 << 0 << 1 << -1 << 0 << 0 << -1;
-  } */
-
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   Matrix* FieldOfVision::pointOfView(const int row, const int col, const int radius) {
-    this->matrix->reset(0);
-    inspectNNW(row, col, 0, 1, 0);
+    this->matrix->reset(1);
+
+    this->inspectNNW(QPoint(row,col),QPoint(row,col),radius,1);
+
+    //inspectNNW(row, col, 0, 1, 0);
 
     return this->matrix;
   }
 
-
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   double FieldOfVision::slope(const double x1, const double y1, const double x2, const double y2 ) {
     return ((x1 - x2) / (y1 - y2));
   }
 
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   double FieldOfVision::inverse(const double x1, const double y1, const double x2, const double y2 ) {
     return 1 / this->slope(x1,y1,x2,y2);
   }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   void FieldOfVision::light(const int row, const int col) {
-    this->matrix->set(row,col,1);
+    qDebug() << "LIGHTING " << row << "," << col;
+    if(this->matrix->contains(row,col)) this->matrix->set(row,col,0);
   }
 
-  bool FieldOfVision::isBlocked(const int row, const int col) {
-    return this->obsticals->get(row,col) != -1;
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  bool FieldOfVision::isBlocked(const int row, const int col) {    
+
+    bool result =  obsticals->contains(row,col) ?   (this->obsticals->get(row,col) != 0) : true;
+    qDebug() << "IS BLOCKED " << row << "," << col << " = " << result;
+    return result;
   }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   int FieldOfVision::ceiling(const double value) {
     int result = (int)value;
     if(value > result)result++;
     return result;
   }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   int FieldOfVision::max(const int i1, const int i2) {
     if(i1 > i2) {
       return i1;
@@ -96,15 +107,63 @@ namespace mtdnd {
     return i2;
   }
 
+
+  /* -------------------------------------------------------------------------------------------
+   * Is the point within the vision range of center?
+   * ------------------------------------------------------------------------------------------- */
+  //bool inRange(QPoint center, QPoint point, int vision) {
+  //  if(center.x() < point.x() && center.x() + vision < )
+ // }
+
   /* -------------------------------------------------------------------------------------------
    * North north west is quadrant 1. Scan it row by row from left to right
    * rows will be decreasing, cols increasing
    * ------------------------------------------------------------------------------------------- */
-  void FieldOfVision::inspectNNW(int row, int col, int depth, int startSlope, int endSlope) {
-    int startRow = row + this->ceiling(startSlope * depth);
-    int endRow = col + this->ceiling(endSlope * depth);
+  void FieldOfVision::inspectNNW(QPoint character, QPoint current, int vision, int width) {
 
-    int currentCol = col + depth;
+
+    // we start at row, col [9,24] and we work our way out to vision distance (which is the decrementing of rows).
+    // We are going right to left. This means that row starts at current+1 and keeps increasing by one.
+    //
+
+    qDebug() << "CHAR: " << character << " CURRENT " << current << " VISION " << vision << " WIDTH " << width;
+
+
+    // are we on the edge of the map?
+    if(current.x() < 0 || current.y() < 0) return;
+
+
+    // are we out of vision?
+    if(current.x() < (character.x() - vision)) return;
+    if(current.y() < (character.y() - vision)) return;
+
+
+    if((current.x() > character.x() + vision) || (current.x() < 0) || (current.y() > character.y() + vision) || (current.y() < 0) ) {
+      // we are at end of vision range or map.
+      return;
+    }
+
+    int row = current.x();
+
+
+    for(int col= character.y() - width; col <= character.y(); col++){
+      if(isBlocked(row, col)) {
+        qDebug() << "BLOCKED AT " << row << "," << col;
+        col++;
+      } else {
+        this->light(row, col);
+      }
+    }
+
+    this->inspectNNW(QPoint(character),QPoint(current.x()-1,current.y()),vision,width+1);
+
+
+    /*
+
+    int startRow = row + this->ceiling(startSlope * vision);
+    int endRow = col + this->ceiling(endSlope * vision);
+
+    int currentCol = col + vision;
 
     if(currentCol >= this->matrix->rowCount() ) return; // hit the right edge
 
@@ -114,7 +173,7 @@ namespace mtdnd {
       if(this->isBlocked(currentRow, currentCol)) {
         if(!blocked) {
           double newScanEndSlope = slope(row, col,(currentRow - 0.5), (currentCol + 0.5));
-          inspectNNW(row,col,depth+1,startSlope, newScanEndSlope);
+          inspectNNW(row,col,vision+1,startSlope, newScanEndSlope);
         }
         blocked = true;
       } else {
@@ -125,7 +184,7 @@ namespace mtdnd {
         blocked = false;
       }
     }
-
+    */
 
   }
 
