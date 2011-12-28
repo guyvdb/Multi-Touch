@@ -84,7 +84,7 @@ namespace mtv {
 
   };
 
-  LIBMTV_EXPORT static Pipeline* pipelineSingleton = NULL;
+  /*LIBMTV_EXPORT*/ static Pipeline* pipelineSingleton = NULL;
 
 }
 

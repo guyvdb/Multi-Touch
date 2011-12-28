@@ -40,8 +40,24 @@ unix {
   PKGCONFIG += opencv
 }
 
+win32 {
 
-## TODO add pkgconfig equiv for win32
+  INCLUDEPATH += $$PWD/../../contrib/opencv/build/include
+
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_calib3d231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_contrib231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_core231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_features2d231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_flann231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_gpu231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_highgui231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_imgproc231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_legacy231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_ml231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_objdetect231.dll.a
+  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_video231.dll.a
+
+}
 
 LIBS += -L$$DESTDIR -lqjson -lmtv
 

@@ -21,6 +21,7 @@
 #include "libmtv_global.h"
 #include "Pipeline.h"
 
+/*
 extern "C" {
     LIBMTV_EXPORT mtv::Pipeline *singletonPipelineInstance = 0x0;
 
@@ -32,3 +33,4 @@ extern "C" {
         return singletonPipelineInstance;
     }
 }
+*/

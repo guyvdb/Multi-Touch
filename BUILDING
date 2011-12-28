@@ -8,6 +8,9 @@ am running Ubuntu 11.10 64bit.
 Things will get better as I add more hours to the project!
 
 
+LINUX
+==============================
+
 1) Qt 4.7.3 and QtCreator - I installed the Ubuntu 11.10 packages via apt-get install.
 
 2) OpenCV 2.3.1(a) - This was the biggest pain to build and install. I did it from source
@@ -45,6 +48,22 @@ Gotachs
 1) Set your shadow build directory to ROOT/build for both debug and release builds
 2) In QtCreator under projects on the Run Settings tab for each Run configuration modify 
    the run environment. Add a variable LD_LIBRARY_PATH = ../bin
+
+
+
+WINDOWS 7
+==============================
+This is a work in progress as I try get everything built on windows. This is not working yet!
+
+1) Download and install Qt & Qt Creator. I have installed:
+   qt-creator-win-opensource-2.2.1.exe & qt-win-opensource-4.7.3-mingw.exe
+   Google for them. Not sure of the links
+
+2) Download the OpenCV 3.2.1 binaries (OpenCV-2.3.1-win-superpack.exe) from 
+   http://sourceforge.net/projects/opencvlibrary/files/opencv-win/2.3.1/
+
+   Extract it into ROOT/contrib you should now have a folder ROOT/contrib/OpenCV2.3
+
 
 
 
