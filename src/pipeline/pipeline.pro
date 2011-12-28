@@ -24,7 +24,9 @@ FORMS    += PipelineEditorWindow.ui \
 
 OTHER_FILES += \
     ../../config/pipelin.xml \
-    README.txt
+    README \
+    COPYING \
+    AUTHORS
 
 CONFIG   -= app_bundle
 
