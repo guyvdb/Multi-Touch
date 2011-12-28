@@ -1,5 +1,5 @@
 TEMPLATE    =     subdirs
-SUBDIRS     =     src/libmtg \
+SUBDIRS     =     src/libmtdnd \
                   src/libmtv \
                   src/pipeline \
                   src/pc \
