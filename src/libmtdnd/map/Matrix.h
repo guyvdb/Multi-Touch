@@ -18,11 +18,52 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef ZINDEX_H
-#define ZINDEX_H
+#ifndef STATEGRID_H
+#define STATEGRID_H
 
-#define ZINDEX_MAP            10
-#define ZINDEX_GAME_TOKEN     100
-#define ZINDEX_FOG_OF_WAR     50
+#include <QVector>
+#include <QPoint>
 
-#endif // ZINDEX_H
+namespace mtdnd {
+
+  class Matrix
+  {
+  public:
+
+    Matrix();
+    Matrix(const int rows, const int cols);
+    Matrix(const int rows, const int cols, const short initialValue);
+    ~Matrix();
+
+    void resize(const int rows, const int cols, const short initialValue = 0);
+    void reset(const short value);
+    bool contains(const int row, const int col) const {return col >=0 && row >= 0 && col < cols && row < rows;}
+    bool contains(const QPoint &point) const {return contains(point.x(), point.y()); }
+
+
+    void set(const int row, const int col, const short value);
+    void set(const QPoint &point, const short value) {set(point.x(), point.y(), value); }
+    short get(const int row, const int col) const;
+    short get(const QPoint &point) const {return get(point.x(), point.y()); }
+
+
+    int rowCount() {return this->rows; }
+    int colCount() {return this->cols; }
+
+    void save(const QString filename);
+
+  private:
+
+    void initialize(const int rows, const int cols, const short value = 0);
+    void release();
+
+    int rows;
+    int cols;
+
+
+    QVector< QVector<short> *> *grid;
+  };
+
+}
+
+#endif // STATEGRID_H

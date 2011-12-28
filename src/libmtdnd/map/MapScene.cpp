@@ -1,3 +1,24 @@
+/* -------------------------------------------------------------------------------------------
+ *                                   M U L T I - T O U C H
+ *  -------------------------------------------------------------------------------------------
+ *                             Copyright 2011, 2012 Guy van den Berg
+ *                                      All Rights Reserved
+ *
+ *          This program is free software; you can redistribute it and/or modify it
+ *          under the terms of the GNU General Public License as published by the Free
+ *          Software Foundation; either version 2 of the License, or (at your option)
+ *          any later version.
+ *
+ *          This program is distributed in the hope that it will be useful, but WITHOUT
+ *          ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *          FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ *          more details.
+ *
+ *          You should have received a copy of the GNU General Public License along with
+ *          this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ------------------------------------------------------------------------------------------- */
+
 #include "MapScene.h"
 #include "tiled/maprenderer.h"
 #include "tiled/layer.h"
@@ -15,6 +36,8 @@
 
 #include "map/MapView.h"
 #include "map/ZIndex.h"
+#include "map/FieldOfVision.h"
+
 #include "engine/GameEngine.h"
 #include "message/Message.h"
 
@@ -26,7 +49,9 @@ namespace mtdnd {
   MapScene::MapScene(GameEngine *engine,MapView *mapView)
     : QGraphicsScene(), engine(engine), mapView(mapView), renderer(0x0), dragged(0x0), tileSize(QSize(32,32)), mapSize(QSize(0,0))
   {
-    this->cellStates = new CellStates();
+
+    this->cellStates = 0x0;
+
     //this->nextTokenId = 0;
     this->fogOfWar = new FogOfWar(QRect(0,0,0,0));
     this->fogOfWar->setPos(0,0);
@@ -49,7 +74,11 @@ namespace mtdnd {
 
     this->mapSize = QSize(map->width(), map->height());
 
-    this->cellStates->resize(map->height(), map->width());
+    if(this->cellStates == 0x0) {
+      this->cellStates = new CellStates(map->height(), map->width());
+    } else {
+      this->cellStates->resize(map->height(), map->width());
+    }
 
     // find any markers
     foreach(Tiled::Layer *layer, map->layers()) {
@@ -333,16 +362,33 @@ namespace mtdnd {
 
           if(this->cellStates->contains(row,col)){
             this->cellStates->setVisability(row,col,CellStates::Clear);
-            switch(this->cellStates->getObstruction(row,col)) {
+           /* switch(this->cellStates->getObstruction(row,col)) {
             case
 
-            }
+            }*/
           }
         }
       }
     }
 
-    this->fogOfWar->recalculate(this->tileSize, this->cellStates->visabilityList());
+    Matrix *visability = this->cellStates->getVisabilityMatrix();
+    visability->save("visability");
+
+
+    Matrix *obstruction = this->cellStates->getObstructionMatrix();
+    obstruction->save("obstruction");
+
+    if(this->tokens.count() > 0) {
+      MapToken *t = this->tokens.at(0);
+
+      FieldOfVision v(obstruction);
+      Matrix *computed = v.pointOfView(t->getLocation().x(),t->getLocation().y(),4);
+      computed->save("computed");
+
+    }
+
+
+   this->fogOfWar->recalculate(this->tileSize,visability);
 
 
   }

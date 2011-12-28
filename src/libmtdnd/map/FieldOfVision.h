@@ -18,11 +18,55 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef ZINDEX_H
-#define ZINDEX_H
+#ifndef SHADOWCASTINGFOV_H
+#define SHADOWCASTINGFOV_H
 
-#define ZINDEX_MAP            10
-#define ZINDEX_GAME_TOKEN     100
-#define ZINDEX_FOG_OF_WAR     50
+#include <QList>
+#include <QPoint>
 
-#endif // ZINDEX_H
+
+#include "Matrix.h"
+
+namespace mtdnd {
+
+  class FieldOfVision
+  {
+  public:
+      FieldOfVision( Matrix *obsticals);
+      ~FieldOfVision();
+
+      Matrix* pointOfView(const int row, const int col, const int radius);
+
+  private:
+     // void initializeMultipliers();
+      double slope(const double x1, const double y1, const double x2, const double y2 );
+      double inverse(const double x1, const double y1, const double x2, const double y2 );
+
+      void light(const int row, const int col);
+      bool isBlocked(const int row, const int col);
+
+      int ceiling(const double value);
+      int max(const int i1, const int i2);
+
+
+      void inspectNNW(int viewx, int viewy, int depth, int startSlope, int endSlope);
+
+      //void castLight(const int cx, const int cy, const int row, const int start, const int end, const int radius, const int xx, const int xy, const int yx, const int yy, const int id);
+
+
+
+
+
+
+
+      QList<QList<int>*> multipliers;
+
+      Matrix *obsticals;
+      Matrix *matrix;
+      int width;
+      int height;
+  };
+
+}
+
+#endif // SHADOWCASTINGFOV_H

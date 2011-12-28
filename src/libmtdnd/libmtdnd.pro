@@ -6,10 +6,10 @@
 
 QT       += network webkit xml sql opengl
 
-TARGET = mtg
+TARGET = mtdnd
 TEMPLATE = lib
 
-DEFINES += LIBMT_LIBRARY
+DEFINES += LIBMTDND_LIBRARY
 
 SOURCES += \
     utils/FileUtils.cpp \
@@ -37,8 +37,8 @@ SOURCES += \
     data/BaseModel.cpp \
     map/MapToken.cpp \
     map/CellStates.cpp \
-    map/StateGrid.cpp \
-    map/ShadowCastingFOV.cpp
+    map/Matrix.cpp \
+    map/FieldOfVision.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -68,8 +68,8 @@ HEADERS +=\
     map/MapToken.h \
     map/ZIndex.h \
     map/CellStates.h \
-    map/StateGrid.h \
-    map/ShadowCastingFOV.h
+    map/Matrix.h \
+    map/FieldOfVision.h
 
 
 FORMS += \
@@ -77,7 +77,9 @@ FORMS += \
 
 OTHER_FILES += \
     ../../config/multitable.conf \
-    README.txt
+    README \
+    COPYING \
+    AUTHORS
 
 
 INCLUDEPATH += $$PWD/../../include

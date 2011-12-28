@@ -1,3 +1,23 @@
+/* -------------------------------------------------------------------------------------------
+ *                                   M U L T I - T O U C H
+ *  -------------------------------------------------------------------------------------------
+ *                             Copyright 2011, 2012 Guy van den Berg
+ *                                      All Rights Reserved
+ *
+ *          This program is free software; you can redistribute it and/or modify it
+ *          under the terms of the GNU General Public License as published by the Free
+ *          Software Foundation; either version 2 of the License, or (at your option)
+ *          any later version.
+ *
+ *          This program is distributed in the hope that it will be useful, but WITHOUT
+ *          ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *          FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ *          more details.
+ *
+ *          You should have received a copy of the GNU General Public License along with
+ *          this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ------------------------------------------------------------------------------------------- */
 #ifndef TILESTATES_H
 #define TILESTATES_H
 
@@ -6,6 +26,8 @@
 
 //#include "GameToken.h"
 
+#include "Matrix.h"
+
 namespace mtdnd {
 
   class CellStates
@@ -13,8 +35,8 @@ namespace mtdnd {
   public:
 
     enum State {
-      Clear               = 100,
-      Solid               = 101,
+      Clear               = -1,
+      Solid               = -2,
 
       // these partial states are solid in the indicated area
       // ie a cell with NorthSolid means the northern part is solid
@@ -43,7 +65,7 @@ namespace mtdnd {
       RightBottomWall      = 8
     };
 
-    CellStates( );
+    CellStates(const int rows, const int cols );
     ~CellStates();
 
     void resize(const int rows, const int cols);
@@ -54,7 +76,7 @@ namespace mtdnd {
     CellStates::State getVisability(const int row, const int col) const;
     CellStates::State getVisability(const QPoint &point) const {return getVisability(point.x(), point.y()); }
     void clearVisability();
-    QVector< QVector<CellStates::State> *> * visabilityList() {return this->visability; }
+    Matrix * getVisabilityMatrix() {return this->visability; }
 
 
     // obstruction
@@ -63,6 +85,7 @@ namespace mtdnd {
     CellStates::State getObstruction(const int row, const int col) const;
     CellStates::State getObstruction(const QPoint &point) const {return getObstruction(point.x(), point.y()); }
     void clearObstructions();
+    Matrix * getObstructionMatrix() {return this->obstructions; }
 
     // visited
     void setVisited(const int row, const int col, CellStates::State value);
@@ -75,15 +98,9 @@ namespace mtdnd {
     bool contains(const int row, const int col) const {return col >=0 && row >= 0 && col < cols && row < rows;}
     bool contains(const QPoint &point) const {return contains(point.x(), point.y()); }
   private:
-
-    QVector< QVector <CellStates::State> *> * initializeVector(CellStates::State state);
-    void freeVector(QVector< QVector <CellStates::State> *> *vector);
-    void clearVector(QVector< QVector <CellStates::State> *> *vector, CellStates::State state);
-
-
-    QVector< QVector<CellStates::State> *> *visability;
-    QVector< QVector<CellStates::State> *> *obstruction;
-    QVector< QVector<CellStates::State> *> *visited;
+    Matrix *visability;
+    Matrix *obstructions;
+    Matrix *visited;
 
     int rows;
     int cols;

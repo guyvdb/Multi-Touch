@@ -18,126 +18,142 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#include "CellStates.h"
 
-#include <QDebug>
+#include "Matrix.h"
+#include <QString>
+#include <QFile>
+#include <QTextStream>
 
 namespace mtdnd {
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::CellStates(const int rows, const int cols) : rows(rows), cols(cols)
+  Matrix::Matrix() : grid(new QVector< QVector < short > * >()), rows(0), cols(0)
   {
-
-    this->visability = new Matrix(rows,cols);
-    this->obstructions = new Matrix(rows,cols);
-    this->visited = new Matrix(rows,cols);
-
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::~CellStates() {
-    if(this->visability) delete this->visability;
-    if(this->obstructions) delete this->obstructions;
-    if(this->visited) delete this->visited;
+  Matrix::Matrix(const int rows, const int cols) : grid(0x0), rows(rows), cols(cols)
+  {
+    this->resize(rows,cols);
   }
-
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::resize(const int rows, const int cols) {
-    Q_ASSERT(this->visability != 0x0);
-    Q_ASSERT(this->obstructions != 0x0);
-    Q_ASSERT(this->visited != 0x0);
+  Matrix::Matrix(const int rows, const int cols, const short initialValue) : grid(0x0), rows(rows), cols(cols)
+  {
+    this->resize(rows,cols,initialValue);
+  }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  Matrix::~Matrix() {
+    this->release();
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Matrix::resize(const int rows, const int cols, const short initialValue) {
+    this->release();
     this->rows = rows;
     this->cols = cols;
-
-    if(this->visability) this->visability->resize(rows,cols);
-    if(this->obstructions) this->visability->resize(rows,cols);
-    if(this->visited) this->visability->resize(rows,cols);
-  }
-
-
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  void CellStates::clearVisability() {
-    this->visability->reset((int)CellStates::Solid);
+    this->initialize(rows,cols,initialValue);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::State CellStates::getVisability(const int row, const int col) const {
-    Q_ASSERT(this->visability != 0x0);
-    return (CellStates::State) this->visability->get(row,col);
+  void Matrix::reset(const short value) {
+     Q_ASSERT(this->grid != 0x0);
+    for(int row = 0; row < this->rows; row++){
+      QVector<short> *r = this->grid->at(row);
+      for(int col =0; col < this->cols; col++){
+        r->replace(col,value);
+      }
+    }
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::setVisability(const int row, const int col, CellStates::State value) {
-    Q_ASSERT(this->visability != 0x0);
-    return this->visability->set(row,col, (short)value);
+  void Matrix::set(const int row, const int col, const short value) {
+    Q_ASSERT(contains(row,col));
+    Q_ASSERT(this->grid != 0x0);
+    this->grid->at(row)->replace(col,value);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::clearObstructions() {
-    Q_ASSERT(this->obstructions != 0x0);
-    this->obstructions->reset((short)CellStates::Clear);
+  short Matrix::get(const int row, const int col) const {
+    Q_ASSERT(contains(row,col));
+    Q_ASSERT(this->grid != 0x0);
+    return this->grid->at(row)->at(col);
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::setObstruction(const int row, const int col, CellStates::State value) {
-    Q_ASSERT(this->obstructions != 0x0);
-    this->obstructions->set(row,col,(short)value);
+  void Matrix::initialize(const int rows, const int cols, const short value) {
+    this->grid = new QVector< QVector < short > * >();
+    for(int row = 0; row < rows; row++){
+      QVector <short> *v = new QVector < short > ();
+      this->grid->append(v);
+      for(int col =0; col < cols; col++) {
+        v->append(value);
+      }
+    }
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::State CellStates::getObstruction(const int row, const int col) const {
-    Q_ASSERT(this->obstructions != 0x0);
-    return (CellStates::State)this->obstructions->get(row,col);
-  }
-
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  void CellStates::clearVisited() {
-    Q_ASSERT(this->visited != 0x0);
-    this->visited->reset((short)CellStates::Clear);
+  void Matrix::release() {
+    if(this->grid != 0x0) {
+      for(int i=0;i<this->grid->count(); i++) delete this->grid->at(i);
+      delete this->grid;
+      this->grid = 0x0;
+    }
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CellStates::State CellStates::getVisited(const int row, const int col) const {
-    Q_ASSERT(this->visited != 0x0);
-    return (CellStates::State)this->visited->get(row,col);
+  //debug method
+  QString format(const short no) {
+    QString n = QString::number(no);
+    if (n.length() == 1) n = "0" + n;
+
+    return "  " + n + "  ";
   }
-
-
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void CellStates::setVisited(const int row, const int col, CellStates::State value) {
-    Q_ASSERT(this->visited != 0x0);
-    this->visited->set(row,col,(short)value);
+  // debug method
+  void Matrix::save(const QString filename) {
+    QString fn("/home/guy/Projects/Current/multitable/output/");
+    fn.append(filename);
+
+    QFile file(fn);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+
+    QTextStream out(&file);
+
+    for(int row=0; row<this->rows; row++){
+      for(int col=0; col< this->cols; col++){
+        out << format(this->get(row,col));
+      }
+      out << "\n";
+    }
+
+    file.close();
+
   }
-
-
-
 
 }
