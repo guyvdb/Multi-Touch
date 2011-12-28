@@ -34,7 +34,9 @@ Things will get better as I add more hours to the project!
    and copy libtiled.so and all its symlinks to the ROOT/linux folder.
 
 
-5) Building the project. Open ROOT/multitable.pro  in QtCreator and build.
+5) Building the project. Open ROOT/multitable.pro  in QtCreator and build. When you open the
+   project for the first time it will want to set shadow build paths for both debug and release.
+   Set them both to ROOT/build
 
 
 
