@@ -21,3 +21,8 @@ FORMS    += UdpWindow.ui
 unix {
   DESTDIR += ../../linux
 }
+
+OTHER_FILES += \
+    README \
+    COPYING \
+    AUTHORS
