@@ -1,0 +1,67 @@
+How to build MultiTouch
+----------------------------------
+
+This project is in its infancy. Things are still a bit difficult. 
+I checked out a clean repository and this is what I had to do. I
+am running Ubuntu 11.10 64bit.
+
+Things will get better as I add more hours to the project!
+
+
+1) Qt 4.7.3 and QtCreator - I installed the Ubuntu 11.10 packages via apt-get install.
+
+2) OpenCV 2.3.1(a) - This was the biggest pain to build and install. I did it from source
+   including its dependencies such as FFMPEG. I followed the instructions 
+   http://ozbots.org/opencv-installation/  with a few minor tweeks which I do not recall.
+
+3) QJson - JSON parser. Messages in the gaming portions of the code are sent UDP as json 
+   packages. The code is located in contrib/qjson
+
+   cd contrib/qjson
+   mkdir build
+   cd build
+   cmake ../
+   make
+   
+   navigate to the build/lib folder and copy libqjson.so and all its simlinks to the linux
+   folder. 
+
+
+4) libtiled - Used to parse the maps in gameplay. Source is located in contrib/tiled. This 
+   is a little older and I need to update it to latest release. This comes from 
+   http://mapeditor.org. I use QtCreator to build this. Navigate to folder contrib/tiled/src 
+   and open tiled.pro with QtCreator. Build the project. Go to the location that you built to 
+   and copy libtiled.so and all its symlinks to the ROOT/linux folder.
+
+
+5) Building the project. Open ROOT/multitable.pro  in QtCreator and build.
+
+
+
+Gotachs
+--------------------
+1) Turn of shadow builds (for now) else the linker cannot find the libraries. In QtCreator in 
+   the multitable.pro project select Projects and on the Build Settings tab under General turn
+   off Shadow build
+
+2) One path is still hard coded in the source. You need to change it according to your directory 
+   structure. This will be removed soon. In the file:
+      ROOT/src/libmtdnd/utils/FileUtils.cpp in the function binDirectory(). This function should
+      return the fully qualified path to ROOT/linux
+
+
+
+Thats it for now.
+
+
+Cheers
+
+Guy
+
+
+
+
+
+
+
+
