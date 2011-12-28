@@ -31,13 +31,15 @@ FORMS    += \
     forms/ErrorDialog.ui
 
 OTHER_FILES += \
-    README.txt
+    COPYING \
+    README \
+    AUTHORS
 
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
-INCLUDEPATH += $$PWD/../libmtg
-DEPENDPATH += $$PWD/../libmtg
+INCLUDEPATH += $$PWD/../libmtdnd
+DEPENDPATH += $$PWD/../libmtdnd
 
 
 unix {
@@ -50,7 +52,7 @@ win32 {
 }
 
 
-LIBS += -L$$DESTDIR -lmtg -ltiled -lqjson
+LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson
 
 RESOURCES += \
     assets.qrc
