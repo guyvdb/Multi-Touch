@@ -86,7 +86,7 @@ HEADERS +=\
 
 CONFIG   -= app_bundle
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 unix {
     CONFIG += link_pkgconfig

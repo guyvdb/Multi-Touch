@@ -46,7 +46,7 @@ DEPENDPATH += $$PWD/../libmtdnd
 
 
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 unix {
   CONFIG += link_pkgconfig

@@ -42,7 +42,7 @@ INCLUDEPATH += $$PWD/../libmtdnd
 DEPENDPATH += $$PWD/../libmtdnd
 
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 
 LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson

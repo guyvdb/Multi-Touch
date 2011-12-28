@@ -19,7 +19,7 @@ FORMS    += UdpWindow.ui
 
 
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 
 OTHER_FILES += \

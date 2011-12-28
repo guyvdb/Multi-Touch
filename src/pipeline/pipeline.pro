@@ -26,14 +26,16 @@ OTHER_FILES += \
     ../../config/pipelin.xml \
     README \
     COPYING \
-    AUTHORS
+    AUTHORS \
+    ../../config/camera.xml \
+    ../../config/video.xml
 
 CONFIG   -= app_bundle
 
 INCLUDEPATH += $$PWD/../libmtv
 DEPENDPATH += $$PWD/../libmtv
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 unix {
   CONFIG += link_pkgconfig
@@ -44,5 +46,3 @@ unix {
 ## TODO add pkgconfig equiv for win32
 
 LIBS += -L$$DESTDIR -lqjson -lmtv
-
-
