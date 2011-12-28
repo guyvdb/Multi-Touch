@@ -35,7 +35,7 @@ DEPENDPATH += $$PWD/../libmtdnd
 
 
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 
 

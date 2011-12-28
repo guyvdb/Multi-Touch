@@ -86,6 +86,6 @@ INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
 
-DESTDIR += ../../bin
+DESTDIR += ../../../bin
 
 LIBS += -L$$DESTDIR -ltiled -lqjson

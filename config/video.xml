@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline name="test">
 
-    <module name="video0" type="camera">
-        <setting name="fps" type="integer" value="10"/>
-        <setting name="device" type="integer" value="0"/>
+    <module name="video0" type="video">
+        <setting name="fps" type="integer" value="30"/>
         <setting name="filename" type="string" value="../doc/rdi.avi"/>
     </module>
 
-<!-- 
-    <module name="video1" type="camera">
-        <setting name="fps" type="integer" value="10"/>
-        <setting name="device" type="integer" value="1"/>
-        <setting name="filename" type="string" value="../doc/rdi.avi"/>
-    </module>
-
--->
 
     <module name="grayscale" type="grayscale">
         <setting name="input" type="frame" value="video0:OUTPUT"/>
@@ -39,7 +30,7 @@
 
     <module name="amplify" type="amplify">
         <setting name="input" type="frame" value="highpass:OUTPUT"/>
-        <setting name="amplification" type="double" value="4"/>
+        <setting name="amplification" type="double" value="0.03"/>
     </module>
 
     <module name="binary" type="binary">
