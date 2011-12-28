@@ -1,3 +1,0 @@
-MTV
-==================
-Multitouch Vision Application

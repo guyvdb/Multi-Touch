@@ -56,6 +56,8 @@ win32 {
 }
 
 OTHER_FILES += \
-    README.txt \
     ../../config/mtv.xml \
-    ../../linux/camera-tuned.xml
+    ../../linux/camera-tuned.xml \
+    README \
+    COPYING \
+    AUTHORS
