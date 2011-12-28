@@ -98,4 +98,6 @@ win32 {
 }
 
 OTHER_FILES += \
-    README.txt
+    COPYING \
+    README \
+    AUTHORS
