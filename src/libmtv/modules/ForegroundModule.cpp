@@ -46,7 +46,7 @@ namespace mtv {
     double learn = this->setting("learn")->asDouble();
 
     // ensure we have an accumulated image - if the accumulator is older that 1 second replace it
-    if(this->accumulated.empty() ) matrix.convertTo(this->accumulated, CV_32F);
+    if(this->accumulated.empty() || this->lastAccumulation.elapsed() > 2000) matrix.convertTo(this->accumulated, CV_32F);
 
     // our background for this frame
     this->accumulated.convertTo(background, CV_8U);

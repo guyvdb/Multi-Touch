@@ -28,6 +28,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QMenu>
+#include <QCoreApplication>
 
 #include "pipeline/Pipeline.h"
 #include "pipeline/Module.h"
@@ -197,15 +198,13 @@ void PipelineEditorWindow::OnShowContextMenu(const QPoint &point) {
 
 }
 
-
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::onSettingsWindowClosed(int value) {
   qDebug() << "SETTING WIN CLOSED: " << value;
   sender()->deleteLater();
 }
-
-/*void PipelineEditorWindow:onSettingsWindowClosed(int value) {
-  qDebug();
-}*/
 
 /* -------------------------------------------------------------------------------------------
  *
@@ -243,7 +242,7 @@ void PipelineEditorWindow::layoutVideoWidgets() {
  * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::on_actionLoad_triggered()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Pipeline"), "./", tr("Pipeline File (*.xml)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Open Pipeline"), "../config", tr("Pipeline File (*.xml)"));
   if(fileName != "") {
 
     on_btnHideAllModules_clicked();
@@ -271,6 +270,9 @@ void PipelineEditorWindow::on_actionLoad_triggered()
   }
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::on_btnShowAllModules_clicked()
 {
   // show all the modules as video clips
@@ -290,6 +292,9 @@ void PipelineEditorWindow::on_btnShowAllModules_clicked()
 
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::on_btnHideAllModules_clicked()
 {
   // remove all visible video clips
@@ -304,6 +309,9 @@ void PipelineEditorWindow::on_btnHideAllModules_clicked()
   this->layoutVideoWidgets();
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::on_btnPipelineStart_clicked()
 {
     mtv::Pipeline *pipeline = mtv::Pipeline::instance();
@@ -312,6 +320,9 @@ void PipelineEditorWindow::on_btnPipelineStart_clicked()
 
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::on_btnPipelineStop_clicked()
 {
   mtv::Pipeline *pipeline = mtv::Pipeline::instance();
@@ -319,6 +330,9 @@ void PipelineEditorWindow::on_btnPipelineStop_clicked()
   if(pipeline->isRunning()) pipeline->stop();
 }
 
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void PipelineEditorWindow::on_btnPause_clicked()
 {
    mtv::Pipeline *pipeline = mtv::Pipeline::instance();

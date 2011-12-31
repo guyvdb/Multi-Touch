@@ -44,7 +44,8 @@ SOURCES += \
     modules/BinaryModule.cpp \
     modules/BalanceModule.cpp \
     modules/AmplifyModule.cpp \
-    modules/MergeModule.cpp
+    modules/MergeModule.cpp \
+    modules/RecordModule.cpp
 
 
 
@@ -82,7 +83,8 @@ HEADERS +=\
     modules/BinaryModule.h \
     modules/BalanceModule.h \
     modules/AmplifyModule.h \
-    modules/MergeModule.h
+    modules/MergeModule.h \
+    modules/RecordModule.h
 
 OTHER_FILES += \
     COPYING \
@@ -116,7 +118,3 @@ win32 {
   LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_video231.dll.a
 
 }
-
-
-
-

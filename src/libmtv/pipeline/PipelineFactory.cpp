@@ -44,6 +44,7 @@
 #include "modules/HistogramModule.h"
 #include "modules/MedianModule.h"
 #include "modules/MergeModule.h"
+#include "modules/RecordModule.h"
 #include "modules/SobelModule.h"
 #include "modules/ThresholdModule.h"
 #include "modules/VideoModule.h"
@@ -62,7 +63,7 @@ namespace mtv {
     define("camera",          new CameraModuleFactory());
     define("canny",           new CannyModuleFactory());
     define("circles",         new CirclesModuleFactory());
-    define("contour",        new ContourModuleFactory());
+    define("contour",         new ContourModuleFactory());
     define("dilate",          new DilateModuleFactory());
     define("erode",           new ErodeModuleFactory());
     define("fast-features",   new FastFeaturesModuleFactory());
@@ -74,6 +75,7 @@ namespace mtv {
     define("histogram",       new HistogramModuleFactory());
     define("median",          new MedianModuleFactory());
     define("merge",           new MergeModuleFactory());
+    define("record",          new RecordModuleFactory());
     define("sobel",           new SobelModuleFactory());
     define("threshold",       new ThresholdModuleFactory());
     define("video",           new VideoModuleFactory());
