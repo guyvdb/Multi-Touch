@@ -3,20 +3,18 @@
 
     <module name="video0" type="video">
         <setting name="fps" type="integer" value="30"/>
-        <setting name="filename" type="string" value="../doc/rdi.avi"/>
+        <setting name="filename" type="string" value="../doc/1.ogv"/>
     </module>
-
 
     <module name="grayscale" type="grayscale">
         <setting name="input" type="frame" value="video0:OUTPUT"/>
     </module>
-    
+
     <module name="foreground" type="foreground">
         <setting name="input" type="frame" value="grayscale:OUTPUT"/>
         <setting name="learn" type="double" value="0.0001"/>
-        <setting name="timeout" type="integer" value="2000"/>
     </module>
-    
+
     <module name="blur" type="blur">
         <setting name="input" type="frame" value="foreground:OUTPUT"/>
         <setting name="size" type="integer" value="4"/>
@@ -24,47 +22,19 @@
 
     <module name="highpass" type="highpass">
         <setting name="input" type="frame" value="blur:OUTPUT"/>
-        <setting name="threshold" type="integer" value="1"/>
-        <setting name="noise" type="integer" value="1"/>
+        <setting name="threshold" type="integer" value="2"/>
+        <setting name="noise" type="integer" value="2"/>
     </module>
 
     <module name="amplify" type="amplify">
         <setting name="input" type="frame" value="highpass:OUTPUT"/>
-        <setting name="amplification" type="double" value="0.03"/>
+        <setting name="amplification" type="double" value="0.09"/>
     </module>
 
     <module name="binary" type="binary">
         <setting name="input" type="frame" value="amplify:OUTPUT"/>
-        <setting name="threshold" type="integer" value="58"/>
+        <setting name="threshold" type="integer" value="60"/>
     </module>
 
-  <module name="contour" type="contour">
-    <setting name="input" type="frame" value="binary:OUTPUT"/>
-    <setting name="min-blob-size" type="integer" value="30"/>
-    <setting name="max-blob-size" type="integer" value="60"/>
-    <setting name="max-blobs" type="integer" value="100"/>
-    <setting name="find-holes" type="boolean" value="false"/>
-    <setting name="use-approximation" type="boolean" value="false"/>
-  </module>
 
-  <module name="erode" type="erode">
-    <setting name="input" type="frame" value="binary:OUTPUT"/>      
-  </module>
-
-  <module name="dilate" type="dilate">
-    <setting name="input" type="frame" value="binary:OUTPUT"/>      
-  </module>
-
-
-  <module name="fast-features" type="fast-features">
-    <setting name="input" type="frame" value="amplify:OUTPUT"/>  
-  </module>
-
-<!--
-  <module name="merge" type="merge">
-    <setting name="input0" type="frame" value="video0:OUTPUT"/>  
-    <setting name="input1" type="frame" value="video1:OUTPUT"/>  
-    <setting name="edge" type="string" value="left"/> 
-  </module>
--->
 </pipeline>
