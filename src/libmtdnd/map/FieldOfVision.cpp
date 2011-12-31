@@ -22,7 +22,11 @@
 #include "FieldOfVision.h"
 #include "MapToken.h"
 
+#include "utils/FileUtils.h"
+
 #include <QDebug>
+
+#include <QtCore/qmath.h>
 
 namespace mtdnd {
 
@@ -42,39 +46,201 @@ namespace mtdnd {
     for(int i=0; i < this->multipliers.count(); i++) delete this->multipliers.at(i);
   }
 
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void FieldOfVision::walk(const int sx, const int sy, const float angle, QRect &bounds) {
+
+
+    qDebug() << "WALK: " << sx  << "," << sy << " A:" << angle;
+
+    if(angle == 360) {
+      qDebug() << "HERE";
+    }
+
+    float mx = qSin(angle);
+    float my = qCos(angle);
+    int x = sx;
+    int y = sy;
+
+    while(true) {
+
+      x = x - mx;
+      y = y - my;
+
+      QPoint p(x,y);
+
+      // out of sight
+      if(!bounds.contains(p)) {
+        qDebug() << "OUT OF BOUNDS: " << x << "," << y;
+        return;
+      }
+
+      // edge of world
+      if(x > this->obsticals->colCount()) {
+        qDebug() << "EDGE A";
+        return;
+      }
+      if(y > this->obsticals->rowCount()) {
+        qDebug() << "EDGE B";
+        return;
+      }
+      if(x < 0) {
+        qDebug() << "EDGE C";
+        return;
+      }
+      if(y < 0) {
+        qDebug() << "EDGE D";
+        return;
+      }
+
+
+      // already blocked by someone else
+      if(this->matrix->get(x,y) == 2) {
+        qDebug() << "BLOCKED HISTORY " << x << "," << y;
+        return;
+      }
+
+      if(this->isBlocked(x,y)) {
+        qDebug() << "BLOCKED " << x << "," << y;
+        this->matrix->set(x,y,2);
+        return;
+      }
+
+      qDebug() << "LIGHT: " << x << "," << y;
+      this->light(x,y);
+
+
+
+    }
+  }
+
+  void FieldOfVision::walkNorthWest(const int cx, const int cy, const int x, const int y, QRect &bounds) {
+    // walk west .. hit an obstical recurse hit bounds recurse
+
+
+
+    int watch = 0;
+    int mx = x;
+    int my = y;
+
+
+    while(true) {
+
+
+
+
+
+      // out of vision
+      QPoint p(mx,my);
+      if(!bounds.contains(p)) return;
+
+      // out of world
+      if(mx < 0) return;
+      if(mx >= this->obsticals->rowCount()) return;
+      if(my < 0) return;
+      if(my >= this->obsticals->colCount()) return;
+
+
+
+      if(this->matrix->contains(mx,my)) {
+        this->light(mx,my);
+        if(this->isBlocked(mx,my)) {
+          my = cy;
+          mx--;
+          this->walkNorthWest(cx,cy,mx,my,bounds);
+          return;
+        } else {
+          my--;
+        }
+      } else {
+        my = cy;
+        mx--;
+        this->walkNorthWest(cx,cy,mx,my,bounds);
+        return;
+      }
+
+
+      watch++;
+      if(watch > 20000) {
+        qDebug() << "YOU ARE CAUGHT IN A LOOP: " << mx << "," << my;
+        return;
+      }
+
+    }
+  }
+
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   Matrix* FieldOfVision::pointOfView(const int row, const int col, const int radius) {
-    this->matrix->reset(1);
+    this->matrix->reset(1);  // 0 = light, 1 = dark, 2 = blocked
 
-    this->inspectNNW(QPoint(row,col),QPoint(row,col),radius,1);
 
-    //inspectNNW(row, col, 0, 1, 0);
+
+   /* qDebug() << "CENTER: " << row << "," << col;
+
+    for(float angle = 1; angle <= 360; angle += 0.5) {
+      this->walk(row,col,angle,bounds);
+    }*/
+
+    QRect bounds(row-radius,col-radius,radius*2+1,radius*2+1);
+    this->walkNorthWest(row,col,row,col,bounds);
+
+    this->matrix->save("vision");
 
     return this->matrix;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  double FieldOfVision::slope(const double x1, const double y1, const double x2, const double y2 ) {
-    return ((x1 - x2) / (y1 - y2));
-  }
 
 
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  double FieldOfVision::inverse(const double x1, const double y1, const double x2, const double y2 ) {
-    return 1 / this->slope(x1,y1,x2,y2);
+/*
+
+
+    for(float angle = 1; angle <= 360; angle = angle + 5) {
+      int dist = 0;
+      float x = col;
+      float y = row;
+      float xm = qSin(angle);
+      float ym = qCos(angle);
+
+      while(true) {
+        x = x - xm;
+        y = y - ym;
+
+
+        QPoint p(y,x);
+
+        qDebug() << "WALK: y,x " << y << "," << x << " DISTANCE = " << dist;
+
+        // beyond vision
+        if(!bounds.contains(p)) break;
+
+        // edge of world
+        if(x > this->obsticals->colCount()) break;
+        if(y > this->obsticals->rowCount()) break;
+        if(x < 0) break;
+        if(y < 0) break;
+
+
+        if(this->isBlocked((int)y,(int)x)) {
+          break;
+        } else {
+          this->light((int)y, (int)x);
+        }
+
+
+    }
+    return this->matrix;
+    */
   }
+
+
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   void FieldOfVision::light(const int row, const int col) {
-    qDebug() << "LIGHTING " << row << "," << col;
+   // qDebug() << "LIGHTING " << row << "," << col;
     if(this->matrix->contains(row,col)) this->matrix->set(row,col,0);
   }
 
@@ -84,173 +250,10 @@ namespace mtdnd {
   bool FieldOfVision::isBlocked(const int row, const int col) {    
 
     bool result =  obsticals->contains(row,col) ?   (this->obsticals->get(row,col) != 0) : true;
-    qDebug() << "IS BLOCKED " << row << "," << col << " = " << result;
+    //qDebug() << "IS BLOCKED " << row << "," << col << " = " << result;
     return result;
   }
 
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  int FieldOfVision::ceiling(const double value) {
-    int result = (int)value;
-    if(value > result)result++;
-    return result;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  int FieldOfVision::max(const int i1, const int i2) {
-    if(i1 > i2) {
-      return i1;
-    }
-    return i2;
-  }
-
-
-  /* -------------------------------------------------------------------------------------------
-   * Is the point within the vision range of center?
-   * ------------------------------------------------------------------------------------------- */
-  //bool inRange(QPoint center, QPoint point, int vision) {
-  //  if(center.x() < point.x() && center.x() + vision < )
- // }
-
-  /* -------------------------------------------------------------------------------------------
-   * North north west is quadrant 1. Scan it row by row from left to right
-   * rows will be decreasing, cols increasing
-   * ------------------------------------------------------------------------------------------- */
-  void FieldOfVision::inspectNNW(QPoint character, QPoint current, int vision, int width) {
-
-
-    // we start at row, col [9,24] and we work our way out to vision distance (which is the decrementing of rows).
-    // We are going right to left. This means that row starts at current+1 and keeps increasing by one.
-    //
-
-    qDebug() << "CHAR: " << character << " CURRENT " << current << " VISION " << vision << " WIDTH " << width;
-
-
-    // are we on the edge of the map?
-    if(current.x() < 0 || current.y() < 0) return;
-
-
-    // are we out of vision?
-    if(current.x() < (character.x() - vision)) return;
-    if(current.y() < (character.y() - vision)) return;
-
-
-    if((current.x() > character.x() + vision) || (current.x() < 0) || (current.y() > character.y() + vision) || (current.y() < 0) ) {
-      // we are at end of vision range or map.
-      return;
-    }
-
-    int row = current.x();
-
-
-    for(int col= character.y() - width; col <= character.y(); col++){
-      if(isBlocked(row, col)) {
-        qDebug() << "BLOCKED AT " << row << "," << col;
-        col++;
-      } else {
-        this->light(row, col);
-      }
-    }
-
-    this->inspectNNW(QPoint(character),QPoint(current.x()-1,current.y()),vision,width+1);
-
-
-    /*
-
-    int startRow = row + this->ceiling(startSlope * vision);
-    int endRow = col + this->ceiling(endSlope * vision);
-
-    int currentCol = col + vision;
-
-    if(currentCol >= this->matrix->rowCount() ) return; // hit the right edge
-
-    bool blocked = this->isBlocked(startRow, currentCol);
-
-    for(int currentRow = this->max(startRow, 0); currentRow >= 0; currentRow-- ) {
-      if(this->isBlocked(currentRow, currentCol)) {
-        if(!blocked) {
-          double newScanEndSlope = slope(row, col,(currentRow - 0.5), (currentCol + 0.5));
-          inspectNNW(row,col,vision+1,startSlope, newScanEndSlope);
-        }
-        blocked = true;
-      } else {
-        if(blocked) {
-          startSlope = slope(row,col,(currentRow - 0.5), (currentCol + 0.5));
-        }
-        this->light(currentRow, currentCol);
-        blocked = false;
-      }
-    }
-    */
-
-  }
-
-  /*
-
-  void FieldOfVision::castLight(const int cx, const int cy, const int row, const int start, const int end, const int radius, const int xx, const int xy, const int yx, const int yy, const int id) {
-    if(start < end) return;
-
-    int squaredRadius = radius * radius;
-
-
-    int newStart;
-    int lightStart = start;
-
-
-    for (int j= row; j <= radius; j++) {
-      int dx = -j-1;
-      int dy = -j;
-      bool blocked = false;
-
-
-      while(dx <= 0) {
-        // translate dx,dy into map cords
-        int mx = cx + dx * xx + dy * xy;
-        int my = cy + dx * yx + dy * yy;
-
-        double lslope = (dx-0.5)/(dy+0.5);
-        double rslope = (dx+0.5)/(dy-0.5);
-
-        if(lightStart < rslope) {
-          continue;
-        } else if(end > lslope) {
-          break;
-        } else {
-
-          if((dx*dx + dy*dy) < squaredRadius){
-            // our light is touching this square
-            this->light(mx,my);
-          }
-
-          if(blocked) {
-            // scanning a row of blocked squares
-            if(isBlocked(mx,my)) {
-              newStart = rslope;
-              continue;
-            } else {
-              blocked = false;
-              lightStart = newStart;
-            }
-          } else {
-            if(isBlocked(mx,my) && j < radius) {
-              // blocking square -- start child scan
-              blocked = true;
-              castLight(cx,cy,j+1,lightStart,lslope, radius, xx,xy,yx,yy,id+1);
-              newStart = rslope;
-            }
-          }
-        }
-
-        if(blocked) break;
-      }
-
-
-    }
-  }
-*/
 
 
 

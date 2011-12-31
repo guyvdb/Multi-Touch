@@ -101,10 +101,15 @@ namespace mtdnd {
 
     void sendClients(QVariantMap &data, const QString type);
     void sendClients(QByteArray data);
+    void sendClients(mtdnd::Message &message);
+
     void sendClient(const QString nodeId, QVariantMap &data, const QString type);
     void sendClient(const QString nodeId, QByteArray data);
+    void sendClient(const QString nodeId, mtdnd::Message &message);
+
     void sendServer(QVariantMap &data, const QString type);
     void sendServer(QByteArray data);
+    void sendServer(mtdnd::Message &message);
 
   signals:
      void networkDiscoveryComplete();

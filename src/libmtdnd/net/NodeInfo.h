@@ -28,10 +28,20 @@ namespace mtdnd {
   class NodeInfo
   {
   public:
-      NodeInfo(const QString id, const QString host, const int port);
+
+      enum NodeType {
+        UnknownNode,
+        ServerNode,
+        TableNode,
+        ClientNode
+      };
+
+      NodeInfo(const QString id, const QString host, const int port, const NodeInfo::NodeType type);
       QString id;
       QString host;
       int port;
+      NodeInfo::NodeType type;
+
   };
 
 

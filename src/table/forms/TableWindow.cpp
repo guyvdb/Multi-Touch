@@ -39,7 +39,7 @@ TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWin
     this->commandServer = 0x0;
 
     QDesktopWidget *desktop = QApplication::desktop();
-    QRect workspace = desktop->availableGeometry(0);
+    QRect workspace = desktop->availableGeometry(1);
 
     //this->setGeometry(QRect(workspace.x(), workspace.y(), 500,500));
     this->setGeometry(workspace);

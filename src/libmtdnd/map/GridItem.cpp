@@ -72,8 +72,8 @@ namespace mtdnd {
 
 
             painter->setBrush(Qt::transparent);
-            painter->setPen(Qt::red);
-            painter->drawRect(this->bounds);
+           // painter->setPen(Qt::red);
+            //painter->drawRect(this->bounds);
 
 
             if(this->tileSize.width() > 0 && this->mapSize.width() > 0) {
@@ -87,19 +87,21 @@ namespace mtdnd {
 
               QFont f;
               f = QFont(*this->font,painter->device());
+              QColor color(255,255,255,128);
+              painter->setPen(color);
 
               painter->setFont(f);
 
               for(int col = 0; col < cols; col ++) {
-                for(int row = rows-1; row >=0; row --){
+                for(int row = 0; row < rows; row ++){
                   QRect r(left, top,this->tileSize.width(), this->tileSize.height());
 
-                  painter->setPen(Qt::red);
-                  painter->drawRect(r);
+                  //painter->setPen(Qt::red);
+                  //painter->drawRect(r);
 
-                  painter->setPen(Qt::white);
+                  //painter->setPen(Qt::white);
 
-                  QString text = QString::number(col) + "," + QString::number(row);
+                  QString text = QString::number(row) + "," + QString::number(col);
                   painter->drawText(r,Qt::AlignCenter, text);
 
 

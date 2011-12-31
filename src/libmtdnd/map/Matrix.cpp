@@ -95,9 +95,6 @@ namespace mtdnd {
    * ------------------------------------------------------------------------------------------- */
   short Matrix::get(const int row, const int col) const {
     Q_ASSERT(this->grid != 0x0);
-
-   // qDebug() << "MATRIX GET REQUEST: " << row << "," << col;
-
     Q_ASSERT(contains(row,col));
 
     return this->grid->at(row)->at(col);

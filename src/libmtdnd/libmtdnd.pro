@@ -38,7 +38,8 @@ SOURCES += \
     map/MapToken.cpp \
     map/CellStates.cpp \
     map/Matrix.cpp \
-    map/FieldOfVision.cpp
+    map/FieldOfVision.cpp \
+    map/fov/AbstractFieldOfVision.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -69,7 +70,8 @@ HEADERS +=\
     map/ZIndex.h \
     map/CellStates.h \
     map/Matrix.h \
-    map/FieldOfVision.h
+    map/FieldOfVision.h \
+    map/fov/AbstractFieldOfVision.h
 
 
 FORMS += \

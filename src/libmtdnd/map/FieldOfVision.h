@@ -23,7 +23,7 @@
 
 #include <QList>
 #include <QPoint>
-
+#include <QRect>
 
 #include "Matrix.h"
 
@@ -38,30 +38,14 @@ namespace mtdnd {
       Matrix* pointOfView(const int row, const int col, const int radius);
 
   private:
-     // void initializeMultipliers();
-      double slope(const double x1, const double y1, const double x2, const double y2 );
-      double inverse(const double x1, const double y1, const double x2, const double y2 );
+
 
       void light(const int row, const int col);
       bool isBlocked(const int row, const int col);
-
-      int ceiling(const double value);
-      int max(const int i1, const int i2);
-
-      bool inRange(QPoint center, QPoint point, int vision);
+      void walkNorthWest(const int cx, const int cy, const int x, const int y, QRect &bounds);
 
 
-    //  void cast()
-
-      void inspectNNW(QPoint character, QPoint current, int vision, int width);
-
-      //void castLight(const int cx, const int cy, const int row, const int start, const int end, const int radius, const int xx, const int xy, const int yx, const int yy, const int id);
-
-
-
-
-
-
+      void walk(const int sx, const int sy, const float angle, QRect &bounds);
 
       QList<QList<int>*> multipliers;
 

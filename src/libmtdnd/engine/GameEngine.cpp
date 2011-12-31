@@ -73,7 +73,6 @@ namespace mtdnd {
       QVariantMap ports = network.value("ports").toMap();
 
       // initial port values
-
       this->serverHost = network.value("server").toString();
       this->serverDiscoveryPort =ports.value("discovery").toInt();
       this->serverCommandPort = ports.value("command").toInt();
@@ -180,9 +179,13 @@ namespace mtdnd {
         // open and broadcast
         this->mapView->loadMap(file);
 
-        QVariantMap data;
-        data.insert("filename",filename);
-        this->sendClients(mtdnd::Message::encode(this->commandClient->getId(), "SHOW_MAP", data));
+        //QVariantMap data;
+        //data.insert("filename",filename);
+
+        Message message("SHOW_MAP");
+        message.set("filename",filename);
+
+        this->sendClients( message /*mtdnd::Message::encode(this->commandClient->getId(), "SHOW_MAP", data)*/);
       } else {
         // ensure it exists and open or retreive
         QFile f(file);
@@ -222,6 +225,14 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendClients(mtdnd::Message &message) {
+      message.setFrom(this->commandClient->getId());
+      this->sendClients(mtdnd::Message::encode(message));
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendServer(QVariantMap &data, const QString type) {
       this->sendServer(mtdnd::Message::encode(this->commandClient->getId(),type, data));
     }
@@ -231,6 +242,14 @@ namespace mtdnd {
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendServer(QByteArray data) {
       this->commandClient->send(this->serverHost, this->serverCommandPort, data);
+    }
+
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendServer(mtdnd::Message &message) {
+      message.setFrom(this->commandClient->getId());
+      this->sendServer(mtdnd::Message::encode(message));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -252,6 +271,14 @@ namespace mtdnd {
       }
     }
 
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void GameEngine::sendClient(const QString nodeId, mtdnd::Message &message) {
+      message.setFrom(this->commandClient->getId());
+      this->sendClient(nodeId, mtdnd::Message::encode(message));
+    }
+
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -264,13 +291,30 @@ namespace mtdnd {
       // stop discovery
       this->discoveryClient->deleteLater();
 
-      // send a registration message
-      QVariantMap data;
-      data.insert("host",mtdnd::IPAddressLocator::getMachineAddress());
-      data.insert("port", QString::number(this->clientCommandPort));
+      // what type of node are we?
+      NodeInfo::NodeType type = NodeInfo::UnknownNode;
 
-      QByteArray bytes = mtdnd::Message::encode(this->commandClient->getId(), "REGISTRATION", data);
-      this->commandClient->send(this->serverHost,this->serverCommandPort, bytes);
+      switch(this->mode) {
+      case GameServer:
+        // we should never get here
+        Q_ASSERT(false);
+        break;
+      case GameTable:
+        type = NodeInfo::TableNode;
+        break;
+      case GameClient:
+        type = NodeInfo::ClientNode;
+        break;
+      }
+
+
+      // send a registration message
+      Message message("REGISTRATION");
+      message.set("host",mtdnd::IPAddressLocator::getMachineAddress());
+      message.set("port", QString::number(this->clientCommandPort));
+      message.set("type",(int)type);
+      this->sendServer(message);
+
 
       // notify registration complete
       emit networkDiscoveryComplete();
@@ -282,10 +326,13 @@ namespace mtdnd {
     void GameEngine::OnMessageForServer(mtdnd::Message::DataPacket packet) {
       qDebug() << "Message For Server from: " << packet.from << " DATA: " << packet.data;
 
-
       // Register a new node
       if(packet.type == "REGISTRATION") {
-        NodeInfo* node = new NodeInfo(packet.data.value("from").toString(), packet.data.value("host").toString(), packet.data.value("port").toInt());
+        NodeInfo* node = new NodeInfo(packet.data.value("from").toString(),
+                                      packet.data.value("host").toString(),
+                                      packet.data.value("port").toInt(),
+                                      (NodeInfo::NodeType)packet.data.value("type").toInt()
+                                      );
         this->nodes.append(node);
         this->nodesIndex[node->id] = node;
       } else if(packet.type == "MOVE_TOKEN") {

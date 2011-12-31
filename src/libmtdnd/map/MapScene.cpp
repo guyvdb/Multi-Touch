@@ -57,6 +57,7 @@ namespace mtdnd {
     this->grid = new GridItem(QRect(0,0,0,0));
     this->grid->setPos(0,0);
     this->grid->setZValue(ZINDEX_GRID);
+    this->showGrid = false;
 
   }
 
@@ -110,12 +111,13 @@ namespace mtdnd {
 
 
     // grid
-    this->grid->setMapSize(QSize(map->width() * map->tileWidth(), map->height() * map->tileHeight()));
-    this->grid->setTileSize(QSize(this->tileSize));
-    this->addItem(this->grid);
-
-
-
+    if (this->showGrid) {
+      this->grid->setMapSize(QSize(map->width() * map->tileWidth(), map->height() * map->tileHeight()));
+      this->grid->setTileSize(QSize(this->tileSize));
+      this->addItem(this->grid);
+    } else {
+      this->removeItem(this->grid);
+    }
 
     if(engine->getGameMode() == GameEngine::GameServer) {
       this->fogOfWar->setOverlayColor(QColor(0,0,0,180));
@@ -341,7 +343,7 @@ namespace mtdnd {
 
     if(!this->mapView->isLoaded()) return;
 
-    /*
+
     this->cellStates->clearVisability();
     foreach(MapToken *token, this->tokens) {
       // find the cell the token is located on
@@ -360,14 +362,6 @@ namespace mtdnd {
       int startCol = currentCol - ev;
       int endCol = currentCol + ev;
 
-
-
-      // block directions
-      //bool btop = false;
-      //bool bbottom = false;
-      //bool bleft = false;
-      //bool bright = false;
-
       for(int row = startRow; row <= endRow; row++) {
         for(int col = startCol; col <= endCol; col++){
           if(this->cellStates->contains(row,col)){
@@ -376,15 +370,14 @@ namespace mtdnd {
         }
       }
     }
+    this->fogOfWar->recalculate(this->tileSize,this->cellStates->getVisabilityMatrix());
 
 
 
+/*
+   // Matrix *visability = this->cellStates->getVisabilityMatrix();
+   // visability->save("visability");
 
-
-    Matrix *visability = this->cellStates->getVisabilityMatrix();
-    visability->save("visability");
-
-     */
 
     Matrix *obstruction = this->cellStates->getObstructionMatrix();
     obstruction->save("obstruction");
@@ -393,14 +386,14 @@ namespace mtdnd {
       MapToken *t = this->tokens.at(0);
 
       FieldOfVision v(obstruction);
-      Matrix *computed = v.pointOfView(t->getLocation().x(),t->getLocation().y(),4);
+      Matrix *computed = v.pointOfView(t->getLocation().x(),t->getLocation().y(),3);
       computed->save("computed");
 
       this->fogOfWar->recalculate(this->tileSize,computed);
     }
 
 
-
+*/
 
 
   }

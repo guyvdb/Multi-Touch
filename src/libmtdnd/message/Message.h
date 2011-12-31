@@ -26,23 +26,41 @@
 
 namespace mtdnd {
 
-    class Message
-    {
-    public:
+  class Message
+  {
+  public:
 
-        typedef struct Packet {
-            bool ok;
-            QString type;
-            QString from;
-            QVariantMap data;
-        } DataPacket;
+    typedef struct Packet {
+      bool ok;
+      QString type;
+      QString from;
+      QVariantMap data;
+    } DataPacket;
+
+
+    // Quick methods for sending message without construction a message
+    static Message::DataPacket decode(QByteArray bytes);
+    static QByteArray encode(QString from, QString type, QVariantMap message);
+    static QByteArray encode(Message::DataPacket &packet);
+    static QByteArray encode(mtdnd::Message &message);
 
 
 
-        static Message::DataPacket decode(QByteArray bytes);
-        static QByteArray encode(QString from, QString type, QVariantMap message);
+    Message(const QString type);
+    void set(const QString name, const int value);
+    void set(const QString name, const double value);
+    void set(const QString name, const bool value);
+    void set(const QString name, const QString value);
 
-    };
+    void setFrom(const QString value) {this->packet.from = value; }
+
+    Message::DataPacket getPacket() {return this->packet; }
+
+  private:
+    Message::DataPacket packet;
+
+
+  };
 
 }
 #endif // MESSAGE_H

@@ -22,7 +22,7 @@
 
 namespace mtdnd {
 
-  NodeInfo::NodeInfo(const QString id, const QString host, const int port) : id(id), host(host), port(port)
+  NodeInfo::NodeInfo(const QString id, const QString host, const int port, const NodeInfo::NodeType type) : id(id), host(host), port(port), type(type)
   {
   }
 

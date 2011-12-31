@@ -92,6 +92,7 @@ namespace mtdnd {
 
     FogOfWar *fogOfWar;
     GridItem *grid;
+    bool showGrid;
 
     CellStates *cellStates;
     QList<MapToken*> tokens;
