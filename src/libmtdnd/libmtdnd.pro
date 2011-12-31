@@ -39,7 +39,8 @@ SOURCES += \
     map/CellStates.cpp \
     map/Matrix.cpp \
     map/FieldOfVision.cpp \
-    map/fov/AbstractFieldOfVision.cpp
+    map/fov/AbstractFieldOfVision.cpp \
+    map/fov/BasicFieldOfVision.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -71,7 +72,8 @@ HEADERS +=\
     map/CellStates.h \
     map/Matrix.h \
     map/FieldOfVision.h \
-    map/fov/AbstractFieldOfVision.h
+    map/fov/AbstractFieldOfVision.h \
+    map/fov/BasicFieldOfVision.h
 
 
 FORMS += \

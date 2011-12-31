@@ -38,6 +38,9 @@
 #include "map/ZIndex.h"
 #include "map/FieldOfVision.h"
 
+#include "map/fov/AbstractFieldOfVision.h"
+#include "map/fov/BasicFieldOfVision.h"
+
 #include "engine/GameEngine.h"
 #include "message/Message.h"
 
@@ -344,11 +347,18 @@ namespace mtdnd {
     if(!this->mapView->isLoaded()) return;
 
 
-    this->cellStates->clearVisability();
+    //this->cellStates->clearVisability();
+
+    BasicFieldOfVision fov(this->cellStates->getObstructionMatrix());
+    fov.reset();
+
+
     foreach(MapToken *token, this->tokens) {
       // find the cell the token is located on
       int currentRow = token->getLocation().x();
       int currentCol = token->getLocation().y();
+
+     // fov.addPointOfView(token->getLocation(), this->visualRange(token->getVision()));
 
       // current location
       this->cellStates->setVisability(currentRow,currentCol,CellStates::Clear);
