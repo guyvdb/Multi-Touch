@@ -89,11 +89,16 @@ namespace mtv {
       if(this->timer != 0x0) {
         this->timer->stop();
         this->disconnect(this->timer, SIGNAL(timeout()),this,SLOT(tick()));
+        qDebug() << "ABOUT TO DELETE TIMER";
         delete this->timer;
         this->timer = 0x0;
       }
-      delete this->capture;
+      qDebug() << "ABOUT TO DELETE CAPTURE";
+      if(this->capture != 0x0) delete this->capture;
+      this->capture = 0x0;
       this->running = false;
+
+      qDebug() << "DONE";
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -127,7 +132,7 @@ namespace mtv {
           this->frameRate = this->frameCount / (this->time.elapsed()/1000);
           this->frameCount = 0;
           this->time.start();
-          qDebug() << "fps: " << this->frameRate;
+          qDebug() << "device: " << QString::number(this->setting("device")->asInteger()) <<  " fps: " << this->frameRate;
         }
       }
 

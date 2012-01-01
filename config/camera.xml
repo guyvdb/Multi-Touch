@@ -6,6 +6,11 @@
        <setting name="device" type="integer" value="0"/>
     </module>
 
+    <module name="video1" type="camera">
+       <setting name="fps" type="integer" value="100"/>
+       <setting name="device" type="integer" value="1"/>
+    </module>
+
     <module name="grayscale" type="grayscale">
         <setting name="input" type="frame" value="video0:OUTPUT"/>
     </module>
