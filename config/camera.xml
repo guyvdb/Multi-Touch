@@ -6,10 +6,12 @@
        <setting name="device" type="integer" value="0"/>
     </module>
 
+    <!--
     <module name="video1" type="camera">
        <setting name="fps" type="integer" value="100"/>
        <setting name="device" type="integer" value="1"/>
     </module>
+    -->
 
     <module name="grayscale" type="grayscale">
         <setting name="input" type="frame" value="video0:OUTPUT"/>
@@ -34,12 +36,12 @@
 
     <module name="amplify" type="amplify">
         <setting name="input" type="frame" value="highpass:OUTPUT"/>
-        <setting name="amplification" type="double" value="0.1"/>
+        <setting name="amplification" type="double" value="0.08"/>
     </module>
 
     <module name="binary" type="binary">
         <setting name="input" type="frame" value="amplify:OUTPUT"/>
-        <setting name="threshold" type="integer" value="46"/>
+        <setting name="threshold" type="integer" value="40"/>
     </module>
 
 </pipeline>
