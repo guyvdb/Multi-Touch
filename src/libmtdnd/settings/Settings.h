@@ -24,9 +24,11 @@
 #include <QObject>
 #include <QVariantMap>
 
+#include "libmtg_global.h"
+
 namespace mtdnd {
 
-    class Settings : public QObject
+    class LIBMTDND_EXPORT Settings : public QObject
     {
         Q_OBJECT
     public:
