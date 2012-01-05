@@ -108,6 +108,9 @@ namespace mtv {
       void unhookFrameHandler(Module *source);
 
       QHash<QString, mtv::Setting*>* getSettings() {return &this->settings; }
+
+  protected:
+      void save(const QString filename, cv::Mat &frame);
   private:
       QHash<QString, mtv::Setting*> settings;
       QString instanceName;

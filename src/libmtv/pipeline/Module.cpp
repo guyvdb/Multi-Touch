@@ -21,6 +21,8 @@
 #include <QDebug>
 #include "Module.h"
 
+#include <opencv2/highgui/highgui.hpp>
+
 namespace mtv {
 
   /* -------------------------------------------------------------------------------------------
@@ -106,5 +108,22 @@ namespace mtv {
     qDebug() << "UNHOOK: " << source->getModuleName() << ":" << source->getInstanceName() << " -> " << this->getModuleName() << ":" << this->getInstanceName();
     this->disconnect(source,SIGNAL(frameReady(mtv::Module*,QString,cv::Mat&)), this, SLOT(OnFrame(mtv::Module*,QString,cv::Mat&)));
   }
+
+  /* -------------------------------------------------------------------------------------------
+   * debugging method
+   * ------------------------------------------------------------------------------------------- */
+  void Module::save(const QString filename, cv::Mat &frame) {
+    QString file = "../debug/";
+    file.append(filename);
+    file.append(".jpg");
+
+    qDebug() << "SAVE FRAME: " << file << " Empty=" << frame.empty();
+
+    std::string path(file.toAscii().constData());
+    cv::imwrite(path,frame);
+  }
+
+
+
 
 }

@@ -18,52 +18,62 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#include "ContourModule.h"
+#include "Repository.h"
 
-#include <QDebug>
+#include <QSqlDatabase>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-
-#include <vector>
+#include "qdjango/QDjango.h"
 
 
-namespace mtv {
+#include "repository/Map.h"
+
+namespace mtdnd {
+
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  ContourModule::ContourModule() : SimpleModule() {
-    this->setting("input")->set(0x0,"");
-    this->setting("min-blob-size")->set(10);
-    this->setting("max-blob-size")->set(50);
-    this->setting("max-blobs")->set(20);
-    this->setting("find-holes")->set(false);
-    this->setting("use-approximation")->set(false);
+  Repository::Repository() : QObject()
+  {
+    this->database = QSqlDatabase::addDatabase("QSQLITE","REPOSITORY");
+    this->registerModels();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void ContourModule::OnFrame(mtv::Module *module, const QString name, cv::Mat &matrix) {
-    std::vector< std::vector< cv::Point > > list;
-    cv::Mat frame;
-    matrix.copyTo(frame);
-    cv::findContours(frame, list, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+  bool Repository::open(const QString filename) {
+    this->database.setDatabaseName(filename + ".repos");
+    bool flag = this->database.open();
 
-
-
-
-    if(list.size() > 0) {
-      cv::drawContours(frame, list, -1, cv::Scalar(255),1);
-      //TODO add emit point list
-      //qDebug() << "CONTOURS: " << list.size();
-
-      //save(frame,"contours");
-
-      emit frameReady(this,"OUTPUT",frame);
-
+    if(flag) {
+      QDjango::setDatabase(this->database);
+      QDjango::createTables();
     }
+
+
+    return flag;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Repository::close() {
+    // TODO how do we unset the QDjango database??
+    this->database.close();
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  bool Repository::isOpen() {
+    return this->database.isOpen();
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Repository::registerModels() {
+    QDjango::registerModel<Map>();
   }
 
 }
-

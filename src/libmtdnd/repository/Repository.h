@@ -18,34 +18,33 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef DISCOVERYSERVER_H
-#define DISCOVERYSERVER_H
+#ifndef REPOSITORY_H
+#define REPOSITORY_H
 
-#include <QUdpSocket>
-#include <QTimer>
+#include <QObject>
+#include <QSqlDatabase>
 
 namespace mtdnd {
 
-  class DiscoveryServer : public QUdpSocket
+  class Repository : public QObject
   {
       Q_OBJECT
   public:
-    explicit DiscoveryServer(const QString serverHost, const int discoveryPort, const int assetPort, const int commandPort);
+    explicit Repository();
+
+    bool open(const QString filename);
+    void close();
+    bool isOpen();
+
 
 
   private:
-    QTimer timer;
-    int discoveryPort;
-    int assetPort;
-    int commandPort;
-    QString serverHost;
-    QByteArray datagram;
+    QSqlDatabase database;
 
-  private slots:
-      void tick();
+    void registerModels();
 
   };
 
 }
 
-#endif // DISCOVERYSERVER_H
+#endif // REPOSITORY_H

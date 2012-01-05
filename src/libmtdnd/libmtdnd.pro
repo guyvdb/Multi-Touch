@@ -23,7 +23,6 @@ SOURCES += \
     engine/GameEngine.cpp \
     settings/Settings.cpp \
     message/Message.cpp \
-    data/Repository.cpp \
     data/MapModel.cpp \
     map/FogOfWar.cpp \
     net/AssetServer.cpp \
@@ -31,8 +30,6 @@ SOURCES += \
     net/CommandClient.cpp \
     net/CommandServer.cpp \
     net/IPAddressLocator.cpp \
-    net/DiscoveryServer.cpp \
-    net/DiscoveryClient.cpp \
     net/NodeInfo.cpp \
     data/BaseModel.cpp \
     map/MapToken.cpp \
@@ -40,7 +37,10 @@ SOURCES += \
     map/Matrix.cpp \
     map/FieldOfVision.cpp \
     map/fov/AbstractFieldOfVision.cpp \
-    map/fov/BasicFieldOfVision.cpp
+    map/fov/BasicFieldOfVision.cpp \
+    repository/Repository.cpp \
+    data/RepositoryDeprecated.cpp \
+    repository/Map.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -55,7 +55,6 @@ HEADERS +=\
     settings/Settings.h \
     message/Message.h \
     libmtg_global.h \
-    data/Repository.h \
     data/MapModel.h \
     map/FogOfWar.h \
     net/AssetServer.h \
@@ -63,8 +62,6 @@ HEADERS +=\
     net/CommandClient.h \
     net/CommandServer.h \
     net/IPAddressLocator.h \
-    net/DiscoveryServer.h \
-    net/DiscoveryClient.h \
     net/NodeInfo.h \
     data/BaseModel.h \
     map/MapToken.h \
@@ -73,7 +70,10 @@ HEADERS +=\
     map/Matrix.h \
     map/FieldOfVision.h \
     map/fov/AbstractFieldOfVision.h \
-    map/fov/BasicFieldOfVision.h
+    map/fov/BasicFieldOfVision.h \
+    repository/Repository.h \
+    data/RepositoryDeprecated.h \
+    repository/Map.h 
 
 
 FORMS += \
@@ -92,4 +92,6 @@ DEPENDPATH += $$PWD/../../include
 
 DESTDIR += ../../../bin
 
+
 LIBS += -L$$DESTDIR -ltiled -lqjson
+#-lqdjango-db

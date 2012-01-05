@@ -17,7 +17,7 @@ namespace mtdnd {
     ~AbstractFieldOfVision();
 
     virtual void addPointOfView(const int row, const int col, const int radius) = 0;
-    virtual void addPointOfView(QPoint point, const int radius) {this->addPointOfView(point.x(), point.y(), radius); }
+    virtual void addPointOfView(QPoint point, const int radius) = 0;
     void reset();
     Matrix *getMatrix() {return this->matrix; }
 

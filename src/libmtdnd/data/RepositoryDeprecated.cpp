@@ -19,7 +19,7 @@
  *
  * ------------------------------------------------------------------------------------------- */
 
-#include "Repository.h"
+#include "RepositoryDeprecated.h"
 
 #include <QStringList>
 #include <QDebug>
@@ -31,21 +31,21 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  Repository::Repository(QSqlDatabase &database) : QObject(), database(database)
+  RepositoryDeprecated::RepositoryDeprecated(QSqlDatabase &database) : QObject(), database(database)
   {
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::initialize() {
+  void RepositoryDeprecated::initialize() {
     if(!this->schemaExists()) this->createSchema();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::addMap(mtdnd::MapModel &map) {
+  void RepositoryDeprecated::addMap(mtdnd::MapModel &map) {
     QStringList statement;
     statement << "INSERT INTO maps VALUES ("  << quote(map.id) << "," << quote(map.name) << "," << quote(map.file) << ")";
     execSql(statement);
@@ -54,7 +54,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::deleteMap(mtdnd::MapModel &map) {
+  void RepositoryDeprecated::deleteMap(mtdnd::MapModel &map) {
 
 
   }
@@ -62,7 +62,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::listMaps(QList<mtdnd::MapModel*> &result) {
+  void RepositoryDeprecated::listMaps(QList<mtdnd::MapModel*> &result) {
     QSqlQuery query(this->database);
     query.exec("SELECT name, file FROM maps");
     while(query.next()) {
@@ -75,21 +75,21 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  bool Repository::schemaExists() {
+  bool RepositoryDeprecated::schemaExists() {
     return this->tableExists("schema");
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::createSchema() {
+  void RepositoryDeprecated::createSchema() {
     this->createSchemaV1();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  bool Repository::tableExists(const QString name) {
+  bool RepositoryDeprecated::tableExists(const QString name) {
 
     QSqlQuery query(this->database);
     query.exec("SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "'");
@@ -101,7 +101,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  int Repository::getSchemaVersion() {
+  int RepositoryDeprecated::getSchemaVersion() {
     QSqlQuery query(this->database);
     query.exec("SELECT version FROM schema");
     if(query.next()) {
@@ -114,7 +114,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::setSchemaVersion(const int version) {
+  void RepositoryDeprecated::setSchemaVersion(const int version) {
     this->execSql("DELETE FROM schema");
     this->execSql("INSERT INTO schema VALUES (" + QString::number(version) + ")");
   }
@@ -122,7 +122,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::execSql(const QString statement) {
+  void RepositoryDeprecated::execSql(const QString statement) {
     QSqlQuery query(this->database);
     query.exec(statement);
   }
@@ -130,7 +130,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::execSql(QStringList &statement) {
+  void RepositoryDeprecated::execSql(QStringList &statement) {
     this->execSql(statement.join(" "));
   }
 
@@ -138,7 +138,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  QString Repository::quote(const QString value) {
+  QString RepositoryDeprecated::quote(const QString value) {
     QString result = value;
     result.replace("'","''");
     return "'" + result + "'";
@@ -147,7 +147,7 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::createSchemaV1() {
+  void RepositoryDeprecated::createSchemaV1() {
     QStringList statement;
 
     // schema

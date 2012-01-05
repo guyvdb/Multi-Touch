@@ -35,10 +35,15 @@ namespace mtdnd {
         bool load();
         bool save();
         void dump();
-        void merge(QVariantMap *defaults);
+        void merge(QVariantMap &defaults);
         QVariantMap *getMap();
 
+        void set(const QString key, QVariant value);
+
     private:
+        void mergeMaps(QVariant setting,  QVariant defaults);
+
+
         QVariantMap map;
         QString filename;
     };

@@ -43,7 +43,8 @@ public:
 
     bool event(QEvent *event);
 private slots:
-    void OnNetworkDiscoveryComplete();
+    void OnNetworkRegistrationComplete();
+    void OnWaitingNetworkRegistration(const QString host, const int port);
 private:
 
     QRect calculateMapRect();

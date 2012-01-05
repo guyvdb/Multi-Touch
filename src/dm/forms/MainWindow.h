@@ -57,10 +57,13 @@ private slots:
   void on_closePrivateMapAction_triggered();
   void on_startGameAction_triggered();
 
+  void on_registerTableAction_triggered();
+
 private:
   enum GameState {
     GameOpenState,
-    GameClosedState
+    GameClosedState,
+    GameStartedState
   };
 
 
@@ -74,6 +77,7 @@ private:
   bool isGameStateValid(GameState requiredState);
   void showGameStateOpenError();
   void showGameStateClosedError();
+  void showGameStateStoppedError();
 
   GameState state;
   bool started;

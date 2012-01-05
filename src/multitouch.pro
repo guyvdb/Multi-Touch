@@ -6,4 +6,5 @@ SUBDIRS     =     libmtdnd \
                   table \
                   dm \
                   mtv \
-                  udp
+                  udp \
+    headless

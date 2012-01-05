@@ -14,26 +14,33 @@ SOURCES += main.cpp\
     forms/CreateGameDialog.cpp \
     forms/NetworkSettingDialog.cpp \
     forms/ShowMapDialog.cpp \
-    forms/ErrorDialog.cpp
+    forms/ErrorDialog.cpp \
+    forms/RegisterTableDialog.cpp \
+    forms/DMWindow.cpp
 
 HEADERS  += \
     forms/MainWindow.h \
     forms/CreateGameDialog.h \
     forms/NetworkSettingDialog.h \
     forms/ShowMapDialog.h \
-    forms/ErrorDialog.h
+    forms/ErrorDialog.h \
+    forms/RegisterTableDialog.h \
+    forms/DMWindow.h
 
 FORMS    += \
     forms/MainWindow.ui \
     forms/CreateGameDialog.ui \
     forms/NetworkSettingDialog.ui \
     forms/ShowMapDialog.ui \
-    forms/ErrorDialog.ui
+    forms/ErrorDialog.ui \
+    forms/RegisterTableDialog.ui
 
 OTHER_FILES += \
     COPYING \
     README \
-    AUTHORS
+    AUTHORS \
+    ../../config/multitable.conf \
+    ../../config/dm.state
 
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include

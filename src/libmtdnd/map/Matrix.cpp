@@ -128,6 +128,18 @@ namespace mtdnd {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
+  void Matrix::copy(Matrix *value) {
+    this->resize(value->rowCount(), value->colCount());
+    for(int row = 0; row < value->rowCount(); row++) {
+      for(int col =0; col < value->colCount(); col++){
+        this->set(row,col,value->get(row,col));
+      }
+    }
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   //debug method
   QString format(const short no) {
     QString n = QString::number(no);

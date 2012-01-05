@@ -22,22 +22,12 @@
 #include "SimpleModule.h"
 #include <QDebug>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+
 
 
 
 namespace mtv {
   SimpleModule::SimpleModule() : Module()
   {
-  }
-
-  void SimpleModule::saveToFile(cv::Mat &frame, const QString filename) {
-    QString file = "../output/";
-    file.append(filename);
-    file.append(".jpg");
-
-    std::string path(file.toAscii().constData());
-    cv::imwrite(path,frame);
   }
 }

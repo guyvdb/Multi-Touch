@@ -17,9 +17,10 @@ fi
 ##
 # Find and export the lib directory
 ##
-LIB_DIR="${BIN_DIR}./linux"
+LIB_DIR="${BIN_DIR}./bin"
 LD_LIBRARY_PATH=$LIB_DIR
 export LD_LIBRARY_PATH
+
 
 
 ##
@@ -39,6 +40,8 @@ elif [ $1 = "pipeline" ] ; then
   $BIN_DIR/pipeline
 elif [ $1 = "mtv" ] ; then
   $BIN_DIR/mtv
+elif [ $1 = "headless" ] ; then
+  $BIN_DIR/headless
 else
   echo "-----------------------"
   echo "Error. Invalid command"

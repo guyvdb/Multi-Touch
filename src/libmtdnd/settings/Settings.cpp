@@ -74,52 +74,34 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void Settings::merge(QVariantMap *defaults) {
+    void Settings::merge(QVariantMap &defaults) {
 
-        //defaults->insert()
+      foreach(QString key, defaults.keys()) {
+        QVariant defval = defaults.value(key);
 
-        //this->recursiveMerge(defaults,this->getMap());
+        if(!this->map.contains(key)) {
+          this->map[key] = defval;
+        } else {
+          if(defval.canConvert<QVariantMap>()){
+            this->mergeMaps(this->map.value(key),defval);
+          }
+        }
+      }
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    //void Settings::recursiveMerge(QVariant *source, QVariant *dest) {
-        /*
-        QVariantMap::Iterator i;
+    void Settings::mergeMaps(QVariant setting,  QVariant defaults) {
+      // TODO implement map merging
+    }
 
-        for(i=source->begin(); i!=source->end();i++){
-           QVariant key = i.key();
-           QVariant value = i.value();
-
-
-           if(value.type() == QVariant::Map) {
-               qDebug() << key << " is a map";
-               if(!dest->contains(key.toString())) {
-                   qDebug() << "DEST DOES NOT CONTAIN KEY";
-                   QVariantMap child;
-                   dest->insert(key.toString(), child);
-               }
-
-               QVariant sourceChild = source->value(key.toString());
-               QVariant destChild = dest->value(key.toString());
-
-               this->recursiveMerge(&sourceChild, &destChild);
-
-
-           } else {
-
-           }
-
-
-           qDebug() << "key: " << key << " : value : " << value;
-           qDebug() << "KEYTYPE: " << key.type();
-           qDebug() << "VALUETYPE: " << value.type();
-
-        }*/
-    //}
-
-    //key:  QVariant(QString, "files")  : value :  QVariant(QVariantMap, QMap(("foo", QVariant(QString, "Bar") ) )  )
+    /* -------------------------------------------------------------------------------------------
+     *
+     * ------------------------------------------------------------------------------------------- */
+    void Settings::set(const QString key, QVariant value) {
+      this->map[key] = value;
+    }
 
     /* -------------------------------------------------------------------------------------------
      *

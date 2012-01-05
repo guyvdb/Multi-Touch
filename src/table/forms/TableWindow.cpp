@@ -41,11 +41,13 @@ TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWin
     QDesktopWidget *desktop = QApplication::desktop();
     QRect workspace = desktop->availableGeometry(1);
 
-    //this->setGeometry(QRect(workspace.x(), workspace.y(), 500,500));
     this->setGeometry(workspace);
 
     this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameTable);
-    this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkDiscoveryComplete()));
+    this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkRegistrationComplete()));
+    this->connect(this->engine, SIGNAL(waitingNetworkRegistration(QString,int)), this, SLOT(OnWaitingNetworkRegistration(QString,int)));
+
+
     this->statusDialog = new StatusDialog(this);
 
     QSize size = this->statusDialog->size();
@@ -74,10 +76,20 @@ TableWindow::~TableWindow()
   delete ui;
 }
 
+
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-void TableWindow::OnNetworkDiscoveryComplete() {
+void TableWindow::OnWaitingNetworkRegistration(const QString host, const int port) {
+  QString msg = "Waiting on registration (host " + host + ", port " + QString::number(port) + ")";
+  if(this->statusDialog != 0x0) this->statusDialog->setStatus(msg);
+
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void TableWindow::OnNetworkRegistrationComplete() {
   // close the dialog
   QString status = "Found: " + this->engine->getServerHost() + " command:" + QString::number(this->engine->getServerCommandPort()) + " asset:" + QString::number(this->engine->getServerAssetPort());
   this->statusDialog->setStatus(status);

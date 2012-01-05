@@ -52,19 +52,13 @@ namespace mtv {
      *
      * ------------------------------------------------------------------------------------------- */
     void CameraModule::start() {
-
-
-
       int device = this->setting("device")->asInteger();
       int fps =  this->setting("fps")->asInteger();
       int frequency = 1000 / fps;
 
-
-
       this->frameRate = 0;
       this->frameCount = 0;
       this->time.start();
-
 
       qDebug() << "Starting device:" << device << " at " << fps << "fps";
 
@@ -75,11 +69,14 @@ namespace mtv {
         this->timer->setInterval(frequency);
         this->connect(this->timer, SIGNAL(timeout()),this,SLOT(tick()));
         this->timer->start();
-
+        qDebug() << "TIMER STARTED";
         this->running = true;
       } else {
         this->addError("device","Failed to open device (" + QString::number(device) + ")");
+        qDebug() << "FAILED TO OPEN DEVICE: " << device;
       }
+
+      qDebug() << "END start()";
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -121,13 +118,17 @@ namespace mtv {
     void CameraModule::tick() {
       cv::Mat frame;
 
+      qDebug() << "tick";
+
       if(this->capture->read(frame)) {
         if(frame.data != 0x0) {
           this->frameCount++;
+          qDebug() << "data ok";
           emit frameReady(this, "OUTPUT", frame);
         }
 
         if(frameCount > 100) {
+          this->save("camera",frame);
           // reset the framerate counter
           this->frameRate = this->frameCount / (this->time.elapsed()/1000);
           this->frameCount = 0;

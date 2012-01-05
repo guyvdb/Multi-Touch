@@ -18,38 +18,31 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#include "DiscoveryClient.h"
-#include "message/Message.h"
+#ifndef MAP_H
+#define MAP_H
+
+#include "qdjango/QDjangoModel.h"
+#include "libmtg_global.h"
 
 namespace mtdnd {
 
-  DiscoveryClient::DiscoveryClient(const int discoveryPort) : QUdpSocket(), discoveryPort(discoveryPort)
+  class LIBMTDND_EXPORT Map : public QDjangoModel
   {
+    Q_OBJECT
+    Q_PROPERTY(QString name READ name WRITE setName)
+    Q_PROPERTY(QString file READ file WRITE setFile)
 
-  }
+  public:
+    Map();
+    QString name() const {return this->m_name;}
+    void setName(const QString value) {this->m_name = value;}
+    QString file() const {return this->m_file;}
+    void setFile(const QString value) {this->m_file = value;}
 
-  void DiscoveryClient::discover() {
-    this->bind(this->discoveryPort, QUdpSocket::ShareAddress);
-    this->connect(this,SIGNAL(readyRead()), this, SLOT(process()));
-  }
+  private:
+    QString m_name;
+    QString m_file;
+  };
 
-
-  void DiscoveryClient::process() {
-    while(this->hasPendingDatagrams()) {
-        QByteArray datagram;
-        datagram.resize(this->pendingDatagramSize());
-        this->readDatagram(datagram.data(), datagram.size());
-        Message::DataPacket packet = Message::decode(datagram);
-        if(packet.ok) {
-          if(packet.type == "DISCOVERY") {
-            QString host = packet.data.value("host").toString();
-            int command = packet.data.value("command").toInt();
-            int asset = packet.data.value("asset").toInt();
-            emit discovered(host,asset,command);
-          } else {
-            Q_ASSERT(false); //should never get here
-          }
-        }
-    }
-  }
 }
+#endif // MAP_H

@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>assets/error-icon.png</file>
+        <file>assets/game-new.png</file>
+        <file>assets/game-open.png</file>
+        <file>assets/quit.png</file>
+        <file>assets/close-game.png</file>
+        <file>assets/add-map.png</file>
     </qresource>
 </RCC>

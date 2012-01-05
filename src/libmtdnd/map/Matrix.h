@@ -52,6 +52,8 @@ namespace mtdnd {
 
     void save(const QString filename);
 
+    void copy(Matrix *value);
+
   private:
 
     void initialize(const int rows, const int cols, const short value = 0);

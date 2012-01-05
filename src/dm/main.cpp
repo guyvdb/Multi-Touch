@@ -23,6 +23,7 @@
 #include <QVariantMap>
 #include <QtGui/QApplication>
 #include "forms/MainWindow.h"
+#include "forms/DMWindow.h"
 
 #include "utils/FileUtils.h"
 #include "settings/Settings.h"
@@ -44,22 +45,14 @@ int main(int argc, char *argv[])
       return 0;
     }
 
+    // create and launch the main window -- DEPRECATED
+    //MainWindow w(&settings);
+    //w.show();
 
-    /* test code */
-    QVariantMap root;
-    QVariantMap files;
-    files["foo"] = "Bar";
-    root["files"] = files;
+    // new main window
+    DMWindow dmw(&settings);
+    dmw.show();
 
-    settings.merge(&root);
-
-
-
-    //settings.dump();
-
-    // create and launch the main window
-    MainWindow w(&settings);
-    w.show();
 
     return a.exec();
 }

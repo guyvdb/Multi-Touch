@@ -31,11 +31,12 @@ namespace mtdnd {
   FogOfWar::FogOfWar(QRectF bounds, QGraphicsItem *parent) :  QGraphicsItem(parent), bounds(bounds)
   {
     this->tileSize = QSize(0,0);
-    this->state = 0x0;
+    this->state = new Matrix();
     this->overlayColor = Qt::black;
   }
 
   FogOfWar::~FogOfWar() {
+    delete this->state;
   }
 
   void FogOfWar::setBounds(QRectF value) {
@@ -51,7 +52,7 @@ namespace mtdnd {
 
   void FogOfWar::recalculate(QSize tileSize, Matrix *state) {
     this->tileSize = tileSize;
-    this->state = state;
+    this->state->copy(state);
     this->update();
   }
 

@@ -1,39 +1,25 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2011-11-14T14:17:08
+# Project created by QtCreator 2012-01-04T08:17:16
 #
 #-------------------------------------------------
 
+QT       += core
 
-SOURCES += main.cpp\
-        PipelineEditorWindow.cpp \
-    VideoWidget.cpp \
-    AddModuleDialog.cpp \
-    VideoGrid.cpp \
-    SettingsWindow.cpp
+QT       -= gui
 
-HEADERS  += PipelineEditorWindow.h \
-    VideoWidget.h \
-    AddModuleDialog.h \
-    VideoGrid.h \
-    SettingsWindow.h
-
-FORMS    += PipelineEditorWindow.ui \
-    AddModuleDialog.ui \
-    SettingsWindow.ui
-
-OTHER_FILES += \
-    ../../config/pipelin.xml \
-    README \
-    COPYING \
-    AUTHORS \
-    ../../config/camera.xml \
-    ../../config/video.xml
-
+TARGET = headless
+CONFIG   += console
 CONFIG   -= app_bundle
+
+TEMPLATE = app
+
+
+SOURCES += main.cpp
 
 INCLUDEPATH += $$PWD/../libmtv
 DEPENDPATH += $$PWD/../libmtv
+
 
 DESTDIR += ../../../bin
 
@@ -61,5 +47,4 @@ win32 {
 
 }
 
-#LIBS += -L$$DESTDIR -lqjson -lmtv
 LIBS += -L$$DESTDIR -lmtv

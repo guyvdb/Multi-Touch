@@ -4,7 +4,7 @@ namespace mtdnd {
 
   AbstractFieldOfVision::AbstractFieldOfVision(Matrix *obsticals) :  QObject(), obsticals(obsticals)
   {
-    this->matrix = new Matrix();
+    this->matrix = new Matrix(this->obsticals->rowCount(), this->obsticals->colCount());
   }
 
   AbstractFieldOfVision::~AbstractFieldOfVision() {

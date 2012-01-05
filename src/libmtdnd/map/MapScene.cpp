@@ -341,70 +341,16 @@ namespace mtdnd {
    *
    * ------------------------------------------------------------------------------------------- */
   void MapScene::updateFogOfWar() {
-
-    qDebug() << "UPDATE FOG OF WAR";
-
     if(!this->mapView->isLoaded()) return;
-
-
-    //this->cellStates->clearVisability();
 
     BasicFieldOfVision fov(this->cellStates->getObstructionMatrix());
     fov.reset();
 
-
-    foreach(MapToken *token, this->tokens) {
-      // find the cell the token is located on
-      int currentRow = token->getLocation().x();
-      int currentCol = token->getLocation().y();
-
-     // fov.addPointOfView(token->getLocation(), this->visualRange(token->getVision()));
-
-      // current location
-      this->cellStates->setVisability(currentRow,currentCol,CellStates::Clear);
-
-      // vision
-      int ev = this->visualRange(token->getVision());
-
-      int startRow = currentRow - ev;
-      int endRow = currentRow + ev;
-
-      int startCol = currentCol - ev;
-      int endCol = currentCol + ev;
-
-      for(int row = startRow; row <= endRow; row++) {
-        for(int col = startCol; col <= endCol; col++){
-          if(this->cellStates->contains(row,col)){
-            this->cellStates->setVisability(row,col,CellStates::Clear);
-          }
-        }
-      }
-    }
-    this->fogOfWar->recalculate(this->tileSize,this->cellStates->getVisabilityMatrix());
-
-
-
-/*
-   // Matrix *visability = this->cellStates->getVisabilityMatrix();
-   // visability->save("visability");
-
-
-    Matrix *obstruction = this->cellStates->getObstructionMatrix();
-    obstruction->save("obstruction");
-
-    if(this->tokens.count() > 0) {
-      MapToken *t = this->tokens.at(0);
-
-      FieldOfVision v(obstruction);
-      Matrix *computed = v.pointOfView(t->getLocation().x(),t->getLocation().y(),3);
-      computed->save("computed");
-
-      this->fogOfWar->recalculate(this->tileSize,computed);
+    foreach(MapToken *token, this->tokens) {    
+      fov.addPointOfView(token->getLocation(),this->visualRange(token->getVision()));
     }
 
-
-*/
-
+    this->fogOfWar->recalculate(this->tileSize, fov.getMatrix());
 
   }
 

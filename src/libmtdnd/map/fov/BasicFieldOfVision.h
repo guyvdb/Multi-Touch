@@ -14,7 +14,7 @@ namespace mtdnd {
   public:
       BasicFieldOfVision(Matrix *obsticals);
       virtual void addPointOfView(const int row, const int col, const int radius);
-
+      virtual void addPointOfView(QPoint point, const int radius) { this->addPointOfView(point.x(), point.y(), radius); }
 
   };
 

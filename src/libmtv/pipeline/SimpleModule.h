@@ -34,8 +34,6 @@ namespace mtv {
     virtual void stop() {}
     virtual void pause() {}
     virtual void resume() {}
-  protected:
-    void saveToFile(cv::Mat &frame, const QString filename);
   protected slots:
     virtual void tick() {}
   };

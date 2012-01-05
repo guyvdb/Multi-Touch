@@ -18,40 +18,55 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#include "DiscoveryServer.h"
-#include <QVariantMap>
-#include <QUdpSocket>
-#include <QDebug>
+#ifndef DBMANAGER_H
+#define DBMANAGER_H
 
-#include "message/Message.h"
+#include <QObject>
+#include <QSqlDatabase>
+#include <QList>
 
+#include "data/MapModel.h"
 
-#define BROADCAST_INTERVAL 5 // interval in seconds
+#define SCHEMA_VERSION 1
 
 namespace mtdnd {
 
-  DiscoveryServer::DiscoveryServer(const QString serverHost, const int discoveryPort, const int assetPort, const int commandPort)
-    : QUdpSocket(), serverHost(serverHost), discoveryPort(discoveryPort), assetPort(assetPort), commandPort(commandPort)
+  class RepositoryDeprecated : public QObject
   {
-    //set up timer
-    this->timer.setInterval(BROADCAST_INTERVAL * 1000);
-    this->timer.setSingleShot(false);
-    this->connect(&this->timer,SIGNAL(timeout()),this,SLOT(tick()));
-    this->timer.start();
+      Q_OBJECT
+  public:
+      RepositoryDeprecated(QSqlDatabase &database);
 
-    // setup datagram
-    QVariantMap data;
-    data.insert("host",this->serverHost);
-    data.insert("asset", this->assetPort);
-    data.insert("command",this->commandPort);
-    this->datagram = Message::encode("DISCOVERY","DISCOVERY",data);
-    this->tick();
-  }
+      void initialize();
+
+      void addMap(mtdnd::MapModel &map);
+      void deleteMap(mtdnd::MapModel &map);
+      void listMaps(QList<mtdnd::MapModel*> &result);
+
+  private:
+    QSqlDatabase &database;
+
+    bool schemaExists();
+    void createSchema();
+
+    bool tableExists(const QString name);
+    int getSchemaVersion();
+    void setSchemaVersion(const int version);
 
 
-  void DiscoveryServer::tick() {
-    this->writeDatagram(this->datagram, QHostAddress::Broadcast, this->discoveryPort);
-  }
+    void createSchemaV1();
+
+
+    void execSql(const QString statement);
+    void execSql(QStringList &statement);
+
+    QString quote(const QString value);
+
+  signals:
+
+  public slots:
+
+  };
 
 }
-
+#endif // DBMANAGER_H

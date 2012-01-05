@@ -36,6 +36,7 @@
 #include "forms/NetworkSettingDialog.h"
 #include "forms/ShowMapDialog.h"
 #include "forms/ErrorDialog.h"
+#include "forms/RegisterTableDialog.h"
 
 #include "tiled/map.h"
 #include "tiled/mapreader.h"
@@ -103,6 +104,13 @@ void MainWindow::showGameStateClosedError() {
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
+void MainWindow::showGameStateStoppedError() {
+  this->showError("Game is currently stopped.","Please start a game first");
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 bool MainWindow::isGameStateValid(GameState requiredState) {
   switch(this->state) {
   case GameOpenState:
@@ -117,6 +125,14 @@ bool MainWindow::isGameStateValid(GameState requiredState) {
     this->showGameStateClosedError();
     return false;
     break;
+
+  case GameStartedState:
+    if(requiredState == GameOpenState || requiredState == GameStartedState) return true;
+
+    this->showGameStateStoppedError();
+    return false;
+    break;
+
   }
 }
 
@@ -143,11 +159,11 @@ void MainWindow::resizeEvent(QResizeEvent *e) {
  * ------------------------------------------------------------------------------------------- */
 QRect MainWindow::calculateTabRect() {
   int menu = this->ui->menuBar->geometry().height();
-  int status = this->ui->statusBar->geometry().height();
+  //int status = this->ui->statusBar->geometry().height();
   int x = 0;
   int y = menu;
   int w = this->width();
-  int h = this->height() - (menu+status);
+  int h = this->height() - (menu);
   return QRect(x,y,w,h);
 }
 
@@ -407,8 +423,22 @@ void MainWindow::on_closePrivateMapAction_triggered()
   this->dmMap->unloadMap();
 }
 
-
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
 void MainWindow::on_startGameAction_triggered()
 {
     this->startGame();
+}
+
+/* -------------------------------------------------------------------------------------------
+ *
+ * ------------------------------------------------------------------------------------------- */
+void MainWindow::on_registerTableAction_triggered()
+{
+  if(!isGameStateValid(GameOpenState)) return;
+
+  RegisterTableDialog dlg(this->engine);
+  dlg.show();
+  dlg.exec();
 }

@@ -8,41 +8,20 @@ namespace mtdnd {
 
   void BasicFieldOfVision::addPointOfView(const int row, const int col, const int radius) {
     int ev = radius;
-  }
 
+    int sr = row - ev;
+    int er = row + ev;
 
-/*
+    int sc = col - ev;
+    int ec = col + ev;
 
-  foreach(MapToken *token, this->tokens) {
-    // find the cell the token is located on
-    int currentRow = token->getLocation().x();
-    int currentCol = token->getLocation().y();
-
-    fov.addPointOfView(token->getLocation(), this->visualRange(token->getVision()));
-
-    // current location
-    this->cellStates->setVisability(currentRow,currentCol,CellStates::Clear);
-
-    // vision
-    int ev = this->visualRange(token->getVision());
-
-    int startRow = currentRow - ev;
-    int endRow = currentRow + ev;
-
-    int startCol = currentCol - ev;
-    int endCol = currentCol + ev;
-
-    for(int row = startRow; row <= endRow; row++) {
-      for(int col = startCol; col <= endCol; col++){
-        if(this->cellStates->contains(row,col)){
-          this->cellStates->setVisability(row,col,CellStates::Clear);
+    for(int r = sr; r <= er; r++) {
+      for (int c = sc; c <= ec; c++) {
+        if(this->matrix->contains(r,c)) {
+          light(r,c);
         }
       }
     }
   }
-  this->fogOfWar->recalculate(this->tileSize,this->cellStates->getVisabilityMatrix());
-
-*/
-
 
 }
