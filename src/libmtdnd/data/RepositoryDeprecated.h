@@ -27,11 +27,13 @@
 
 #include "data/MapModel.h"
 
+#include "libmtg_global.h"
+
 #define SCHEMA_VERSION 1
 
 namespace mtdnd {
 
-  class RepositoryDeprecated : public QObject
+  class LIBMTDND_EXPORT  RepositoryDeprecated : public QObject
   {
       Q_OBJECT
   public:

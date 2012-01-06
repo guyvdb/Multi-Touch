@@ -30,6 +30,9 @@
 #include <QVariantMap>
 #include <QTimer>
 
+
+
+
 #include <opencv2/core/core.hpp>
 
 #include "libmtv_global.h"

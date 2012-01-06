@@ -2,4 +2,6 @@
 bin
 debug
 games
+build
 src/multitouch.pro.user
+lib/*.a

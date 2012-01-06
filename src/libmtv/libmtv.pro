@@ -102,19 +102,16 @@ unix {
 
 win32 {
 
-  INCLUDEPATH += $$PWD/../../contrib/opencv/build/include
+  INCLUDEPATH += $$PWD/../../include
 
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_calib3d231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_contrib231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_core231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_features2d231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_flann231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_gpu231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_highgui231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_imgproc231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_legacy231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_ml231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_objdetect231.dll.a
-  LIBS += $$PWD/../../contrib/opencv/build/x86/mingw/lib/libopencv_video231.dll.a
+  LIBS += -L$$DESTDIR -lopencv_core231 -lopencv_imgproc231 -lopencv_video231 -lopencv_features2d231 -lopencv_highgui231
 
 }
+
+
+
+
+
+
+
+
