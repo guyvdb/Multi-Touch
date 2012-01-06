@@ -6,7 +6,7 @@
 
 #include "settings/Settings.h"
 #include "engine/GameEngine.h"
-
+#include "widget/DockListWidget.h"
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -32,62 +32,79 @@ public:
   ~DMWindow();
 
 private slots:
+  //game
   void newGame();
   void openGame();
   void closeGame();
+
+  //maps
   void addMap();
+  void removeMap();
+  void showMapOnTable();
+  void showMapOnPopup();
+
+  //artifacts
+
+  //PCs
+  void addPc();
+  void removePc();
+
+
+
 
 private:
 
-  void setGameState(GameState state);
+  // add map tokens
+  void updateMapTokens();
 
+  // update views
+  void updateMapList();
+  void updatePCList();
+
+  // state
   void saveCurrentWindowState();
   void restoreCurrentWindowState();
+  void setGameState(GameState state);
 
+  // setup ui
   void createActions();
   void createMenus();
   void createToolBars();
   void createStatusBar();
   void createDockWindows();
 
+
+
   mtdnd::Settings *settings;
   mtdnd::GameEngine *engine;
 
 
   QMenu *gameMenu;
-  QMenu *mapMenu;
-  QMenu *characterMenu;
-  QMenu *monsterMenu;
   QMenu *tableMenu;
   QMenu *viewMenu;
 
   QToolBar *gameToolbar;
-  QToolBar *mapToolbar;
 
-  // game
   QAction *newGameAction;
   QAction *openGameAction;
   QAction *closeGameAction;
   QAction *quitAction;
 
-  // map
-  QAction *addMapAction;
 
-
-
-  QDockWidget *playerCharacterDock;
-  QDockWidget *nonPlayerCharacterDock;
+  QDockWidget *pcDock;
+  QDockWidget *npcDock;
   QDockWidget *monsterDock;
   QDockWidget *initiativeDock;
   QDockWidget *mapDock;
-  QDockWidget *assetDock;
+  QDockWidget *artifactDock;
 
-  QListWidget *playerCharacterList;
-  QListWidget *nonPlayerCharacterList;
-  QListWidget *monsterList;
-  QListWidget *initiativeList;
-  QListWidget *mapList;
-  QListWidget *assetList;
+  DockListWidget *pcList;
+  DockListWidget *npcList;
+  DockListWidget *monsterList;
+  DockListWidget *initiativeList;
+  DockListWidget *mapList;
+  DockListWidget *assetList;
+
 };
 
 #endif // DMWINDOW_H

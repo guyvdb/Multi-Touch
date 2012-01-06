@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network webkit xml sql opengl
+QT       += network webkit xml opengl sql
 
 TARGET = mtdnd
 TEMPLATE = lib
@@ -23,7 +23,6 @@ SOURCES += \
     engine/GameEngine.cpp \
     settings/Settings.cpp \
     message/Message.cpp \
-    data/MapModel.cpp \
     map/FogOfWar.cpp \
     net/AssetServer.cpp \
     net/AssetClient.cpp \
@@ -31,15 +30,13 @@ SOURCES += \
     net/CommandServer.cpp \
     net/IPAddressLocator.cpp \
     net/NodeInfo.cpp \
-    data/BaseModel.cpp \
     map/MapToken.cpp \
     map/CellStates.cpp \
     map/Matrix.cpp \
     map/FieldOfVision.cpp \
     map/fov/AbstractFieldOfVision.cpp \
     map/fov/BasicFieldOfVision.cpp \
-    repository/Repository.cpp \
-    data/RepositoryDeprecated.cpp
+    repository/Repository.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -54,7 +51,6 @@ HEADERS +=\
     settings/Settings.h \
     message/Message.h \
     libmtg_global.h \
-    data/MapModel.h \
     map/FogOfWar.h \
     net/AssetServer.h \
     net/AssetClient.h \
@@ -62,7 +58,6 @@ HEADERS +=\
     net/CommandServer.h \
     net/IPAddressLocator.h \
     net/NodeInfo.h \
-    data/BaseModel.h \
     map/MapToken.h \
     map/ZIndex.h \
     map/CellStates.h \
@@ -70,8 +65,7 @@ HEADERS +=\
     map/FieldOfVision.h \
     map/fov/AbstractFieldOfVision.h \
     map/fov/BasicFieldOfVision.h \
-    repository/Repository.h \
-    data/RepositoryDeprecated.h
+    repository/Repository.h
 
 
 FORMS += \
@@ -88,8 +82,8 @@ INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
 
+
 DESTDIR += ../../../bin
 
 
 LIBS += -L$$DESTDIR -ltiled -lqjson
-#-lqdjango-db

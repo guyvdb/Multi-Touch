@@ -29,7 +29,7 @@
 #include <QByteArray>
 #include <QList>
 #include <QHash>
-#include <QSqlDatabase>
+
 
 #include "libmtg_global.h"
 
@@ -40,8 +40,7 @@
 #include "net/AssetServer.h"
 #include "net/NodeInfo.h"
 
-#include "data/RepositoryDeprecated.h"
-#include "data/MapModel.h"
+
 
 #include "repository/Repository.h"
 
@@ -79,10 +78,12 @@ namespace mtdnd {
     void stop();
     bool isRunning() {return this->running;}
 
-    RepositoryDeprecated* getRepository() {return this->repositoryDeprecated; }
+
     mtdnd::MapScene* getScene() {return this->mapView->getScene();}
     mtdnd::MapView *getMapView() {return this->mapView; }
     GameMode getGameMode() {return this->mode; }
+
+    mtdnd::Repository *getGameRepository() {return this->gameRepository;}
 
 
     void loadMap(const QString filename);
@@ -140,21 +141,19 @@ namespace mtdnd {
     QList<NodeInfo*> nodes;
     QHash<QString, NodeInfo*> nodesIndex;
 
+    // Database
+    Repository *gameRepository;
+    Repository *systemRepository;
+
     QString serverHost;
     QString clientHost;
-
 
     int serverAssetPort;
     int serverCommandPort;
     int clientCommandPort;
 
-    // Database
-    RepositoryDeprecated *repositoryDeprecated;
-
-
-    // State
     MapView *mapView;
-    QSqlDatabase database;
+
 
 
   };

@@ -25,7 +25,7 @@
 #include <QList>
 #include <QModelIndex>
 
-#include "data/MapModel.h"
+
 
 namespace Ui {
     class ShowMapDialog;
@@ -39,7 +39,7 @@ public:
     explicit ShowMapDialog(QWidget *parent = 0);
     ~ShowMapDialog();
 
-  void load(QList<mtdnd::MapModel*> maps);
+
 
   QString  getSelectedMapName() {return this->selectedMapName;}
   QString getTarget() {return this->target;}

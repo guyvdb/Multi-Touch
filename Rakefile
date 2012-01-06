@@ -6,20 +6,17 @@ task :clean do
   # files
   files = [
     "**/Makefile",
-    "linux/libmt.*",
-    "linux/libmtg.*",
-    "linux/libmtv.*",
-    "linux/pc",
-    "linux/dm",
-    "linux/table",
-    "linux/tiled",
-    "linux/tmxviewer",
-    "linux/tuio",
-    "linux/pipeline",
+    "bin/libmt*.*",
+    "bin/pc",
+    "bin/dm",
+    "bin/table",
+    "bin/pipeline",
+    "bin/headless",
+    "bin/mtv",
+    "bin/udp",
+
+
     "build/*",
-    "contrib/qjson/build/*",
-    "contrib/tiled/bin/*",
-    "contrib/qjson/CMakeLists.txt.user",
     "**/*.o",    
     "**/moc_*",    
     "**/ui_*",
@@ -35,8 +32,7 @@ task :clean do
 
   #directories
   dirs = [
-    "contrib/tiled/build",
-    "contrib/qjson/build"
+    "build"
   ]
 
   dirs.each do |d|

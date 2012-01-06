@@ -39,18 +39,14 @@ namespace mtdnd {
      * ------------------------------------------------------------------------------------------- */
     GameEngine::GameEngine(Settings *settings,  GameEngine::GameMode mode) : QObject(), settings(settings), mode(mode)
     {
-      this->database = QSqlDatabase::addDatabase("QSQLITE"); // DEPRECATED
-      this->repositoryDeprecated = 0x0; // DEPRECATED
-
-      this->mapView = new MapView(this);
       this->commandServer = 0x0;
       this->commandClient = 0x0;
 
+      this->mapView = new MapView(this);      
       this->running = false;
 
-
-
-
+      this->gameRepository = new Repository("game",this);
+      this->systemRepository = new Repository("system", this);
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -83,14 +79,12 @@ namespace mtdnd {
       switch(this->mode) {
       case GameServer:
         // initialize the database
-
-        // DEPRECATED;
-        this->database.setDatabaseName(databaseName);
-        this->database.open();
-        this->repositoryDeprecated = new RepositoryDeprecated(this->database);        
-        this->repositoryDeprecated->initialize();
-        // END DEPRECATED;
-
+        this->gameRepository->open(databaseName);
+        this->gameRepository->registerCollection("settings");
+        this->gameRepository->registerCollection("maps");
+        this->gameRepository->registerCollection("pcs");
+        this->gameRepository->registerCollection("npcs");
+        this->gameRepository->registerCollection("monsters");
 
 
 
@@ -124,9 +118,7 @@ namespace mtdnd {
       case GameServer:
 
         // clean up db
-        if(repositoryDeprecated != 0x0) delete repositoryDeprecated;
-        this->repositoryDeprecated = 0x0;
-        this->database.close();
+
 
         // clean up sockets
         delete this->commandServer;

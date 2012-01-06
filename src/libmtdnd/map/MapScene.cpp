@@ -102,6 +102,7 @@ namespace mtdnd {
       MapToken *token = this->tokens.at(i);
       token->setTileSize(this->tileSize);
       token->setZValue(ZINDEX_GAME_TOKEN);
+      token->setLocation(QPoint(0,0));
       token->setPos(this->cellToSceneTransform(token->getLocation()));
       this->addItem(token);
     }

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql opengl
+QT       += core gui network opengl sql
 
 TARGET = dm
 TEMPLATE = app
@@ -16,7 +16,8 @@ SOURCES += main.cpp\
     forms/ShowMapDialog.cpp \
     forms/ErrorDialog.cpp \
     forms/RegisterTableDialog.cpp \
-    forms/DMWindow.cpp
+    forms/DMWindow.cpp \
+    widget/DockListWidget.cpp
 
 HEADERS  += \
     forms/MainWindow.h \
@@ -25,7 +26,8 @@ HEADERS  += \
     forms/ShowMapDialog.h \
     forms/ErrorDialog.h \
     forms/RegisterTableDialog.h \
-    forms/DMWindow.h
+    forms/DMWindow.h \
+    widget/DockListWidget.h
 
 FORMS    += \
     forms/MainWindow.ui \
@@ -33,7 +35,8 @@ FORMS    += \
     forms/NetworkSettingDialog.ui \
     forms/ShowMapDialog.ui \
     forms/ErrorDialog.ui \
-    forms/RegisterTableDialog.ui
+    forms/RegisterTableDialog.ui \
+    widget/DockListWidget.ui
 
 OTHER_FILES += \
     COPYING \

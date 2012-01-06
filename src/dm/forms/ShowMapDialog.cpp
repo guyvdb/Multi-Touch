@@ -36,12 +36,12 @@ ShowMapDialog::~ShowMapDialog()
     delete ui;
 }
 
-void ShowMapDialog::load(QList<mtdnd::MapModel *> maps) {
+/*void ShowMapDialog::load(QList<mtdnd::MapModel *> maps) {
   this->ui->lstMaps->clear();
   foreach(mtdnd::MapModel *map, maps) {
     this->ui->lstMaps->addItem(map->name);
   }
-}
+}*/
 
 void ShowMapDialog::on_btnShow_clicked()
 {

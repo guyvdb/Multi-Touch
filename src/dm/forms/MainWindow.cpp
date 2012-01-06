@@ -27,7 +27,6 @@
 #include <QErrorMessage>
 #include <QFileDialog>
 #include <QResizeEvent>
-#include <QSqlDatabase>
 #include <QDir>
 
 #include "utils/FileUtils.h"
@@ -354,7 +353,7 @@ void MainWindow::on_showMapAction_triggered()
 {
   if(!this->isGameStateValid(GameOpenState)) return;
 
-
+    /*
     QList<mtdnd::MapModel*> maps;
     this->engine->getRepository()->listMaps(maps);
 
@@ -375,6 +374,7 @@ void MainWindow::on_showMapAction_triggered()
       }
     }
     foreach(mtdnd::MapModel *map, maps) delete map;
+    */
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -400,8 +400,8 @@ void MainWindow::on_addMapAction_triggered()
     delete map;
 
 
-    mtdnd::MapModel model(name,relative);
-    this->engine->getRepository()->addMap(model);
+    //mtdnd::MapModel model(name,relative);
+   // this->engine->getRepository()->addMap(model);
   }
 }
 

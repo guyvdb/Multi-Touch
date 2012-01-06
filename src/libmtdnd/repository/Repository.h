@@ -22,19 +22,45 @@
 #define REPOSITORY_H
 
 #include <QObject>
+#include <QVariant>
+#include <QVariantMap>
 #include <QSqlDatabase>
 
-
-
 namespace mtdnd {
+
 
 
   class Repository : public QObject
   {
     Q_OBJECT
   public:
+    Repository(const QString name, QObject *parent = 0);
+    ~Repository();
+    bool open(const QString filename);
+    void close();
+    bool isOpen();
+
+    void registerCollection(const QString name);
+    QVariantMap get(const QString collection, const QString key);
+    void put(const QString collection, const QString key, QVariantMap value);
+    void remove(const QString collection, const QString key);
+    QList<QVariantMap> list(const QString collection);
+    bool keyExists(const QString collection, const QString key);
+  protected:
+
+  private:
+    bool exists(const QString collection);
+    void create(const QString collection);
+
+    void update(const QString collection, const QString key, QByteArray &value);
+    void insert(const QString collection, const QString key, QByteArray &value);
+
+
+    QSqlDatabase database;
 
   };
+
+
 
 
 
