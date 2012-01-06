@@ -36,7 +36,7 @@
 TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
 {
     ui->setupUi(this);
-    this->commandServer = 0x0;
+    //this->commandServer = 0x0;
 
     QDesktopWidget *desktop = QApplication::desktop();
     QRect workspace = desktop->availableGeometry(1);
@@ -71,7 +71,7 @@ TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWin
  * ------------------------------------------------------------------------------------------- */
 TableWindow::~TableWindow()
 {
-  if(this->commandServer) delete this->commandServer;
+  //if(this->commandServer) delete this->commandServer;
   delete this->statusDialog;
   delete ui;
 }

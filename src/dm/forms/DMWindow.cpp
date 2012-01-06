@@ -10,7 +10,6 @@
 #include "utils/FileUtils.h"
 #include "forms/CreateGameDialog.h"
 
-#include "repository/Map.h"
 
 /* -------------------------------------------------------------------------------------------
  *

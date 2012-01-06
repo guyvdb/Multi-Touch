@@ -75,7 +75,7 @@ namespace mtdnd {
     ~GameEngine();
 
 
-    void start(const QString databaseFileName);
+    void start(const QString databaseName);
     void stop();
     bool isRunning() {return this->running;}
 
@@ -150,7 +150,7 @@ namespace mtdnd {
 
     // Database
     RepositoryDeprecated *repositoryDeprecated;
-    Repository *repository;
+
 
     // State
     MapView *mapView;

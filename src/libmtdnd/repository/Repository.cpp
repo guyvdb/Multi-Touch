@@ -21,58 +21,11 @@
 #include "Repository.h"
 
 #include <QSqlDatabase>
+#include <QMap>
 
 
-#include "repository/Map.h"
 
 namespace mtdnd {
-
-  QSqlDatabase database;
-
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  bool Repository::open(const QString filename) {
-    Repository::setDatabase(QSqlDatabase::addDatabase("SQLITE","REPOSITORY"));
-
-    Repository::getDatabase().setDatabaseName(filename + ".repos");
-    bool flag = Repository::getDatabase().open();
-
-    if(flag) {
-
-    }
-
-    return flag;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  void Repository::close() {
-    Repository::getDatabase().close();
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  bool Repository::isOpen() {
-    return Repository::getDatabase().isOpen();
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  QSqlDatabase &Repository::getDatabase() {
-    return database;
-  }
-
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  void Repository::setDatabase(QSqlDatabase db) {
-    database = db;
-  }
 
 
 

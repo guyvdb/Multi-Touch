@@ -24,26 +24,19 @@
 #include <QObject>
 #include <QSqlDatabase>
 
+
+
 namespace mtdnd {
+
 
   class Repository : public QObject
   {
-      Q_OBJECT
+    Q_OBJECT
   public:
-    //explicit Repository();
-
-    static bool open(const QString filename);
-    static void close();
-    static bool isOpen();
-
-
-    static void setDatabase(QSqlDatabase db);
-    static QSqlDatabase &getDatabase();
-  private:
-   // static QSqlDatabase db;
-
 
   };
+
+
 
 }
 

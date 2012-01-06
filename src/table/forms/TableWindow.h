@@ -52,7 +52,7 @@ private:
     Ui::TableWindow *ui;
     mtdnd::Settings *settings;
     mtdnd::GameEngine *engine;
-    mtdnd::CommandServer *commandServer;
+    //mtdnd::CommandServer *commandServer;
     StatusDialog *statusDialog;
 
 };

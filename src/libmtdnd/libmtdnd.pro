@@ -39,9 +39,7 @@ SOURCES += \
     map/fov/AbstractFieldOfVision.cpp \
     map/fov/BasicFieldOfVision.cpp \
     repository/Repository.cpp \
-    data/RepositoryDeprecated.cpp \
-    repository/Map.cpp \
-    repository/Model.cpp
+    data/RepositoryDeprecated.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -73,9 +71,7 @@ HEADERS +=\
     map/fov/AbstractFieldOfVision.h \
     map/fov/BasicFieldOfVision.h \
     repository/Repository.h \
-    data/RepositoryDeprecated.h \
-    repository/Map.h \  
-    repository/Model.h
+    data/RepositoryDeprecated.h
 
 
 FORMS += \

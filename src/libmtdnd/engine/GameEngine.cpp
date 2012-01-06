@@ -40,12 +40,17 @@ namespace mtdnd {
     GameEngine::GameEngine(Settings *settings,  GameEngine::GameMode mode) : QObject(), settings(settings), mode(mode)
     {
       this->database = QSqlDatabase::addDatabase("QSQLITE"); // DEPRECATED
+      this->repositoryDeprecated = 0x0; // DEPRECATED
+
       this->mapView = new MapView(this);
       this->commandServer = 0x0;
       this->commandClient = 0x0;
-      this->repositoryDeprecated = 0x0;
+
       this->running = false;
-      this->repository = new Repository();
+
+
+
+
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -55,13 +60,12 @@ namespace mtdnd {
       // delete anything created
       if(this->commandServer) delete this->commandServer;
       delete this->mapView;      
-      delete this->repository;
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::start(const QString databaseFileName) {
+    void GameEngine::start(const QString databaseName) {
 
       qDebug() << "[Game Engine] Start";
 
@@ -81,14 +85,11 @@ namespace mtdnd {
         // initialize the database
 
         // DEPRECATED;
-        this->database.setDatabaseName(databaseFileName);
+        this->database.setDatabaseName(databaseName);
         this->database.open();
         this->repositoryDeprecated = new RepositoryDeprecated(this->database);        
         this->repositoryDeprecated->initialize();
         // END DEPRECATED;
-
-        this->repository->open(databaseFileName);
-
 
 
 

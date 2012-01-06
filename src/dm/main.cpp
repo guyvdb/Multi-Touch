@@ -28,7 +28,10 @@
 #include "utils/FileUtils.h"
 #include "settings/Settings.h"
 
-class FileUtils;
+
+
+
+//class FileUtils;
 
 int main(int argc, char *argv[])
 {
@@ -46,12 +49,12 @@ int main(int argc, char *argv[])
     }
 
     // create and launch the main window -- DEPRECATED
-    MainWindow w(&settings);
-    w.show();
+    //MainWindow w(&settings);
+    //w.show();
 
     // new main window
-    //DMWindow dmw(&settings);
-    //dmw.show();
+    DMWindow dmw(&settings);
+    dmw.show();
 
 
     return a.exec();
