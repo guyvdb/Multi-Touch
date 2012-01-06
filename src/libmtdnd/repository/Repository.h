@@ -30,18 +30,18 @@ namespace mtdnd {
   {
       Q_OBJECT
   public:
-    explicit Repository();
+    //explicit Repository();
 
-    bool open(const QString filename);
-    void close();
-    bool isOpen();
+    static bool open(const QString filename);
+    static void close();
+    static bool isOpen();
 
 
-
+    static void setDatabase(QSqlDatabase db);
+    static QSqlDatabase &getDatabase();
   private:
-    QSqlDatabase database;
+   // static QSqlDatabase db;
 
-    void registerModels();
 
   };
 

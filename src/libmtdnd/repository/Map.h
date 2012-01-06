@@ -21,27 +21,28 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "qdjango/QDjangoModel.h"
+#include <QObject>
+#include "repository/Model.h"
 #include "libmtg_global.h"
 
 namespace mtdnd {
 
-  class LIBMTDND_EXPORT Map : public QDjangoModel
+  class LIBMTDND_EXPORT Map : Model
   {
     Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName)
-    Q_PROPERTY(QString file READ file WRITE setFile)
+    Q_PROPERTY(QString name READ getName WRITE setName)
+    Q_PROPERTY(QString file READ getFile WRITE setFile)
 
   public:
-    Map();
-    QString name() const {return this->m_name;}
-    void setName(const QString value) {this->m_name = value;}
-    QString file() const {return this->m_file;}
-    void setFile(const QString value) {this->m_file = value;}
+    Map(QObject *parent);
+    QString getName() const;
+    void setName(const QString value);
+    QString getFile() const;
+    void setFile(const QString value);
 
   private:
-    QString m_name;
-    QString m_file;
+    QString name;
+    QString file;
   };
 
 }

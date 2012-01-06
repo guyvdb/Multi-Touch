@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
     }
 
     // create and launch the main window -- DEPRECATED
-    //MainWindow w(&settings);
-    //w.show();
+    MainWindow w(&settings);
+    w.show();
 
     // new main window
-    DMWindow dmw(&settings);
-    dmw.show();
+    //DMWindow dmw(&settings);
+    //dmw.show();
 
 
     return a.exec();

@@ -22,34 +22,26 @@
 
 #include <QSqlDatabase>
 
-#include "qdjango/QDjango.h"
-
 
 #include "repository/Map.h"
 
 namespace mtdnd {
 
-  /* -------------------------------------------------------------------------------------------
-   *
-   * ------------------------------------------------------------------------------------------- */
-  Repository::Repository() : QObject()
-  {
-    this->database = QSqlDatabase::addDatabase("QSQLITE","REPOSITORY");
-    this->registerModels();
-  }
+  QSqlDatabase database;
+
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   bool Repository::open(const QString filename) {
-    this->database.setDatabaseName(filename + ".repos");
-    bool flag = this->database.open();
+    Repository::setDatabase(QSqlDatabase::addDatabase("SQLITE","REPOSITORY"));
+
+    Repository::getDatabase().setDatabaseName(filename + ".repos");
+    bool flag = Repository::getDatabase().open();
 
     if(flag) {
-      QDjango::setDatabase(this->database);
-      QDjango::createTables();
-    }
 
+    }
 
     return flag;
   }
@@ -58,22 +50,30 @@ namespace mtdnd {
    *
    * ------------------------------------------------------------------------------------------- */
   void Repository::close() {
-    // TODO how do we unset the QDjango database??
-    this->database.close();
+    Repository::getDatabase().close();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   bool Repository::isOpen() {
-    return this->database.isOpen();
+    return Repository::getDatabase().isOpen();
   }
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void Repository::registerModels() {
-    QDjango::registerModel<Map>();
+  QSqlDatabase &Repository::getDatabase() {
+    return database;
   }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void Repository::setDatabase(QSqlDatabase db) {
+    database = db;
+  }
+
+
 
 }
