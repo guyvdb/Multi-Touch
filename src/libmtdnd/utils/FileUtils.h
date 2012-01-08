@@ -37,6 +37,7 @@ namespace mtdnd {
         static QString mapsDirectory();
         static QString configDirectory();
         static QString debugDirectory();
+        static QString systemsDirectory();
 
         static QString cacheDirectory();
         static QString cachedMapsDirectory();

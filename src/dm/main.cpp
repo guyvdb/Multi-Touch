@@ -29,9 +29,10 @@
 #include "settings/Settings.h"
 
 
+// for testing only
+#include "system/GameSystem.h"
 
 
-//class FileUtils;
 
 int main(int argc, char *argv[])
 {
@@ -47,6 +48,12 @@ int main(int argc, char *argv[])
       qDebug() << "[FATAL ERROR] Could not load config file: " << config;
       return 0;
     }
+
+
+    // testing
+    mtdnd::GameSystem system;
+    bool loaded = system.load("/home/guy/Projects/Current/MultiTouch/systems/_template/system.js");
+    qDebug() << "GAME SYSTEM LOADED = " << loaded;
 
     // create and launch the main window -- DEPRECATED
     //MainWindow w(&settings);

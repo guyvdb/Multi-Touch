@@ -122,7 +122,7 @@ void DMWindow::addMap() {
     QVariantMap data;
     data.insert("name", name);
     data.insert("file",mtdnd::FileUtils::relativeTo(mtdnd::FileUtils::mapsDirectory(), fileName));
-    this->engine->getGameRepository()->put("maps",QUuid::createUuid().toString(),data);
+    this->engine->getRepository()->put("maps",QUuid::createUuid().toString(),data);
     this->updateMapList();
   }
 }
@@ -155,7 +155,7 @@ void DMWindow::showMapOnPopup() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::updateMapList() {
-  this->mapList->populate(this->engine->getGameRepository()->list("maps"),"name");
+  this->mapList->populate(this->engine->getRepository()->list("maps"),"name");
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -167,7 +167,7 @@ void DMWindow::addPc() {
   data.insert("name","fooie");
   data.insert("player","joe");
 
-  this->engine->getGameRepository()->put("pcs",data.value("key").toString(), data);
+  this->engine->getRepository()->put("pcs",data.value("key").toString(), data);
   this->updatePCList();
 }
 
@@ -184,7 +184,7 @@ void DMWindow::removePc() {
                            QMessageBox::No,
                            QMessageBox::NoButton) == QMessageBox::Yes) {
     DockListWidgetItem *item = this->pcList->selectedItem();
-    this->engine->getGameRepository()->remove("pcs",item->getMap().value("key").toString());
+    this->engine->getRepository()->remove("pcs",item->getMap().value("key").toString());
     this->updatePCList();
   }
 }
@@ -193,7 +193,7 @@ void DMWindow::removePc() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::updatePCList() {
-  this->pcList->populate(this->engine->getGameRepository()->list("pcs"),"name");
+  this->pcList->populate(this->engine->getRepository()->list("pcs"),"name");
 }
 
 /* -------------------------------------------------------------------------------------------

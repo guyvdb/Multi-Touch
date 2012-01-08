@@ -45,8 +45,7 @@ namespace mtdnd {
       this->mapView = new MapView(this);      
       this->running = false;
 
-      this->gameRepository = new Repository("game",this);
-      this->systemRepository = new Repository("system", this);
+      this->repository = new Repository("game",this);
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -79,12 +78,12 @@ namespace mtdnd {
       switch(this->mode) {
       case GameServer:
         // initialize the database
-        this->gameRepository->open(databaseName);
-        this->gameRepository->registerCollection("settings");
-        this->gameRepository->registerCollection("maps");
-        this->gameRepository->registerCollection("pcs");
-        this->gameRepository->registerCollection("npcs");
-        this->gameRepository->registerCollection("monsters");
+        this->repository->open(databaseName);
+        this->repository->registerCollection("settings");
+        this->repository->registerCollection("maps");
+        this->repository->registerCollection("pcs");
+        this->repository->registerCollection("npcs");
+        this->repository->registerCollection("monsters");
 
 
 

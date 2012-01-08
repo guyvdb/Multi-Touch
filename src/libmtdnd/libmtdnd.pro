@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network webkit xml opengl sql
+QT       += network webkit xml opengl sql script
 
 TARGET = mtdnd
 TEMPLATE = lib
@@ -36,7 +36,8 @@ SOURCES += \
     map/FieldOfVision.cpp \
     map/fov/AbstractFieldOfVision.cpp \
     map/fov/BasicFieldOfVision.cpp \
-    repository/Repository.cpp
+    repository/Repository.cpp \
+    system/GameSystem.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -65,7 +66,8 @@ HEADERS +=\
     map/FieldOfVision.h \
     map/fov/AbstractFieldOfVision.h \
     map/fov/BasicFieldOfVision.h \
-    repository/Repository.h
+    repository/Repository.h \
+    system/GameSystem.h
 
 
 FORMS += \

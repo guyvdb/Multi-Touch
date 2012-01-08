@@ -83,7 +83,7 @@ namespace mtdnd {
     mtdnd::MapView *getMapView() {return this->mapView; }
     GameMode getGameMode() {return this->mode; }
 
-    mtdnd::Repository *getGameRepository() {return this->gameRepository;}
+    mtdnd::Repository *getRepository() {return this->repository;}
 
 
     void loadMap(const QString filename);
@@ -142,8 +142,8 @@ namespace mtdnd {
     QHash<QString, NodeInfo*> nodesIndex;
 
     // Database
-    Repository *gameRepository;
-    Repository *systemRepository;
+    Repository *repository;
+
 
     QString serverHost;
     QString clientHost;

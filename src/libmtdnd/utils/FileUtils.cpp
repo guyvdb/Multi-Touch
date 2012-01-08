@@ -81,6 +81,10 @@ namespace mtdnd {
       return FileUtils::getDirectoryOffRoot("debug");
     }
 
+    QString FileUtils::systemsDirectory() {
+      return FileUtils::getDirectoryOffRoot("systems");
+    }
+
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */

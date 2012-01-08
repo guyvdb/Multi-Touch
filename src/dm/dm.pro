@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network opengl sql
+QT       += core gui network opengl sql script
 
 TARGET = dm
 TEMPLATE = app
