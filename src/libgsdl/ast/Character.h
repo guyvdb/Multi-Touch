@@ -7,12 +7,13 @@
 #include "ast/Group.h"
 #include "ast/Field.h"
 
+#include "libgsdl_global.h"
 
 namespace gsdl {
 
   class GameSystem;
 
-  class Character : public Token
+  class LIBGSDL_EXPORT Character : public Token
   {
       Q_OBJECT
   public:

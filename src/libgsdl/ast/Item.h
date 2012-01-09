@@ -1,12 +1,12 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-
+#include "libgsdl_global.h"
 #include "ast/Token.h"
 
 namespace gsdl {
 
-  class Item : public Token
+  class LIBGSDL_EXPORT Item : public Token
   {
       Q_OBJECT
   public:

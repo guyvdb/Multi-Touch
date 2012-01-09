@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QList>
 
+
+#include "libgsdl_global.h"
+
 #include "ast/Token.h"
 #include "ast/Field.h"
 
@@ -12,7 +15,7 @@ namespace gsdl {
   class Character;
 
 
-  class Group : public Token
+  class LIBGSDL_EXPORT Group : public Token
   {
       Q_OBJECT
   public:

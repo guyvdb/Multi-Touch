@@ -1,12 +1,14 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include "libgsdl_global.h"
+
 #include "ast/Token.h"
 #include "ast/Item.h"
 
 namespace gsdl {
 
-  class Table : public Token
+  class LIBGSDL_EXPORT Table : public Token
   {
       Q_OBJECT
   public:

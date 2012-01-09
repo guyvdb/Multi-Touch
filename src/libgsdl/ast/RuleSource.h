@@ -3,11 +3,12 @@
 
 #include <QObject>
 
+#include "libgsdl_global.h"
 #include "ast/Token.h"
 
 namespace gsdl {
 
-  class RuleSource : public Token
+  class LIBGSDL_EXPORT RuleSource : public Token
   {
     Q_OBJECT
   public:

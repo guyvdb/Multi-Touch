@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QList>
 
+#include "libgsdl_global.h"
+
 #include "ast/Token.h"
 #include "ast/RuleSource.h"
 #include "ast/Character.h"
@@ -12,7 +14,7 @@
 
 namespace gsdl {
 
-  class GameSystem : public Token
+  class LIBGSDL_EXPORT GameSystem : public Token
   {
       Q_OBJECT
   public:

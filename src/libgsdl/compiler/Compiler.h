@@ -4,9 +4,12 @@
 #include <QObject>
 #include "ast/GameSystem.h"
 
+
+#include "libgsdl_global.h"
+
 namespace gsdl {
 
-  class Compiler : public QObject
+  class LIBGSDL_EXPORT Compiler : public QObject
   {
       Q_OBJECT
   public:

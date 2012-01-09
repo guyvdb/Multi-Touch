@@ -1,12 +1,14 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
+#include "libgsdl_global.h"
+
 #include <QObject>
 #include <QStringList>
 
 namespace gsdl {
 
-  class Token : public QObject
+  class LIBGSDL_EXPORT Token : public QObject
   {
       Q_OBJECT
   public:

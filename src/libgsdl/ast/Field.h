@@ -4,10 +4,12 @@
 #include <QStringList>
 #include "ast/Token.h"
 
+#include "libgsdl_global.h"
+
 namespace gsdl {
   class Group;
 
-  class Field : public Token
+  class LIBGSDL_EXPORT Field : public Token
   {
       Q_OBJECT
   public:
