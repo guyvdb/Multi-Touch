@@ -11,9 +11,14 @@ namespace gsdl {
 
   Field* Group::createField(const QString name) {
     if(!fieldExists(name)) {
-      this->fields.append(new Field(name, this));
+      Field *f = new Field(name, this);
+      this->fields.append(f);
+      this->character->addFieldRef(f);
+      this->currentField = f;
+      return f;
     }
-    return this->getField(name);
+    this->currentField = this->getField(name);
+    return this->currentField;
   }
 
   bool Group::fieldExists(const QString name) {

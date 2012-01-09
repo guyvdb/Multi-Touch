@@ -20,16 +20,23 @@ namespace gsdl {
     void createField(std::basic_string<char> value);
     void createLookup(std::basic_string<char> value);
     void createHalfMacro(std::basic_string<char> value);
+    void createModifierMacro(std::basic_string<char> value);
+    void createAddMacro();
+    void appendAddMacroFactor(std::basic_string<char> value);
+    void createTable(std::basic_string<char> value);
+    void setForeignKey(std::basic_string<char> value);
+    void createTableItem(std::basic_string<char> value);
+
     //-----------------------------------------------
 
 
 
 
     void createModifyMacro();
-    void createModifierMacro();
-    void createAddMacro();
-    void createTable();
-    void createTableItem();
+
+
+
+
     void createInformation();
     void createBaseValue();
 
@@ -39,7 +46,7 @@ namespace gsdl {
     void setGroupName(std::basic_string<char> value);
     void setName(std::basic_string<char> value); //change to setFieldName()
     void setTableName(std::basic_string<char> value);
-    void setForeignKey(std::basic_string<char> value);
+
     void setTableItemName(std::basic_string<char> value);
     void setTableItemValue(std::basic_string<char> value);
     void setPairKey(std::basic_string<char> value);
@@ -167,21 +174,22 @@ namespace gsdl {
           ;
 
       modifier_macro %=
-          lit("modifier")[&internal::createModifierMacro]
-          >> variable[&internal::setName]
+          lit("modifier")
+          >> variable[&internal::createModifierMacro]
           ;
 
       add_macro %=
           lit("add")[&internal::createAddMacro]
-          >> variable[&internal::setName]
-          >> lit("plus")
-          >> variable[&internal::setName]
+          >> variable[&internal::appendAddMacroFactor]
+          >> lit("+")
+          >> variable[&internal::appendAddMacroFactor]
           ;
 
+      // add v + v + v + v + v......
 
       table %=
-          lit("table")[&internal::createTable]
-          >> variable[&internal::setTableName]
+          lit("table")
+          >> variable[&internal::createTable]
           >> '{'
           >>    table_entries
           >> '}'
@@ -201,8 +209,8 @@ namespace gsdl {
           ;
 
       item %=
-          lit("item")[&internal::createTableItem]
-          >> variable[&internal::setTableItemName]
+          lit("item")
+          >> variable[&internal::createTableItem]
           >> '{'
           >>    item_entries
           >> '}'

@@ -18,7 +18,7 @@ system "D&D 4e" {
     group "Ability" {
       field     "STR"
       modifier  "STR"
-      add "STR Ability Modifier" plus "Half Level"
+      add "STR Ability Modifier" + "Half Level"
     }
   }
 

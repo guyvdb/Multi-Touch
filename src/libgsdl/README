@@ -1,4 +1,4 @@
 LIBGSDL
 =========================================
 A library to compile game system description language files (*.gsdl)
-int an abstract syntax tree (AST)
+into an abstract syntax tree (AST)

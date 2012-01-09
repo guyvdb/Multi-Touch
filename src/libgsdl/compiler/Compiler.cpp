@@ -50,8 +50,9 @@ namespace gsdl {
         if(gameSystem->getCharacter() != 0x0) {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
             QString name = QString::fromStdString(value);
+            QString table(name);
             Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(name);
-            field->setLookupTableName(name);
+            field->setLookupTableName(table);
             qDebug() << "CREATE LOOKUP: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName() << ", TABLE=" << field->getLookupTableName();
           }
         }
@@ -59,43 +60,102 @@ namespace gsdl {
     }
 
     void createHalfMacro(std::basic_string<char> value) {
-      qDebug() << "enter createHalfMacro";
       if(gameSystem != 0x0) {
         if(gameSystem->getCharacter() != 0x0) {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
             QString target = QString::fromStdString(value);
-            QString name = "Half " + target;
+            QString name = "Half ";
+            name.append(target);
 
             Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(name);
             field->setHalfMacroFieldName(target);
-            qDebug() << "CREATE LOOKUP: NAME=" << QString::fromStdString(value) << " GROUP=" << field->getGroup()->getName() << ", TARGET=" << field->getHalfMacroFieldName();
+            qDebug() << "CREATE HALF MACRO: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName() << ", TARGET=" << field->getHalfMacroFieldName();
           }
         }
       }
     }
 
-    void createModifyMacro() {
-      qDebug() << "enter createModifyMacro";
-
+    void createModifyMacro(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCharacter() != 0x0) {
+          if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
+            QString target = QString::fromStdString(value);
+            QString name("Half " + target);
+            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(name);
+            field->setHalfMacroFieldName(target);
+            qDebug() << "CREATE HALF MACRO: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName() << ", TARGET=" << field->getHalfMacroFieldName();
+          }
+        }
+      }
     }
 
-    void createModifierMacro() {
-      qDebug() << "enter createModifierMacro";
-
+    void createModifierMacro(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCharacter() != 0x0) {
+          if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
+            QString target = QString::fromStdString(value);
+            QString group = gameSystem->getCharacter()->getCurrentGroup()->getName();
+            QString name (target + " " + group + " Modifier");
+            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(name);
+            field->setModifierMacroFieldName(target);
+            field->setModifierTableName(group);
+            qDebug() << "CREATE MODIFIER MACRO: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName() << ", TARGET=" << field->geModifierMacroFieldName() + ", TABLE=" << field->getModifierTableName();
+          }
+        }
+      }
     }
 
     void createAddMacro() {
-      qDebug() << "enter createAddMacro";
-
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCharacter() != 0x0) {
+          if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
+            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField("");
+            qDebug() << "CREATE ADD MACRO: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName();
+          }
+        }
+      }
     }
 
-    void createTable() {
-      qDebug() << "enter createTable";
 
+    void appendAddMacroFactor(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCharacter() != 0x0) {
+          if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
+            if(gameSystem->getCharacter()->getCurrentGroup()->getCurrentField() != 0x0) {
+              Field *field = gameSystem->getCharacter()->getCurrentGroup()->getCurrentField();
+              field->appendAddMacroFactor(QString::fromStdString(value));
+              qDebug() << "MODIFY ADD MACRO: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName();
+            }
+          }
+        }
+      }
     }
 
-    void createTableItem() {
-      qDebug() << "enter createTableItem";
+    void createTable(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        Table* table = gameSystem->createTable(QString::fromStdString(value));
+        qDebug() << "CREATE TABLE: NAME=" << table->getName();
+      }
+    }
+
+    void setForeignKey(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCurrentTable() != 0x0) {
+          Table *table = gameSystem->getCurrentTable();
+          table->setForeignKeyFieldName(QString::fromStdString(value));
+          qDebug() << "SET FOREIGN KEY: TABLE=" << table->getName() << " KEY=" << table->getForeignKeyFieldName();
+        }
+      }
+    }
+
+
+    void createTableItem(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCurrentTable() != 0x0) {
+          Item *item = gameSystem->getCurrentTable()->createItem(QString::fromStdString(value));
+          qDebug() << "CREATE TABLE ITEM: NAME=" << item->getName() << ", VALUE=" << item->getValue();
+        }
+      }
 
     }
 
@@ -130,10 +190,7 @@ namespace gsdl {
 
     }
 
-    void setForeignKey(std::basic_string<char> value) {
-      qDebug() << "enter setForeignKey";
 
-    }
 
     void setTableItemName(std::basic_string<char> value) {
       qDebug() << "enter setTableItemName";
