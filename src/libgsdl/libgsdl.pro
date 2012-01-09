@@ -37,3 +37,8 @@ OTHER_FILES += \
     README \
     ../../systems/README \
     ../../systems/sample.gsdl
+
+win32 {
+    #this needs to be set to the correct path of boost on your system
+    INCLUDEPATH += C:/Projects/boost_1_46_0
+}
