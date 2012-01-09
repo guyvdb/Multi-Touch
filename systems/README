@@ -15,7 +15,7 @@ as EOL in the text.
 
 Keywords are case sensitive and are always lower case. Following is a 
 description of each keyword. The paragraph starts with the formal usage
-of the keyword followed by a brief description.
+of the keyword followed by a brief description and an example.
 
 
 system <value> {}
@@ -37,6 +37,49 @@ source is a line oriented item. The parameter value is a descriptive value of
 some source material.
 
 example: source "Players Handbook" EOL
+
+
+
+character {}
+-------------------------------------------------------------------------------
+character is a container indicated the start of character definition. The 
+allowable items inside the character container are:
+  * group (0..n)
+
+example: character {}
+
+
+group <value> {}
+-------------------------------------------------------------------------------
+group is a container used to group data fields in a logical manner. The parameter 
+value is a descriptive, unique name of the group. You are not allowed to create 
+two groups with the same name. The name of the group is used during various data
+field create methods and is indicated therein.
+
+The allowable items inside the group container are:
+   * field
+   * lookup
+   * half
+   * modifier 
+   * add
+
+example: group "Ability" {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
