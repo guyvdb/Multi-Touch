@@ -7,6 +7,7 @@ task :clean do
   files = [
     "**/Makefile",
     "bin/libmt*.*",
+    "bin/libgsdl.*",
     "bin/pc",
     "bin/dm",
     "bin/table",
@@ -14,8 +15,7 @@ task :clean do
     "bin/headless",
     "bin/mtv",
     "bin/udp",
-
-
+    "bin/gsdl",
     "build/*",
     "**/*.o",    
     "**/moc_*",    
