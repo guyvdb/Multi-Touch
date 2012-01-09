@@ -32,3 +32,6 @@ SOURCES += \
     ast/Token.cpp \
     ast/Field.cpp \
     compiler/Compiler.cpp
+
+OTHER_FILES += \
+    README

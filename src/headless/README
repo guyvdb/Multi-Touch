@@ -1,0 +1,4 @@
+HEADLESS
+===========================
+A simple executable the links to libmtv to test the computer vision
+library in a headless (no graphics) environment

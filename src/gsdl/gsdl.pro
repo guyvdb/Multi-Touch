@@ -31,3 +31,6 @@ DESTDIR += ../../../bin
 
 
 LIBS += -L$$DESTDIR -lgsdl
+
+OTHER_FILES += \
+    README

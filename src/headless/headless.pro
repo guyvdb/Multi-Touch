@@ -48,3 +48,6 @@ win32 {
 }
 
 LIBS += -L$$DESTDIR -lmtv
+
+OTHER_FILES += \
+    README

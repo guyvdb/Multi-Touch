@@ -17,17 +17,20 @@ namespace gsdl {
 
     void createGameSystem(std::basic_string<char> value) {
       gameSystem = new GameSystem(QString::fromStdString(value));
+      qDebug() << "Create Game System: " << QString::fromStdString(value);
     }
 
     void createRuleSource(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
         gameSystem->addRuleSource(QString::fromStdString(value));
+        qDebug() << "Create Rule Source: " << QString::fromStdString(value);
       }
     }
 
     void createGroup(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
         gameSystem->getCharacter()->createGroup(QString::fromStdString(value));
+        qDebug() << "Create Group: " << QString::fromStdString(value);
       }
     }
 
@@ -36,6 +39,7 @@ namespace gsdl {
         if(gameSystem->getCharacter() != 0x0) {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
             gameSystem->getCharacter()->getCurrentGroup()->createField(QString::fromStdString(value));
+            qDebug() << "Create Field: " << QString::fromStdString(value);
           }
         }
       }
@@ -47,6 +51,7 @@ namespace gsdl {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(QString::fromStdString(value));
            field->setLookupTableName(field->getName());
+           qDebug() << "Create Lookup: " << QString::fromStdString(value);
           }
         }
       }
