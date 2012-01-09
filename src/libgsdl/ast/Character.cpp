@@ -16,10 +16,12 @@ namespace gsdl {
    * Create a field group if one with the given name does not exist. Set the current group to
    * the named group
    * ------------------------------------------------------------------------------------------- */
-  void Character::createGroup(const QString name) {
+  Group * Character::createGroup(const QString name) {
     if(!this->groupExists(name)) {
       this->groups.append(new Group(name, this));
     }
+    this->currentGroup = this->getGroup(name);
+    return this->currentGroup;
   }
 
   /* -------------------------------------------------------------------------------------------

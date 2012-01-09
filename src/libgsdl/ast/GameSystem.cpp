@@ -13,9 +13,10 @@ namespace gsdl {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  void GameSystem::addRuleSource(const QString value) {
+  RuleSource * GameSystem::createRuleSource(const QString value) {
     RuleSource *source = new RuleSource(value, this);
     this->sources.append(source);
+    return source;
   }
 
 

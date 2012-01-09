@@ -16,9 +16,10 @@ namespace gsdl {
       Q_OBJECT
   public:
     explicit GameSystem(const QString name, QObject *parent = 0);
-    void addRuleSource(const QString value);
+    RuleSource* createRuleSource(const QString value);
     Character* getCharacter() {return this->character; }
-
+    void setName(const QString value) {this->name = value; }
+    QString getName() const {return this->name; }
   private:
     QString name;
     QList<RuleSource*> sources;

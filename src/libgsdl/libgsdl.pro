@@ -34,4 +34,6 @@ SOURCES += \
     compiler/Compiler.cpp
 
 OTHER_FILES += \
-    README
+    README \
+    ../../systems/README \
+    ../../systems/sample.gsdl

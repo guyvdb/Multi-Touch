@@ -19,12 +19,12 @@ namespace gsdl {
     void createGroup(std::basic_string<char> value);
     void createField(std::basic_string<char> value);
     void createLookup(std::basic_string<char> value);
-
+    void createHalfMacro(std::basic_string<char> value);
     //-----------------------------------------------
 
 
 
-    void createHalfMacro();
+
     void createModifyMacro();
     void createModifierMacro();
     void createAddMacro();
@@ -162,8 +162,8 @@ namespace gsdl {
 
 
       half_macro %=
-          lit("half")[&internal::createHalfMacro]
-          >> variable[&internal::setName]
+          lit("half")
+          >> variable[&internal::createHalfMacro]
           ;
 
       modifier_macro %=

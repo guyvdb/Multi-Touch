@@ -17,20 +17,20 @@ namespace gsdl {
 
     void createGameSystem(std::basic_string<char> value) {
       gameSystem = new GameSystem(QString::fromStdString(value));
-      qDebug() << "Create Game System: " << QString::fromStdString(value);
+      qDebug() << "CREATE GAME SYSTEM: NAME=" << gameSystem->getName();
     }
 
     void createRuleSource(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
-        gameSystem->addRuleSource(QString::fromStdString(value));
-        qDebug() << "Create Rule Source: " << QString::fromStdString(value);
+        RuleSource *source =  gameSystem->createRuleSource(QString::fromStdString(value));
+        qDebug() << "CREATE RULE SOURCE: VALUE=" << source->getValue();
       }
     }
 
     void createGroup(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
-        gameSystem->getCharacter()->createGroup(QString::fromStdString(value));
-        qDebug() << "Create Group: " << QString::fromStdString(value);
+        Group *group= gameSystem->getCharacter()->createGroup(QString::fromStdString(value));
+        qDebug() << "CREATE GROUP: NAME=" << group->getName();
       }
     }
 
@@ -38,8 +38,8 @@ namespace gsdl {
       if(gameSystem != 0x0) {
         if(gameSystem->getCharacter() != 0x0) {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
-            gameSystem->getCharacter()->getCurrentGroup()->createField(QString::fromStdString(value));
-            qDebug() << "Create Field: " << QString::fromStdString(value);
+            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(QString::fromStdString(value));
+            qDebug() << "CREATE FIELD: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName();
           }
         }
       }
@@ -49,80 +49,109 @@ namespace gsdl {
       if(gameSystem != 0x0) {
         if(gameSystem->getCharacter() != 0x0) {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
-           Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(QString::fromStdString(value));
-           field->setLookupTableName(field->getName());
-           qDebug() << "Create Lookup: " << QString::fromStdString(value);
+            QString name = QString::fromStdString(value);
+            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(name);
+            field->setLookupTableName(name);
+            qDebug() << "CREATE LOOKUP: NAME=" << field->getName() << " GROUP=" << field->getGroup()->getName() << ", TABLE=" << field->getLookupTableName();
           }
         }
       }
     }
 
-    void createHalfMacro() {
+    void createHalfMacro(std::basic_string<char> value) {
+      qDebug() << "enter createHalfMacro";
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCharacter() != 0x0) {
+          if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
+            QString target = QString::fromStdString(value);
+            QString name = "Half " + target;
 
+            Field *field = gameSystem->getCharacter()->getCurrentGroup()->createField(name);
+            field->setHalfMacroFieldName(target);
+            qDebug() << "CREATE LOOKUP: NAME=" << QString::fromStdString(value) << " GROUP=" << field->getGroup()->getName() << ", TARGET=" << field->getHalfMacroFieldName();
+          }
+        }
+      }
     }
 
     void createModifyMacro() {
+      qDebug() << "enter createModifyMacro";
 
     }
 
     void createModifierMacro() {
+      qDebug() << "enter createModifierMacro";
 
     }
 
     void createAddMacro() {
+      qDebug() << "enter createAddMacro";
 
     }
 
     void createTable() {
+      qDebug() << "enter createTable";
 
     }
 
     void createTableItem() {
+      qDebug() << "enter createTableItem";
 
     }
 
     void createInformation() {
+      qDebug() << "enter createInformation";
 
     }
 
     void createBaseValue() {
+      qDebug() << "enter createBaseValue";
 
     }
 
 
     void setSystemName(std::basic_string<char> value) {
+      qDebug() << "enter createRuleSource";
 
     }
 
     void setGroupName(std::basic_string<char> value) {
+      qDebug() << "enter setSystemName";
 
     }
 
     void setName(std::basic_string<char> value) {
+      qDebug() << "enter setName";
 
     }
 
     void setTableName(std::basic_string<char> value) {
+      qDebug() << "enter setTableName";
 
     }
 
     void setForeignKey(std::basic_string<char> value) {
+      qDebug() << "enter setForeignKey";
 
     }
 
     void setTableItemName(std::basic_string<char> value) {
+      qDebug() << "enter setTableItemName";
 
     }
 
     void setTableItemValue(std::basic_string<char> value) {
+      qDebug() << "enter setTableItemValue";
 
     }
 
     void setPairKey(std::basic_string<char> value) {
+      qDebug() << "enter setPairKey";
 
     }
 
     void setPairValue(std::basic_string<char> value) {
+      qDebug() << "enter setPairValue";
 
     }
 

@@ -16,10 +16,14 @@ namespace gsdl {
     QString getValue() const {return this->value;}
     void setValue(const QString value) {this->value = value; }
     QString getName() const {return this->name; }
+    void setHalfMacroFieldName(const QString value) {this->halfMacroFieldName = value;}
+    QString getHalfMacroFieldName() const {return this->halfMacroFieldName; }
+    Group* getGroup() {return this->group; }
   private:
     QString name;
     QString value;
     QString lookupTableName;
+    QString halfMacroFieldName;
     Group* group;
   };
 

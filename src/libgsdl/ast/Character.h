@@ -17,7 +17,7 @@ namespace gsdl {
       Q_OBJECT
   public:
     explicit Character(QObject *parent = 0);
-    void createGroup(const QString name);
+    Group* createGroup(const QString name);
 
     bool groupExists(const QString name);
     Group *getGroup(const QString name);

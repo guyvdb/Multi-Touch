@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>/home/guy/Projects/Current/MultiTouch/systems/_template/sample.gsdl</string>
+     <string>/home/guy/Projects/Current/MultiTouch/systems/sample.gsdl</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnParse">

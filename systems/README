@@ -27,6 +27,9 @@ allowable items inside the system container are:
   * character     (1)
   * table         (0..n)
 
+The items in the container must follow this order. You cannot place table above
+source or character below table, etc.
+
 example: system "D&D 4e" {}
 
 
@@ -44,7 +47,7 @@ character {}
 -------------------------------------------------------------------------------
 character is a container indicated the start of character definition. The 
 allowable items inside the character container are:
-  * group (0..n)
+  * group       (0..n)
 
 example: character {}
 
@@ -57,15 +60,38 @@ two groups with the same name. The name of the group is used during various data
 field create methods and is indicated therein.
 
 The allowable items inside the group container are:
-   * field
-   * lookup
-   * half
-   * modifier 
-   * add
+   * field      (0..n)
+   * lookup     (0..n)
+   * half       (0..n)
+   * modifier   (0..n)
+   * add        (0..n)
+
+The order of the items in this container do not matter. You can place these
+items in any order that you would like. Any data fields that are created
+(through field, lookup, half, etc) are created and stored in the order you
+specify.
 
 example: group "Ability" {}
 
 
+field <value> EOL
+-------------------------------------------------------------------------------
+field is a line orientated item. It is used to create a non-computed,
+non-lookup data field. The parameter value is the name of the field. Other
+keywords (macros) can use the name of this field in their computations.
+
+example: field "Speed"
+
+
+lookup <value> EOL
+-------------------------------------------------------------------------------
+lookup is a line orientated item. It is used to create a field whos value will
+be looked up out of a table. The parameter value is both the name of this field
+and the name of the table that will be used to lookup allowable values for this
+field.
+
+
+example: lookup "Race"
 
 
 
