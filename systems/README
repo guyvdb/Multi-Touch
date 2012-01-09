@@ -1,0 +1,42 @@
+===============================================================================
+== Game System Description Language (GDSL)
+===============================================================================
+
+GDSL is an internal domain specific language (DSL) targeting the Role 
+Playing Game domain. This is a short introduction to GDSL.
+
+The language is untyped (for now). All variable data is entered as 
+double quoted strings. All unquoted strings are keywords.
+
+GDSL is container orientated. Almost everything goes inside a container.
+A container is denoted by curly brackets {}. Single statements are line 
+orientated. I.e. the statement is terminated at the end of the line indicated
+as EOL in the text.
+
+Keywords are case sensitive and are always lower case. Following is a 
+description of each keyword. The paragraph starts with the formal usage
+of the keyword followed by a brief description.
+
+
+system <value> {}
+-------------------------------------------------------------------------------
+system is the outermost conatiner. It is the first item in the file. The 
+parameter <value> is a quoted string used for descriptive purposed. The
+allowable items inside the system container are:
+  * source        (0..n)
+  * character     (1)
+  * table         (0..n)
+
+example: system "D&D 4e" {}
+
+
+
+source <value> EOL
+-------------------------------------------------------------------------------
+source is a line oriented item. The parameter value is a descriptive value of
+some source material.
+
+example: source "Players Handbook" EOL
+
+
+
