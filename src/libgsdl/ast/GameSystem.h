@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QMap>
 
 #include "libgsdl_global.h"
 
@@ -31,6 +32,7 @@ namespace gsdl {
     void setName(const QString value) {this->name = value; }
     QString getName() const {return this->name; }
 
+    void addGuiMapping(const QString key, const QString value) {this->guiMappings[key] = value; }
 
   private:
     QString name;
@@ -38,6 +40,8 @@ namespace gsdl {
     Character *character;
     QList<Table*> tables;
     Table* currentTable;
+    QMap<QString, QString> guiMappings;
+
 
   };
 

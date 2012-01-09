@@ -1,10 +1,13 @@
 system "D&D 4e" {
-  source "Players Handbook" 
-  source "Players Handbook 2"
-  source "Table Rules"
+  sources {
+    source "Players Handbook"
+    source "Players Handbook 2"
+    source "Table Rules"
+  }
 
   character { 
     group "Main" {     
+      field     "Player Name"
       field     "Character Name" 
       lookup    "Class" 
       lookup    "Paragon Path"
@@ -15,43 +18,64 @@ system "D&D 4e" {
       half      "Level"
     }
 
-    group "Ability" {
+    group "Ability" {      
       field     "STR"
       modifier  "STR"
       add "STR Ability Modifier" + "Half Level"
     }
   }
 
-  table "Ability" {
-    auto "Level"
-    item "1"          { value "-5" }
-    item "2..3"       { value "-4" }
-    item "4..5"       { value "-3" }
-    item "6..7"       { value "-2" }
-    item "8..9"       { value "-1" }
-    item "10..11"     { value "0" }
-    item "12..13"     { value "1" }
-  }
+  tables {
 
-  table "Race" {
-    item "Dragonborn" {
-      info      "Average Height"    "6 foot 2 - 6 foot 8"
-      info      "Average Weight"    "220 - 320 pounds"
-      bonus     "STR"               "+2"
-      bonus     "CHAR"              "+2"
-      base      "Speed"             "6"
-      base      "Languages"         "Common, Draconic"
-      base      "Vision"            "Normal"
+    table "Ability" {
+      auto "Level"
+      item "1"          { value "-5" }
+      item "2..3"       { value "-4" }
+      item "4..5"       { value "-3" }
+      item "6..7"       { value "-2" }
+      item "8..9"       { value "-1" }
+      item "10..11"     { value "0" }
+      item "12..13"     { value "1" }
+    }
+
+    table "Race" {
+      item "Dragonborn" {
+        info      "Average Height: 6 foot 2 - 6 foot 8"
+        info      "Average Weight: 220 - 320 pounds"
+        increment "STR"               "+2"
+        increment "CHAR"              "+2"
+        base      "Speed"             "6"
+        base      "Languages"         "Common, Draconic"
+        base      "Vision"            "Normal"
+      }
+
+
+      item "Dwarf" {}
+      item "Some Custom Made Up Race" {}
     }
 
 
-    item "Dwarf" {}
-    item "Some Custom Made Up Race" {}
+    table "Class" {
+    }
+
   }
 
 
-  table "Class" {
+
+  hooks {
+    list_character_by "Character Name"
   }
+
+  forms {
+    form "Character Detail" {
+    }
+  }
+
+  sheets {
+    sheet "Character Sheet" {
+    }
+  }
+
 
 
 

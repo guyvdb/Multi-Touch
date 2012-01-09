@@ -26,18 +26,15 @@ namespace gsdl {
     void createTable(std::basic_string<char> value);
     void setForeignKey(std::basic_string<char> value);
     void createTableItem(std::basic_string<char> value);
+    void createInformation(std::basic_string<char> value);
 
+    void setListCharacterByFieldName(std::basic_string<char> value);
     //-----------------------------------------------
 
 
 
 
     void createModifyMacro();
-
-
-
-
-    void createInformation();
     void createBaseValue();
 
 
@@ -67,17 +64,30 @@ namespace gsdl {
 
     // containers
     qi::rule<Iterator, ascii::space_type > system;
-    qi::rule<Iterator, ascii::space_type > source_data;
+    qi::rule<Iterator, ascii::space_type > rule_sources;
+    qi::rule<Iterator, ascii::space_type > rule_source;
+    qi::rule<Iterator, ascii::space_type > hooks;
     qi::rule<Iterator, ascii::space_type > character;
     qi::rule<Iterator, ascii::space_type > group;
     qi::rule<Iterator, ascii::space_type > groups;
+    qi::rule<Iterator, ascii::space_type > tables;
     qi::rule<Iterator, ascii::space_type > table;
+    qi::rule<Iterator, ascii::space_type > forms;
+    qi::rule<Iterator, ascii::space_type > form;
+    qi::rule<Iterator, ascii::space_type > sheets;
+    qi::rule<Iterator, ascii::space_type > sheet;
+
+
+    // gui items
+    qi::rule<Iterator, ascii::space_type > hook_item;
+    qi::rule<Iterator, ascii::space_type > hook_items;
+    qi::rule<Iterator, ascii::space_type > list_character_by;
 
     // macros
     qi::rule<Iterator, ascii::space_type > half_macro;        // create half of a field (rounding down)
     qi::rule<Iterator, ascii::space_type > modifier_macro;    // lookup a modifier value from a modifier table
     qi::rule<Iterator, ascii::space_type > add_macro;         // add two fields together
-
+    qi::rule<Iterator, ascii::space_type > increment_macro;   // increment the value of a field
 
     // tables
     qi::rule<Iterator, ascii::space_type > fk;
@@ -118,16 +128,45 @@ namespace gsdl {
           lit("system")
           >> variable[&internal::createGameSystem]
           >> '{'
-          >>      *(source_data)
+          >>      rule_sources
           >>      character
-          >>      *(table)
+          >>      tables
+          >>      hooks
+          >>      forms
+          >>      sheets
           >> '}'
           ;
 
-      source_data %=
+      rule_sources %=
+          lit("sources")
+          >> '{'
+          >> *rule_source
+          >> '}'
+          ;
+
+      rule_source %=
           lit("source")
           >> variable[&internal::createRuleSource]
           //>> eol
+          ;
+
+      hooks %=
+          lit("hooks")
+          >> '{'
+          >> hook_items
+          >> '}'
+          ;
+
+      hook_items %=
+          *hook_item;
+
+      hook_item %=
+          (list_character_by)
+          ;
+
+      list_character_by %=
+          lit("list_character_by")
+          >> variable[&internal::setListCharacterByFieldName]
           ;
 
       character %=
@@ -185,7 +224,12 @@ namespace gsdl {
           >> variable[&internal::appendAddMacroFactor]
           ;
 
-      // add v + v + v + v + v......
+      tables %=
+          lit("tables")
+          >> '{'
+          >> *table
+          >> '}'
+          ;
 
       table %=
           lit("table")
@@ -222,9 +266,8 @@ namespace gsdl {
           ;
 
       information %=
-          lit("info")[&internal::createInformation]
-          >> variable[&internal::setPairKey]
-          >> variable[&internal::setPairValue]
+          lit("info")
+          >> variable[&internal::createInformation]
           ;
 
       modify_value %=
@@ -239,13 +282,48 @@ namespace gsdl {
           >> variable[&internal::setPairValue]
           ;
 
+      increment_macro %=
+          lit("increment")
+          >> variable
+          >> variable
+          ;
+
       item_entry %=
-          (item_value | information | modify_value | base_value)
+          (item_value | information | modify_value | base_value | increment_macro)
           ;
 
       item_entries %=
           *item_entry
           ;
+
+      forms %=
+          lit("forms")
+          >> '{'
+          >> *form
+          >> '}'
+          ;
+
+      form %=
+          lit("form")
+          >> variable
+          >> '{'
+          >> '}'
+          ;
+
+      sheets %=
+          lit("sheets")
+          >> '{'
+          >> *sheet
+          >> '}'
+          ;
+
+      sheet %=
+          lit("sheet")
+          >> variable
+          >> '{'
+          >> '}'
+          ;
+
     }
 
   };

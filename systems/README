@@ -23,15 +23,23 @@ system <value> {}
 system is the outermost conatiner. It is the first item in the file. The 
 parameter <value> is a quoted string used for descriptive purposed. The
 allowable items inside the system container are:
-  * source        (0..n)
+  * sources       (1)
   * character     (1)
-  * table         (0..n)
+  * tables        (1)
+  * hooks         (1)
+  * forms         (1)
+  * sheets        (1)
 
 The items in the container must follow this order. You cannot place table above
 source or character below table, etc.
 
 example: system "D&D 4e" {}
 
+sources {}
+-------------------------------------------------------------------------------
+sources is a container item. It holds any number of source items.
+
+example: sources {}
 
 
 source <value> EOL
@@ -145,6 +153,13 @@ add "STR Ability Modifier" + "Half Level"  will result in a field name of
 example: add "STR Ability Modifier" + "Half Level"
 
 
+tables {}
+-------------------------------------------------------------------------------
+tables is a container item. It holds any number of table items.
+
+example: tables {}
+
+
 table <value> {}
 -------------------------------------------------------------------------------
 table is a container orientated item. It is used to create lookups and calculations
@@ -188,7 +203,43 @@ The allowable items within the item container are:
 While the number of times you use the value keyword is not enforce, each one
 will overwrite the proceeding one, meaning that its usage is (0..1).
 
-When matches are performed against the items in the table,
+In auto mode, when matches are performed against the items in the table, a key
+is used to lookup the item. First the key is matched against the item name.
+If no match was found on any item then an attempt on a ranged key/name combo
+is preformed.
+
+To create ranged key/name combos, the key must be a number and the name must
+be two numbers denoting a range. I.e. "2..7".
+
+With ranges you can make a mistake and alow for multipule matched. For example,
+if you have 2 items with the names "1..10" and "5..15" and a ranged search is
+performed on the key "6" they will both match. The system takes the first match
+and stops matching.
+
+An example of what all of this is used for will make it clearer. Given the
+following:
+
+  system "sample" {
+    character {
+      group "General" {
+        field "Level"
+      }
+      group "Ability" {
+        field     "STR"
+        modifier  "STR"
+      }
+    }
+
+    table "Ability" {
+      auto "Level"
+      item "1..5"  {value "+1" }
+      item "6..10" {value "+2" }
+    }
+  }
+
+If the characters "Level" was "2" then the field "STR Ability Modifier" would
+be set to "+1". If the characters "Level" was "7" then the field
+"STR Ability Modifier" would be set to "+2"
 
 example: item "Dragonborn" {}
 
@@ -204,10 +255,49 @@ example: value "-3";
 
 
 
+hooks {}
+-------------------------------------------------------------------------------
+hooks is a container item. It is used to hook the game system into the various
+applications in the software. It is concerned with hooking the game system
+to the graphical user interface. All items inside the hooks container should
+only appear once. This is not enforced. If they appear multipule times,
+they will keep overwriting each other making the last one the active one.
+
+Allowable items in this container are:
+  * list_character_by       (1)
+
+example: hooks {}
+
+
+list_character_by <value> EOL
+-------------------------------------------------------------------------------
+list_character_by is a line oriented item. This is used to determine which
+field should be used when the GUI is displaying a list of characters. The
+parameter value is the name of a field.
+
+example: list_character_by "Character Name"
+
+
+forms {}
+-------------------------------------------------------------------------------
+forms is a container item. It holds any number of form items.
+
+example: forms {}
+
+
+form <value> {}
+-------------------------------------------------------------------------------
+form is a container item. It is used to describe a form that will be displayed
+in the GUI. The parameter value is the name of the form. The form must have a
+unique name.
 
 
 
+sheets {}
+-------------------------------------------------------------------------------
+sheets is a container item. It holds any number of sheet items.
 
+example: sheets {}
 
 
 

@@ -24,7 +24,8 @@ HEADERS += \
     gramma/Gramma.h \
     compiler/Compiler.h \
     ast/Table.h \
-    ast/Item.h
+    ast/Item.h \
+    ast/ModifyAction.h
 
 SOURCES += \
     ast/GameSystem.cpp \

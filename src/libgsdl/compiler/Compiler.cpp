@@ -27,6 +27,15 @@ namespace gsdl {
       }
     }
 
+    void setListCharacterByFieldName(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        QString k = "LIST_CHARACTER_BY_FIELD_NAME";
+        QString v = QString::fromStdString(value);
+        gameSystem->addGuiMapping(k,v);
+        qDebug() << "ADD GUI MAPPING: " << k << "=" << v;
+      }
+    }
+
     void createGroup(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
         Group *group= gameSystem->getCharacter()->createGroup(QString::fromStdString(value));
@@ -156,12 +165,30 @@ namespace gsdl {
           qDebug() << "CREATE TABLE ITEM: NAME=" << item->getName() << ", VALUE=" << item->getValue();
         }
       }
-
     }
 
-    void createInformation() {
-      qDebug() << "enter createInformation";
+    void setTableItemValue(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCurrentTable() != 0x0) {
+          if(gameSystem->getCurrentTable()->getCurrentItem() != 0x0) {
+            Item *item = gameSystem->getCurrentTable()->getCurrentItem();
+            item->setValue(QString::fromStdString(value));
+            qDebug() << "MODIFY TABLE ITEM VALUE: NAME=" << item->getName() << ", VALUE=" << item->getValue();
+          }
+        }
+      }
+    }
 
+    void createInformation(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCurrentTable() != 0x0) {
+          if(gameSystem->getCurrentTable()->getCurrentItem() != 0x0) {
+            Item *item = gameSystem->getCurrentTable()->getCurrentItem();
+            item->addInfo(QString::fromStdString(value));
+            qDebug() << "ADDED INFO: NAME=" << item->getName() << ", INFO=" << QString::fromStdString(value);
+          }
+        }
+      }
     }
 
     void createBaseValue() {
@@ -197,10 +224,7 @@ namespace gsdl {
 
     }
 
-    void setTableItemValue(std::basic_string<char> value) {
-      qDebug() << "enter setTableItemValue";
 
-    }
 
     void setPairKey(std::basic_string<char> value) {
       qDebug() << "enter setPairKey";
