@@ -33,9 +33,9 @@ public:
 
 private slots:
   //game
-  void newGame();
-  void openGame();
-  void closeGame();
+  void newCampaign();
+  void openCampaign();
+  void closeCampaign();
 
   //maps
   void addMap();
@@ -73,21 +73,23 @@ private:
   void createStatusBar();
   void createDockWindows();
 
-
-
   mtdnd::Settings *settings;
   mtdnd::GameEngine *engine;
 
 
-  QMenu *gameMenu;
+  QMenu *campaignMenu;
+  QMenu *encounterMenu;
+  QMenu *mapMenu;
+  QMenu *characterMenu;
+  QMenu *monsterMenu;
   QMenu *tableMenu;
   QMenu *viewMenu;
 
   QToolBar *gameToolbar;
 
-  QAction *newGameAction;
-  QAction *openGameAction;
-  QAction *closeGameAction;
+  QAction *newCampaignAction;
+  QAction *openCampaignAction;
+  QAction *closeCampaignAction;
   QAction *quitAction;
 
 
@@ -97,6 +99,8 @@ private:
   QDockWidget *initiativeDock;
   QDockWidget *mapDock;
   QDockWidget *artifactDock;
+  QDockWidget *encounterDock;
+
 
   DockListWidget *pcList;
   DockListWidget *npcList;
@@ -104,6 +108,7 @@ private:
   DockListWidget *initiativeList;
   DockListWidget *mapList;
   DockListWidget *assetList;
+  DockListWidget *encounterList;
 
 };
 

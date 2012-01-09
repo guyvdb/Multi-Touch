@@ -66,8 +66,21 @@ system "D&D 4e" {
     list_character_by "Character Name"
   }
 
+  fonts {
+    font "Fields" "Arial" 10 normal
+    font "Captions" "Arial" 10 bold
+  }
+
+
   forms {
     form "Character Detail" {
+      box {
+        show "Level" 10 10 100 100
+        show "Character Name"
+      }
+
+      box "Ability Scores" 10 10 100 100 {
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-QT       -= gui
+QT       += gui webkit
 
 TARGET = gsdl
 TEMPLATE = lib
@@ -25,7 +25,8 @@ HEADERS += \
     compiler/Compiler.h \
     ast/Table.h \
     ast/Item.h \
-    ast/ModifyAction.h
+    ast/ModifyAction.h \
+    widget/CharacterForm.h
 
 SOURCES += \
     ast/GameSystem.cpp \
@@ -36,12 +37,14 @@ SOURCES += \
     ast/Field.cpp \
     compiler/Compiler.cpp \
     ast/Table.cpp \
-    ast/Item.cpp
+    ast/Item.cpp \
+    widget/CharacterForm.cpp
 
 OTHER_FILES += \
     README \
     ../../systems/README \
-    ../../systems/sample.gsdl
+    ../../systems/sample.gsdl \
+    ../../systems/sample.form
 
 win32 {
     #this needs to be set to the correct path of boost on your system

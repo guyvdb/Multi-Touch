@@ -2,9 +2,12 @@
 #include "ui_ParserWindow.h"
 
 #include <QDebug>
+#include <QStringList>
+#include <QVariantMap>
 
 #include "compiler/Compiler.h"
 #include "ast/GameSystem.h"
+#include "widget/CharacterForm.h"
 
 ParserWindow::ParserWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,11 +28,30 @@ void ParserWindow::on_btnClose_clicked()
 
 void ParserWindow::on_btnParse_clicked()
 {
-    gsdl::Compiler compiler;
+  this->ui->txtResult->clear();
 
-    gsdl::GameSystem *gameSystem = compiler.compile(this->ui->txtFileName->text());
 
-    qDebug() << "Got Pointer: " << gameSystem;
 
-    if(gameSystem != 0x0) delete gameSystem;
+  gsdl::Compiler compiler;
+  gsdl::GameSystem *gameSystem = compiler.compile(this->ui->txtFileName->text());
+
+  qDebug() << "Got Pointer: " << gameSystem;
+
+  if(gameSystem != 0x0 ) {
+    gameSystem->print("");
+    QString data(gameSystem->dump(""));
+    QStringList lines = data.split("\r\n");
+    foreach(QString line, lines) this->ui->txtResult->appendPlainText(line);
+
+    QVariantMap character;
+
+    gsdl::CharacterForm *form = new gsdl::CharacterForm("/home/guy/Projects/Current/MultiTouch/systems/sample.form.html",character,gameSystem, this->ui->tabForm);
+
+    form->setGeometry(this->ui->tabForm->geometry());
+
+
+
+  }
+
+
 }

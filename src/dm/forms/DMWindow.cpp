@@ -53,7 +53,7 @@ DMWindow::~DMWindow()
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-void DMWindow::newGame() {
+void DMWindow::newCampaign() {
 
   CreateGameDialog dialog;
   dialog.show();
@@ -84,7 +84,7 @@ void DMWindow::newGame() {
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-void DMWindow::openGame() {
+void DMWindow::openCampaign() {
   QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
   if(fileName  != "") {
     this->engine->start(fileName);
@@ -102,7 +102,7 @@ void DMWindow::openGame() {
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-void DMWindow::closeGame() {
+void DMWindow::closeCampaign() {
   this->engine->stop();
   this->setGameState(GameClosed);
 }
@@ -234,27 +234,33 @@ void DMWindow::saveCurrentWindowState() {
 void DMWindow::setGameState(GameState state) {
   if(state == GameOpen) {
     // disable
-    this->openGameAction->setDisabled(true);
-    this->newGameAction->setDisabled(true);
+    this->openCampaignAction->setDisabled(true);
+    this->newCampaignAction->setDisabled(true);
 
     // enable
-    this->closeGameAction->setEnabled(true);
-
+    this->closeCampaignAction->setEnabled(true);
+    this->encounterMenu->setEnabled(true);
+    this->mapMenu->setEnabled(true);
+    this->characterMenu->setEnabled(true);
+    this->monsterMenu->setEnabled(true);
 
     this->mapList->enable();
     this->pcList->enable();
 
   } else if (state == GameClosed) {
     //disable
-    this->closeGameAction->setDisabled(true);
-
+    this->closeCampaignAction->setDisabled(true);
+    this->encounterMenu->setDisabled(true);
+    this->mapMenu->setDisabled(true);
+    this->characterMenu->setDisabled(true);
+    this->monsterMenu->setDisabled(true);
 
     this->mapList->disable();
     this->pcList->disable();
 
     //enable
-    this->openGameAction->setEnabled(true);
-    this->newGameAction->setEnabled(true);
+    this->openCampaignAction->setEnabled(true);
+    this->newCampaignAction->setEnabled(true);
   }
 }
 
@@ -263,22 +269,21 @@ void DMWindow::setGameState(GameState state) {
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::createActions() {
 
-  // Game
-  this->newGameAction = new QAction(QIcon(":/assets/game-new.png"), tr("&New Game"), this);
-  this->newGameAction->setShortcut((QKeySequence::New));
-  this->newGameAction->setStatusTip(tr("Create a new game"));
-  this->connect(this->newGameAction, SIGNAL(triggered()), this,SLOT(newGame()));
+  // Campaign
+  this->newCampaignAction = new QAction(QIcon(":/assets/game-new.png"), tr("&New Campaign"), this);
+  this->newCampaignAction->setShortcut((QKeySequence::New));
+  this->newCampaignAction->setStatusTip(tr("Start a new campaign"));
+  this->connect(this->newCampaignAction, SIGNAL(triggered()), this,SLOT(newCampaign()));
 
-  this->openGameAction = new QAction(QIcon(":/assets/game-open.png"), tr("&Open Game"), this);
-  this->openGameAction->setShortcut((QKeySequence::Open));
-  this->openGameAction->setStatusTip(tr("Open an existing game"));
-  this->connect(this->openGameAction, SIGNAL(triggered()), this,SLOT(openGame()));
+  this->openCampaignAction = new QAction(QIcon(":/assets/game-open.png"), tr("&Open Campaign"), this);
+  this->openCampaignAction->setShortcut((QKeySequence::Open));
+  this->openCampaignAction->setStatusTip(tr("Open an existing campaign"));
+  this->connect(this->openCampaignAction, SIGNAL(triggered()), this,SLOT(openCampaign()));
 
-  this->closeGameAction = new QAction(QIcon(":/assets/game-close.png"), tr("&Close Game"), this);
-  this->closeGameAction->setShortcut((QKeySequence::Close));
-  this->closeGameAction->setStatusTip(tr("Close current game"));
-  //this->closeGameAction->setDisabled(true);
-  this->connect(this->closeGameAction, SIGNAL(triggered()), this,SLOT(closeGame()));
+  this->closeCampaignAction = new QAction(QIcon(":/assets/game-close.png"), tr("&Close Campaign"), this);
+  this->closeCampaignAction->setShortcut((QKeySequence::Close));
+  this->closeCampaignAction->setStatusTip(tr("Close the current campaign"));
+  this->connect(this->closeCampaignAction, SIGNAL(triggered()), this,SLOT(closeCampaign()));
 
 
 
@@ -288,11 +293,25 @@ void DMWindow::createActions() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::createMenus() {
-  // game
-  this->gameMenu = this->menuBar()->addMenu(tr("&Game"));
-  this->gameMenu->addAction(this->newGameAction);
-  this->gameMenu->addAction(this->openGameAction);
-  this->gameMenu->addAction(this->closeGameAction);
+  // Campaign
+  this->campaignMenu = this->menuBar()->addMenu(tr("&Campaign"));
+  this->campaignMenu->addAction(this->newCampaignAction);
+  this->campaignMenu->addAction(this->openCampaignAction);
+  this->campaignMenu->addAction(this->closeCampaignAction);
+
+  // Encounter
+  this->encounterMenu = this->menuBar()->addMenu(tr("&Encounter"));
+
+  // Map
+  this->mapMenu = this->menuBar()->addMenu(tr("&Map"));
+
+  // Character
+  this->characterMenu = this->menuBar()->addMenu(tr("C&haracter"));
+
+
+  // Monster
+  this->monsterMenu = this->menuBar()->addMenu(tr("M&onster"));
+
 
   // view
   this->viewMenu = this->menuBar()->addMenu(tr("&View"));
@@ -304,9 +323,9 @@ void DMWindow::createMenus() {
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::createToolBars() {
   this->gameToolbar = this->addToolBar(tr("Game"));
-  this->gameToolbar->addAction(this->newGameAction);
-  this->gameToolbar->addAction(this->openGameAction);
-  this->gameToolbar->addAction(this->closeGameAction);
+  this->gameToolbar->addAction(this->newCampaignAction);
+  this->gameToolbar->addAction(this->openCampaignAction);
+  this->gameToolbar->addAction(this->closeCampaignAction);
 }
 
 /* -------------------------------------------------------------------------------------------

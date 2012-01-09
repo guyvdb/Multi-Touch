@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>649</width>
-    <height>90</height>
+    <width>667</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,8 +43,8 @@
    <widget class="QPushButton" name="btnParse">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>50</y>
+      <x>560</x>
+      <y>530</y>
       <width>91</width>
       <height>27</height>
      </rect>
@@ -56,8 +56,8 @@
    <widget class="QPushButton" name="btnClose">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>50</y>
+      <x>460</x>
+      <y>530</y>
       <width>91</width>
       <height>27</height>
      </rect>
@@ -65,6 +65,42 @@
     <property name="text">
      <string>Close</string>
     </property>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>641</width>
+      <height>471</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Text</string>
+     </attribute>
+     <widget class="QPlainTextEdit" name="txtResult">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>621</width>
+        <height>421</height>
+       </rect>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tabForm">
+     <attribute name="title">
+      <string>Form</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
  </widget>

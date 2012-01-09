@@ -27,6 +27,7 @@ allowable items inside the system container are:
   * character     (1)
   * tables        (1)
   * hooks         (1)
+  * fonts         (1)
   * forms         (1)
   * sheets        (1)
 

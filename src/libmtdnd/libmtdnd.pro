@@ -77,7 +77,8 @@ OTHER_FILES += \
     ../../config/multitable.conf \
     README \
     COPYING \
-    AUTHORS
+    AUTHORS \
+    IDEAS
 
 
 INCLUDEPATH += $$PWD/../../include

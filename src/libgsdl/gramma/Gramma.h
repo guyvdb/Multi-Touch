@@ -1,3 +1,23 @@
+/* -------------------------------------------------------------------------------------------
+ *                                   M U L T I - T O U C H
+ *  -------------------------------------------------------------------------------------------
+ *                             Copyright 2011, 2012 Guy van den Berg
+ *                                      All Rights Reserved
+ *
+ *          This program is free software; you can redistribute it and/or modify it
+ *          under the terms of the GNU General Public License as published by the Free
+ *          Software Foundation; either version 2 of the License, or (at your option)
+ *          any later version.
+ *
+ *          This program is distributed in the hope that it will be useful, but WITHOUT
+ *          ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *          FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ *          more details.
+ *
+ *          You should have received a copy of the GNU General Public License along with
+ *          this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * ------------------------------------------------------------------------------------------- */
 #ifndef GSDLGRAMMA_H
 #define GSDLGRAMMA_H
 
@@ -72,10 +92,13 @@ namespace gsdl {
     qi::rule<Iterator, ascii::space_type > groups;
     qi::rule<Iterator, ascii::space_type > tables;
     qi::rule<Iterator, ascii::space_type > table;
+    qi::rule<Iterator, ascii::space_type > fonts;
+    qi::rule<Iterator, ascii::space_type > font;
     qi::rule<Iterator, ascii::space_type > forms;
     qi::rule<Iterator, ascii::space_type > form;
     qi::rule<Iterator, ascii::space_type > sheets;
     qi::rule<Iterator, ascii::space_type > sheet;
+
 
 
     // gui items
@@ -132,6 +155,7 @@ namespace gsdl {
           >>      character
           >>      tables
           >>      hooks
+          >>      fonts
           >>      forms
           >>      sheets
           >> '}'
@@ -294,6 +318,23 @@ namespace gsdl {
 
       item_entries %=
           *item_entry
+          ;
+
+
+      fonts %=
+          lit("fonts")
+          >> '{'
+          >> *font
+          >> '}'
+          ;
+
+      font %=
+          lit("font")
+          >> variable
+          >> variable
+          >> qi::double_
+          >> -lit("bold")
+          >> -lit("italic")
           ;
 
       forms %=
