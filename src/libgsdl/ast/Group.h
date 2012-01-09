@@ -18,11 +18,10 @@ namespace gsdl {
   public:
     explicit Group(const QString name,  QObject *parent = 0);
     QString getName() const {return this->name;}
-    Field* createField(const QString name);
 
+    Field* createField(const QString name);
     bool fieldExists(const QString name);
     Field* getField(const QString name);
-
     Field* getCurrentField(){return this->currentField; }
   private:
 

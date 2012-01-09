@@ -42,7 +42,6 @@ some source material.
 example: source "Players Handbook" EOL
 
 
-
 character {}
 -------------------------------------------------------------------------------
 character is a container indicated the start of character definition. The 
@@ -88,16 +87,120 @@ lookup <value> EOL
 lookup is a line orientated item. It is used to create a field whos value will
 be looked up out of a table. The parameter value is both the name of this field
 and the name of the table that will be used to lookup allowable values for this
-field.
-
+field. A table must exist with the same name as the field.
 
 example: lookup "Race"
 
 
+half <value> EOL
+-------------------------------------------------------------------------------
+half is a line orientated item. It is used to create a calculated field whos
+value will be half the value of the target field, rounded down. The paramater
+value is the name of the target field. The new data field will have the name
+"Half " + the name of the target field. E.g. half "Level" will create a data
+field called "Half Level".
+
+example: half "Level"
 
 
+modifier <value> EOL
+-------------------------------------------------------------------------------
+modifier is a line orientated item. It is used to create a calculated field whos
+value will be looked up from a modifier table. The parameter value is the name
+of the target field. The name of the lookup table is derived from the name of
+the group that the statement is in. The name of the new data field will be
+calculated as <group name> <target field name> Modifier. The example below
+will help clarify.
+
+    group "Ability" {
+      field "STR"
+      modifier "STR"
+    }
+
+In this example, there must be a table named "Ability" that will be used to
+calculate the modifier. The target field is "STR" and the newly created
+calculated field will be called "STR Ability Modifier"
+
+example: modifier "STR"
 
 
+add <value 1> + <value 2> EOL
+-------------------------------------------------------------------------------
+add is a line orientated item. It is used to create a calculated field whos
+value is the addition of two values. The implementation is very basic at this
+time and only allows for two values to be added together. I.e. add "1" + "2" + "3"
+is not allowed.
+
+The value parameters can either be an integer value quoted or the name of another
+data field. I.e  add "STR Ability Modifier" + "Half Level" is valid but so is
+add "10" + "Half Level" or add "10" + "10"
+
+If a field name exists then the value of this field it is used, otherwise and attempt
+to convert the string to an integer is done.
+
+The resulting data field name will be <value 1> Plus <value 2>. E.g.
+add "STR Ability Modifier" + "Half Level"  will result in a field name of
+"STR Ability Modifier Plus Half Level"
+
+example: add "STR Ability Modifier" + "Half Level"
+
+
+table <value> {}
+-------------------------------------------------------------------------------
+table is a container orientated item. It is used to create lookups and calculations
+for data field values. The parameter value is a descriptive, unique name of the
+table. You are not allowed to create two tables with the same name.
+
+The allowable items inside the table container are:
+   * auto      1
+   * item     (0..n)
+
+The items in this container must follow this order. You are not allowed to place
+auto below item.
+
+example: table "Ability" {}
+
+
+auto <value> EOL
+-------------------------------------------------------------------------------
+auto is a line orientated item. It is used in a table to indicate that items are
+automatically picked from this table and that the end user has no choice as to
+which item is picked. The parameter value is the target data field name. The
+value of that data field will be used to pick the value from the table.
+
+example: auto "Level"
+
+item <value> {}
+-------------------------------------------------------------------------------
+item is a container orientated item. It is an entry into the table. It is one
+of the things that can be picked from the table. The parameter value is the name
+of the item. The name must be unique within the scope of the table. No other
+item in the table is allowed the same name. The same name can be used in a
+different table with no problem.
+
+The allowable items within the item container are:
+
+  * value    (0..1)
+  * info     (0..n)
+  * bonus    (0..n)
+  * base     (0..n)
+
+While the number of times you use the value keyword is not enforce, each one
+will overwrite the proceeding one, meaning that its usage is (0..1).
+
+When matches are performed against the items in the table,
+
+example: item "Dragonborn" {}
+
+
+value <value> EOL
+-------------------------------------------------------------------------------
+value is a line orientated item. It is used to set the value of an item in a
+table. The parameter value is the value that will be set. This is an optional
+item. If it is not used, the value of the item in the table will be the same
+as its name.
+
+example: value "-3";
 
 
 

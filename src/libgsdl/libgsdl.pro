@@ -22,7 +22,9 @@ HEADERS += \
     ast/Token.h \
     ast/Field.h \
     gramma/Gramma.h \
-    compiler/Compiler.h
+    compiler/Compiler.h \
+    ast/Table.h \
+    ast/Item.h
 
 SOURCES += \
     ast/GameSystem.cpp \
@@ -31,7 +33,9 @@ SOURCES += \
     ast/Group.cpp \
     ast/Token.cpp \
     ast/Field.cpp \
-    compiler/Compiler.cpp
+    compiler/Compiler.cpp \
+    ast/Table.cpp \
+    ast/Item.cpp
 
 OTHER_FILES += \
     README \
