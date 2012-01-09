@@ -24,6 +24,11 @@ FORMS    += \
     forms/StatusDialog.ui
 
 
+OTHER_FILES += \
+    README \
+    COPYING \
+    AUTHORS
+
 
 
 INCLUDEPATH += $$PWD/../../include
@@ -33,15 +38,8 @@ INCLUDEPATH += $$PWD/../libmtdnd
 DEPENDPATH += $$PWD/../libmtdnd
 
 
-
-
 DESTDIR += ../../../bin
 
 
 
 LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson
-
-OTHER_FILES += \
-    README \
-    COPYING \
-    AUTHORS

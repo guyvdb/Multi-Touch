@@ -11,18 +11,19 @@ namespace ascii = boost::spirit::ascii;
 namespace classic = boost::spirit::classic;
 
 
-namespace gdsl {
+namespace gsdl {
 
   namespace internal {
     void createGameSystem(std::basic_string<char> value);
     void createRuleSource(std::basic_string<char> value);
     void createGroup(std::basic_string<char> value);
+    void createField(std::basic_string<char> value);
+    void createLookup(std::basic_string<char> value);
 
     //-----------------------------------------------
 
 
-    void createField();
-    void createLookup();
+
     void createHalfMacro();
     void createModifyMacro();
     void createModifierMacro();
@@ -43,14 +44,15 @@ namespace gdsl {
     void setTableItemValue(std::basic_string<char> value);
     void setPairKey(std::basic_string<char> value);
     void setPairValue(std::basic_string<char> value);
-  }
+
+  } // end internal namespace
 
 
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
   template <typename Iterator>
-  struct gsdl_parser : qi::grammar<Iterator,ascii::space_type >
+  struct gsdl_gramma : qi::grammar<Iterator,ascii::space_type >
   {
 
     qi::rule<Iterator, std::string(), ascii::space_type > variable;
@@ -93,7 +95,7 @@ namespace gdsl {
     qi::rule<Iterator, ascii::space_type > fields;
 
 
-    gsdl_parser() : gsdl_parser::base_type(system)
+    gsdl_gramma() : gsdl_gramma::base_type(system)
     {
       using qi::int_;
       using qi::lit;
@@ -154,8 +156,8 @@ namespace gdsl {
           ;
 
       lookup %=
-          lit("lookup")[&internal::createLookup]
-          >> variable[&internal::setName]
+          lit("lookup")
+          >> variable[&internal::createLookup]
           ;
 
 

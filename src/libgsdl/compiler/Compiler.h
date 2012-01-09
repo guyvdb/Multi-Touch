@@ -6,11 +6,11 @@
 
 namespace gsdl {
 
-  class GSDLCompiler : public QObject
+  class Compiler : public QObject
   {
       Q_OBJECT
   public:
-    explicit GSDLCompiler(QObject *parent = 0);
+    explicit Compiler(QObject *parent = 0);
     GameSystem* compile(const QString filename);
   };
 

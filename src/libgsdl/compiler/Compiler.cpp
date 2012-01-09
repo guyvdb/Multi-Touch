@@ -1,6 +1,11 @@
-#include "GSDLCompiler.h"
+#include "Compiler.h"
 
-#include "gramma/GSDLGramma.h"
+#include "gramma/Gramma.h"
+
+#include <QDebug>
+
+#include <iostream>
+#include <fstream>
 
 
 namespace gsdl {
@@ -36,7 +41,7 @@ namespace gsdl {
       }
     }
 
-    void createLookup() {
+    void createLookup(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
         if(gameSystem->getCharacter() != 0x0) {
           if(gameSystem->getCharacter()->getCurrentGroup() != 0x0 ) {
@@ -116,15 +121,39 @@ namespace gsdl {
 
     }
 
-  }
+  } // end internal namespace
 
 
-  GSDLCompiler::GSDLCompiler(QObject *parent) : QObject(parent)
+  Compiler::Compiler(QObject *parent) : QObject(parent)
   {
   }
 
-  GameSystem* GSDLCompiler::compile(const QString filename) {
+  GameSystem* Compiler::compile(const QString filename) {
+    internal::gameSystem = 0x0;  // reset any reference to old game system
 
+    // open a stream
+    std::ifstream stream(filename.toAscii().constData());
+
+    // declare our iterator types
+    typedef std::istreambuf_iterator<char> base_iterator_type;
+    base_iterator_type in_begin(stream);
+
+    typedef boost::spirit::multi_pass<base_iterator_type> forward_iterator_type;
+    forward_iterator_type fwd_begin = boost::spirit::make_default_multi_pass(in_begin);
+    forward_iterator_type fwd_end;
+
+
+    // declare our gramma
+    typedef gsdl_gramma<forward_iterator_type> gsdl_p;
+    gsdl_p g;
+
+    // parse the file into our ast
+    bool r = boost::spirit::qi::phrase_parse(fwd_begin, fwd_end, g, boost::spirit::ascii::space);
+
+    QString msg = r ? "PARSE OK" : "SYNTAX ERROR";
+    qDebug() << msg;
+
+    return internal::gameSystem; // the calling function is responisable to free it.
   }
 
 }

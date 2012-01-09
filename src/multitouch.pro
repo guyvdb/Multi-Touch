@@ -8,4 +8,5 @@ SUBDIRS     =     libmtdnd \
                   mtv \
                   udp \
     headless \
-    libgsdl
+    libgsdl \
+    gsdl
