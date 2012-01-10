@@ -9,13 +9,26 @@ system "D&D 4e" {
     group "Main" {     
       field     "Player Name"
       field     "Character Name" 
-      lookup    "Class" 
-      lookup    "Paragon Path"
-      lookup    "Epic Destiny"
-      field     "XP"
-      lookup    "Race"
       field     "Level"
+      lookup    "Class"
+      field     "Paragon Path"
+      field     "Epic Destiny"
+      field     "Total XP"
+      lookup    "Race"
+      field     "Size"
+      field     "Age"
+      field     "Gender"
+      field     "Height"
+      field     "Weigth"
+      lookup    "Alignment"
+      lookup    "Deity"
+      field     "Adventuring Company"
       half      "Level"
+    }
+
+    group "Initiative" {
+      field     "Initiative"
+
     }
 
     group "Ability" {      
@@ -51,11 +64,25 @@ system "D&D 4e" {
 
 
       item "Dwarf" {}
-      item "Some Custom Made Up Race" {}
+      item "Eladrin" {}
+      item "Elf" {}
+      item "Half-Elf" {}
+      item "Hafling" {}
+      item "Human" {}
+      item "Tiefling" {}
     }
 
 
     table "Class" {
+      item "Cleric" {}
+      item "Fighter" {}
+      item "Paladin" {}
+      item "Ranger" {}
+      item "Rouge" {}
+      item "Warlock" {}
+      item "Warlord" {}
+      item "Wizard" {}
+
     }
 
   }
@@ -65,31 +92,6 @@ system "D&D 4e" {
   hooks {
     list_character_by "Character Name"
   }
-
-  fonts {
-    font "Fields" "Arial" 10 normal
-    font "Captions" "Arial" 10 bold
-  }
-
-
-  forms {
-    form "Character Detail" {
-      box {
-        show "Level" 10 10 100 100
-        show "Character Name"
-      }
-
-      box "Ability Scores" 10 10 100 100 {
-      }
-    }
-  }
-
-  sheets {
-    sheet "Character Sheet" {
-    }
-  }
-
-
 
 
 }

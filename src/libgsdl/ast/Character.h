@@ -50,7 +50,7 @@ namespace gsdl {
     void addFieldRef(Field *field);
 
     Group* getCurrentGroup() {return this->currentGroup; }
-
+    GameSystem *getGameSystem() {return this->gameSystem; }
 
     QByteArray dump(const QString indent);
   private:

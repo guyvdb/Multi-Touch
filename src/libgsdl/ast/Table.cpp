@@ -71,4 +71,15 @@ namespace gsdl {
     return result;
   }
 
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QStringList Table::getOptions() {
+    QStringList result;
+    foreach(Item *item, this->items) result.append(item->getValue());
+
+    //TODO sort
+    return result;
+  }
+
 }

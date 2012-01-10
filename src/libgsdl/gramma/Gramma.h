@@ -51,13 +51,8 @@ namespace gsdl {
     void setListCharacterByFieldName(std::basic_string<char> value);
     //-----------------------------------------------
 
-
-
-
     void createModifyMacro();
     void createBaseValue();
-
-
 
     void setSystemName(std::basic_string<char> value);
     void setGroupName(std::basic_string<char> value);
@@ -92,13 +87,6 @@ namespace gsdl {
     qi::rule<Iterator, ascii::space_type > groups;
     qi::rule<Iterator, ascii::space_type > tables;
     qi::rule<Iterator, ascii::space_type > table;
-    qi::rule<Iterator, ascii::space_type > fonts;
-    qi::rule<Iterator, ascii::space_type > font;
-    qi::rule<Iterator, ascii::space_type > forms;
-    qi::rule<Iterator, ascii::space_type > form;
-    qi::rule<Iterator, ascii::space_type > sheets;
-    qi::rule<Iterator, ascii::space_type > sheet;
-
 
 
     // gui items
@@ -155,9 +143,6 @@ namespace gsdl {
           >>      character
           >>      tables
           >>      hooks
-          >>      fonts
-          >>      forms
-          >>      sheets
           >> '}'
           ;
 
@@ -320,50 +305,6 @@ namespace gsdl {
           *item_entry
           ;
 
-
-      fonts %=
-          lit("fonts")
-          >> '{'
-          >> *font
-          >> '}'
-          ;
-
-      font %=
-          lit("font")
-          >> variable
-          >> variable
-          >> qi::double_
-          >> -lit("bold")
-          >> -lit("italic")
-          ;
-
-      forms %=
-          lit("forms")
-          >> '{'
-          >> *form
-          >> '}'
-          ;
-
-      form %=
-          lit("form")
-          >> variable
-          >> '{'
-          >> '}'
-          ;
-
-      sheets %=
-          lit("sheets")
-          >> '{'
-          >> *sheet
-          >> '}'
-          ;
-
-      sheet %=
-          lit("sheet")
-          >> variable
-          >> '{'
-          >> '}'
-          ;
 
     }
 

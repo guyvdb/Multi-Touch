@@ -46,6 +46,7 @@ namespace gsdl {
     bool fieldExists(const QString name);
     Field* getField(const QString name);
     Field* getCurrentField(){return this->currentField; }
+    Character* getCharacter(){return this->character; }
 
     QByteArray dump(const QString indent);
   private:

@@ -53,6 +53,13 @@ namespace character {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
+  QString CharacterForm::html() {
+    return this->view->page()->mainFrame()->documentElement().toOuterXml();
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   void CharacterForm::show(const QString fileName, QVariantMap *character, gsdl::GameSystem *gameSystem) {
 
     this->character = character;
@@ -78,7 +85,30 @@ namespace character {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
+  QString CharacterForm::buildLookupField(gsdl::Field *metaField, QWebElement &element, const QString fieldName) {
+    QString prefix = fieldName.toLower().replace(" ","-");
+    QString clazz = element.attribute("class");
+    clazz.append(clazz.isEmpty() ? "simple field" : " simple field");
+    QString label = element.attribute("data-label").isEmpty() ? fieldName : element.attribute("data-label");
+
+    QByteArray result;
+
+    result.append("\r\n\t<label id=\"" + prefix +  "-label\" class=\"" + clazz + "\" >").append(label).append("</label>\r\n");
+    result.append("\t<select id=\"" + prefix + "-field\" class=\"" + clazz + "\" onChange=\"javascript:engine.fieldChanged('" + fieldName +  "');\" >\r\n");
+
+    foreach (QString item, metaField->getOptions()) {
+      result.append("\t\t<option>").append(item).append("</option>\r\n");
+    }
+    result.append("\t</select>\r\n\t");
+
+    return QString(result);
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
   QString CharacterForm::buildSimpleField(gsdl::Field *metaField, QWebElement &element, const QString fieldName) {
+    QString prefix = fieldName.toLower().replace(" ","-");
     QString clazz = element.attribute("class");
     clazz.append(clazz.isEmpty() ? "simple field" : " simple field");
     QString label = element.attribute("data-label").isEmpty() ? fieldName : element.attribute("data-label");
@@ -86,8 +116,8 @@ namespace character {
 
     QByteArray result;
 
-    result.append("<label class=\"" + clazz + "\" >").append(label).append("</label>");
-    result.append("<input type=\"text\" value=\"Calculate Me\" onChange=\"javascript:engine.fieldChanged('" + fieldName +  "');\" />");
+    result.append("\r\n\t<label id=\"" + prefix +  "-label\" class=\"" + clazz + "\" >").append(label).append("</label>\r\n");
+    result.append("\t<input id=\"" + prefix + "-field\" type=\"text\" value=\"Calculate Me\" class=\"" + clazz + "\" onChange=\"javascript:engine.fieldChanged('" + fieldName +  "');\" />\r\n\t");
 
     return QString(result);
   }
@@ -99,8 +129,16 @@ namespace character {
     gsdl::Field *metaField = this->gameSystem->getField(fieldName);
 
     if(metaField != 0x0) {
-      qDebug() << "ADD FIELD: " << fieldName << ", TYPE:" << metaField->getFieldType();
-      element.appendInside(buildSimpleField(metaField,element,fieldName));
+      switch(metaField->getFieldType()) {
+      case gsdl::Field::SimpleField:
+      case gsdl::Field::HalfMacroField:
+      case gsdl::Field::ModifierMacroField:
+        element.appendInside(buildSimpleField(metaField,element,fieldName));
+        break;
+      case gsdl::Field::LookupField:
+        element.appendInside(buildLookupField(metaField,element,fieldName));
+        break;
+      }
     } else {
       qDebug() << "FAILED TO FIND FIELD: " << fieldName;
     }
@@ -123,33 +161,12 @@ namespace character {
     QWebFrame *frame = this->view->page()->mainFrame();
     QWebElement document = frame->documentElement();
 
+    // build all the fields
     QWebElementCollection fields = document.findAll("div");
     foreach(QWebElement field, fields) {
       QString fieldName = field.attribute("data-field-name");
       if(!fieldName.isEmpty()) this->addField(field, fieldName);
     }
-
-
-
-/*
-
-    for(int i=fields.count()-1; i >=0; i--){
-
-      QWebElement el = fields.at(i);
-
-
-
-
-      QString data = el.attribute("name");
-      QString name(data);
-      name.replace(" ","_");
-      QString clazz = el.attribute("class");
-      QString html = "<div class=\"" + clazz+ "\"/><label>" + el.attribute("name") + "</label><input type=\"text\" name=\"" + name + "\" data-field-name=\"" + data + "\" class=\"" + clazz + "\" /></div>";
-
-      el.appendInside(html);
-    }
-*/
-
   }
 
 }

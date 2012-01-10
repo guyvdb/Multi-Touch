@@ -21,6 +21,8 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <QStringList>
+
 #include "libgsdl_global.h"
 
 #include "ast/Token.h"
@@ -42,6 +44,8 @@ namespace gsdl {
     bool itemExists(const QString name);
     Item* getItem(const QString name);
     Item* getCurrentItem(){return this->currentItem; }
+
+    QStringList getOptions();
 
     QByteArray dump(const QString indent);
   private:

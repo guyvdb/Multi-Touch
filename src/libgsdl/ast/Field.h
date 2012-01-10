@@ -57,6 +57,8 @@ namespace gsdl {
 
     void appendAddMacroFactor(const QString value);
 
+    QStringList getOptions();
+
     QByteArray dump(const QString indent);
     FieldType getFieldType();
 

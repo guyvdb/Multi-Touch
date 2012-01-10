@@ -279,27 +279,6 @@ parameter value is the name of a field.
 example: list_character_by "Character Name"
 
 
-forms {}
--------------------------------------------------------------------------------
-forms is a container item. It holds any number of form items.
-
-example: forms {}
-
-
-form <value> {}
--------------------------------------------------------------------------------
-form is a container item. It is used to describe a form that will be displayed
-in the GUI. The parameter value is the name of the form. The form must have a
-unique name.
-
-
-
-sheets {}
--------------------------------------------------------------------------------
-sheets is a container item. It holds any number of sheet items.
-
-example: sheets {}
-
 
 
 

@@ -1,55 +1,93 @@
-<!--
-  *.form files are actually just HTML 5 markup with custom elements.
-
-  You can embedd or link items relative to the location of the file.
-
-  The custom elements are:
-
-
-  field
-  -------------------------------
-  field is an element that outputs a data field from the character.
-  The type of field and available options are calculated by libchar.
-  The only thing you have to tell it is the field name in the name
-  attribute. Optionally, you can add a css class with the class
-  attribute that will be honered by the system.
-
-  The output will expand as follows:
-
-  given:
-      <div class="xyz" name="Level"/>
-
-
-  simple field:
-      <field class="xyz" name="Level">
-      </field>
-
-
-
--->
-
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
-<title>Character Detail</title>
+  <meta charset="utf-8" />
+  <title>Character Detail</title>
+  <style type="text/css">
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    #wrap {width: 620px;}
+
+    #header {
+      width: 100%;
+      height: 18px;
+      background:black;
+      color: white;
+      padding: 14px;
+      margin-bottom: 6px;
+    }
+
+    div.over-under {
+      float: left;
+    }
+
+    label { font-size: 11px;  }
+
+    div.over-under label {
+      display: block;
+      margin-left: 5px;
+    }
+
+    p.clear {clear:both;}
+
+    input[type="text"], select {
+      font-family: Arial, Sans-Serif;
+      font-size: 13px;
+      margin-bottom: 5px;
+      display: block;
+      padding: 4px;
+      border: solid 1px black;
+      height: 11px;
+      margin-left: 1px;
+      margin-right: 1px;
+    }
+
+    #character-name-label, #character-name-field {width: 110px;}
+    #level-label, #level-field {width: 26px;}
+    #class-label, #class-field {width: 70px; }
+    #race-label, #race-field {width: 90px; }
+    #paragon-path-label, #paragon-path-field {width: 80px;}
+    #epic-destiny-label, #epic-destiny-field {width: 80px;}
+    #total-xp-label, #total-xp-field {width: 40px;}
+
+
+
+  </style>
 </head>
 <body>
 
+  <div id="wrap">
+    <div id="header">Character Sheet</div>
 
+    <!-- Header Section -->
+    <div>
+      <div class="over-under" data-field-name="Character Name"></div>
+      <div class="over-under" data-field-name="Level"></div>
+      <div class="over-under" data-field-name="Class"></div>
+      <div class="over-under" data-field-name="Race"></div>
+      <div class="over-under" data-field-name="Paragon Path"></div>
+      <div class="over-under" data-field-name="Epic Destiny"></div>
+      <div class="over-under" data-field-name="Total XP" data-label="XP"></div>
+    </div>
 
-  <div class="xyx" data-field-name="Character Name"></div>
-  <div class="xyx" data-field-name="Class"></div>
-  <div class="xyx" data-field-name="Half Level"></div>
-  <div class="xyx" data-field-name="STR Ability Modifier Plus Half Level" data-label="MOD Half LVL"></div>
-  <div class="xyx" data-field-name="STR Ability Modifier" data-label="MOD"></div>
+    <!-- Second Line -->
+    <div>
+    </div>
 
+    <!-- Clear all Floats -->
+    <p class="clear"></p>
 
-  <!--
-      Fake button so all data fields loose focus. Their onChange events
-      will fire if they have changed and they will be saved
-   -->
-  <input type="button"  value="Save" />
-
+    <div class="xyx" data-field-name="Class"></div>
+    <div class="xyx" data-field-name="Half Level"></div>
+    <div class="xyx" data-field-name="STR Ability Modifier" data-label="MOD"></div>
+    <!--
+        Fake button so all data fields loose focus. Their onChange events
+        will fire if they have changed and the C++ code will pick up the changes
+     -->
+    <input type="button"  value="Save" />
+  </div>
 </body>
 </html>

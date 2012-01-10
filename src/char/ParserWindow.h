@@ -29,6 +29,7 @@ private slots:
 private:
     Ui::ParserWindow *ui;
     QPlainTextEdit *text;
+    QPlainTextEdit *html;
     gsdl::GameSystem *system;
     character::CharacterForm *form;
 

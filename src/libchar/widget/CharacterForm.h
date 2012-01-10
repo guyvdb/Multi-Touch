@@ -20,7 +20,7 @@ namespace character {
     explicit CharacterForm(QWidget *parent = 0);
 
     void show(const QString fileName, QVariantMap *character, gsdl::GameSystem *gameSystem);
-
+    QString html();
   protected:
     void resizeEvent(QResizeEvent *);
 
@@ -32,6 +32,7 @@ namespace character {
 
     void addField(QWebElement &element, const QString fieldName);
     QString buildSimpleField(gsdl::Field *metaField, QWebElement &element, const QString fieldName);
+    QString buildLookupField(gsdl::Field *metaField, QWebElement &element, const QString fieldName);
 
     QWebView *view;
     QVariantMap *character;

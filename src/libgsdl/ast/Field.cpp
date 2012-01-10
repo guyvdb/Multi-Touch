@@ -20,6 +20,9 @@
  * ------------------------------------------------------------------------------------------- */
 #include "ast/Field.h"
 #include "ast/Group.h"
+#include "ast/Character.h"
+#include "ast/GameSystem.h"
+#include "ast/Table.h"
 
 #include <QDebug>
 
@@ -38,6 +41,22 @@ namespace gsdl {
   void Field::appendAddMacroFactor(const QString value) {
     this->addMacroFactors.append(value);
     this->recalculateAddMacroFieldName();
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  QStringList Field::getOptions() {
+    Q_ASSERT(this->getFieldType() == LookupField);
+    GameSystem *system = this->group->getCharacter()->getGameSystem();
+    Table *table = system->getTable(this->lookupTableName);
+
+    if(table != 0x0) {
+      return table->getOptions();
+    } else {
+      qDebug() << "WARNING: no table specified for: " << this->getLookupTableName();
+      return QStringList();
+    }
   }
 
   /* -------------------------------------------------------------------------------------------
