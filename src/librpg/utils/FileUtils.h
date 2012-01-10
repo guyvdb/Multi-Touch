@@ -18,29 +18,41 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef OBJECTGROUPITEM_H
-#define OBJECTGROUPITEM_H
+#ifndef FILEUTILS_H
+#define FILEUTILS_H
 
-#include <QGraphicsItem>
+#include <QString>
+#include <QStringList>
+#include <QDir>
 
-#include "libmtg_global.h"
-
-#include "tiled/objectgroup.h"
-#include "tiled/maprenderer.h"
+#include "librpg_global.h"
 
 namespace mtdnd {
 
-  class LIBMTDND_EXPORT ObjectGroupItem : public QGraphicsItem
-  {
-  public:
-      ObjectGroupItem(Tiled::ObjectGroup *objectGroup, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
-      QRectF boundingRect() const;
-      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-  private:
+    class LIBRPG_EXPORT FileUtils
+    {
+    public:
+        static QString binDirectory();
+        static QString campaignsDirectory();
+        static QString mapsDirectory();
+        static QString configDirectory();
+        static QString debugDirectory();
+        static QString systemsDirectory();
+
+        static QString cacheDirectory();
+        static QString cachedMapsDirectory();
 
 
-  };
+        static QString relativeTo(const QString directory, const QString filename);
+        static QString join(const QString p1, const QString p2);
+        static QString join(const QString p1, const QString p2, const QString p3);
+
+
+        //static QString relativeMapName(const QString filename);
+    private:
+        static QString getDirectoryOffRoot(const QString name);
+    };
 
 }
 
-#endif // OBJECTGROUPITEM_H
+#endif // FILEUTILS_H

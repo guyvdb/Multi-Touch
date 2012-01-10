@@ -6,8 +6,9 @@ task :clean do
   # files
   files = [
     "**/Makefile",
-    "bin/libmt*.*",
+    "bin/libmtv.*",
     "bin/libgsdl.*",
+    "bin/librpg.*",
     "bin/pc",
     "bin/dm",
     "bin/table",

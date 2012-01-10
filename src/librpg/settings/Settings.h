@@ -18,31 +18,38 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#include "CreateGameDialog.h"
-#include "ui_CreateGameDialog.h"
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-/* -------------------------------------------------------------------------------------------
- *
- * ------------------------------------------------------------------------------------------- */
-CreateGameDialog::CreateGameDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::CreateGameDialog)
-{
-    ui->setupUi(this);
-    this->ui->edtGameName->setFocus();
+#include <QObject>
+#include <QVariantMap>
+
+#include "librpg_global.h"
+
+namespace mtdnd {
+
+    class LIBRPG_EXPORT Settings : public QObject
+    {
+        Q_OBJECT
+    public:
+        Settings(const QString filename, QObject *parent = 0);
+
+        bool load();
+        bool save();
+        void dump();
+        void merge(QVariantMap &defaults);
+        QVariantMap *getMap();
+
+        void set(const QString key, QVariant value);
+
+    private:
+        void mergeMaps(QVariant setting,  QVariant defaults);
+
+
+        QVariantMap map;
+        QString filename;
+    };
+
 }
 
-/* -------------------------------------------------------------------------------------------
- *
- * ------------------------------------------------------------------------------------------- */
-CreateGameDialog::~CreateGameDialog()
-{
-    delete ui;
-}
-
-/* -------------------------------------------------------------------------------------------
- *
- * ------------------------------------------------------------------------------------------- */
-QString CreateGameDialog::getFileName() const {
-  return this->ui->edtGameName->text();
-}
+#endif // SETTINGS_H

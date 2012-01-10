@@ -18,38 +18,65 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef MAPVIEW_H
+#define MAPVIEW_H
 
-#include <QObject>
-#include <QVariantMap>
 
-#include "libmtg_global.h"
+
+#include <QGraphicsView>
+#include "librpg_global.h"
+
+#include "map/GridItem.h"
+#include "map/MapScene.h"
+#include "map/MapItem.h"
+#include "map/FogOfWar.h"
+#include "map/MapToken.h"
+#include "map/ZIndex.h"
+
+
+namespace Tiled {
+  class Map;
+  class MapRenderer;
+}
+
+
 
 namespace mtdnd {
 
-    class LIBMTDND_EXPORT Settings : public QObject
-    {
-        Q_OBJECT
-    public:
-        Settings(const QString filename, QObject *parent = 0);
-
-        bool load();
-        bool save();
-        void dump();
-        void merge(QVariantMap &defaults);
-        QVariantMap *getMap();
-
-        void set(const QString key, QVariant value);
-
-    private:
-        void mergeMaps(QVariant setting,  QVariant defaults);
 
 
-        QVariantMap map;
-        QString filename;
-    };
+  /**
+   * The MapView shows the map scene. It sets some MapScene specific
+   * properties and also implements zooming and scrolling
+   *
+   */
+  class LIBRPG_EXPORT MapView : public QGraphicsView
+  {
+      Q_OBJECT
+  public:
+    MapView(GameEngine *engine);
+    ~MapView();
+    void loadMap(const QString &fileName);
+    void recalculateFogOfWar();
+    void unloadMap();
+    bool isLoaded() {return this->loaded;}
+    QSize getTileSize();
+    mtdnd::MapScene* getScene() {return this->scene;}
+    Tiled::Map * getMap() {return this->map; }
+  protected:
+    virtual void wheelEvent(QWheelEvent *event);
+  private:
+    QSize getMapSizeInTiles();
+    bool loaded;
+    MapScene *scene;
+    GameEngine *engine;
+    Tiled::Map *map;
+    MapItem *mapItem;
+    Tiled::MapRenderer *renderer;
 
+
+
+  };
 }
 
-#endif // SETTINGS_H
+#endif // MAPVIEW_H

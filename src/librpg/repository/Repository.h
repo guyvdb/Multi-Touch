@@ -18,34 +18,54 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef MAPOBJECTITEM_H
-#define MAPOBJECTITEM_H
+#ifndef REPOSITORY_H
+#define REPOSITORY_H
 
-#include <QGraphicsItem>
+#include <QObject>
+#include <QVariant>
+#include <QVariantMap>
+#include <QSqlDatabase>
 
-#include "libmtg_global.h"
-#include "tiled/tilelayer.h"
-#include "tiled/tileset.h"
-#include "tiled/maprenderer.h"
-#include "tiled/mapobject.h"
+#include "librpg_global.h"
 
-
-
-namespace  mtdnd {
+namespace mtdnd {
 
 
-  class LIBMTDND_EXPORT MapObjectItem : public QGraphicsItem
+
+  class  LIBRPG_EXPORT Repository : public QObject
   {
+    Q_OBJECT
   public:
-      MapObjectItem(Tiled::MapObject *mapObject, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
-      QRectF boundingRect() const;
-      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    Repository(const QString name, QObject *parent = 0);
+    ~Repository();
+    bool open(const QString filename);
+    void close();
+    bool isOpen();
+
+    void registerCollection(const QString name);
+    QVariantMap get(const QString collection, const QString key);
+    void put(const QString collection, const QString key, QVariantMap value);
+    void remove(const QString collection, const QString key);
+    QList<QVariantMap> list(const QString collection);
+    bool keyExists(const QString collection, const QString key);
+  protected:
 
   private:
-      Tiled::MapObject *mapObject;
-      Tiled::MapRenderer *renderer;
+    bool exists(const QString collection);
+    void create(const QString collection);
+
+    void update(const QString collection, const QString key, QByteArray &value);
+    void insert(const QString collection, const QString key, QByteArray &value);
+
+
+    QSqlDatabase database;
+
   };
+
+
+
+
 
 }
 
-#endif // MAPOBJECTITEM_H
+#endif // REPOSITORY_H

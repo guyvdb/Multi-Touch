@@ -31,7 +31,7 @@
 
 #include "utils/FileUtils.h"
 
-#include "forms/CreateGameDialog.h"
+#include "forms/CreateCampaignDialog.h"
 #include "forms/NetworkSettingDialog.h"
 #include "forms/ShowMapDialog.h"
 #include "forms/ErrorDialog.h"
@@ -253,7 +253,7 @@ void MainWindow::on_openGameAction_triggered()
 {  
   if(!this->isGameStateValid(GameClosedState)) return;
 
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::campaignsDirectory(), tr("Game Files (*.game)"));
   if(fileName  != "") {
     this->databaseFileName = fileName;
     this->openGame();
@@ -285,7 +285,7 @@ void MainWindow::on_newGameAction_triggered()
 
   if(!this->isGameStateValid(GameClosedState)) return;
 
-  CreateGameDialog dialog;
+  CreateCampaignDialog dialog;
   dialog.show();
   dialog.exec();
   if(dialog.result()) {
@@ -294,7 +294,7 @@ void MainWindow::on_newGameAction_triggered()
       if(!fileName.endsWith(".game")) {
         fileName = fileName + ".game";
       }
-      fileName = mtdnd::FileUtils::gamesDirectory() + QDir::separator() + fileName;
+      fileName = mtdnd::FileUtils::campaignsDirectory() + QDir::separator() + fileName;
       if(QFile::exists(fileName)) {
         // TODO clean me up. Use a QErrorMessage
         QMessageBox msg;

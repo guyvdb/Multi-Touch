@@ -31,7 +31,7 @@
 #include <QHash>
 
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
 
 
 #include "net/CommandClient.h"
@@ -58,7 +58,7 @@ namespace mtdnd {
    * The game engine provides a central class to carry out all game related activity
    * from controlling the map to network operations
    */
-  class LIBMTDND_EXPORT GameEngine : public QObject
+  class LIBRPG_EXPORT GameEngine : public QObject
   {
       Q_OBJECT
   public:

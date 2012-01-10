@@ -18,29 +18,29 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef UDPCLIENT_H
-#define UDPCLIENT_H
+#ifndef OBJECTGROUPITEM_H
+#define OBJECTGROUPITEM_H
 
-#include <QUdpSocket>
-#include <QByteArray>
-#include <QString>
-#include <QUuid>
+#include <QGraphicsItem>
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
+
+#include "tiled/objectgroup.h"
+#include "tiled/maprenderer.h"
 
 namespace mtdnd {
 
-  class LIBMTDND_EXPORT CommandClient : public QUdpSocket
+  class LIBRPG_EXPORT ObjectGroupItem : public QGraphicsItem
   {
-    Q_OBJECT
   public:
-    CommandClient();
-    void send(const QString host, const int port, QByteArray &data);
-    QString getId() {return this->id;}
-
+      ObjectGroupItem(Tiled::ObjectGroup *objectGroup, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
+      QRectF boundingRect() const;
+      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
   private:
-    QString id;
+
+
   };
+
 }
 
-#endif // UDPCLIENT_H
+#endif // OBJECTGROUPITEM_H

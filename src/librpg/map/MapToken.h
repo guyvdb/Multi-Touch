@@ -23,13 +23,13 @@
 
 #include <QGraphicsItem>
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
 
 
 namespace mtdnd {
 
 
-class LIBMTDND_EXPORT MapToken : public QGraphicsItem
+class LIBRPG_EXPORT MapToken : public QGraphicsItem
 {
   //  Q_OBJECT
 public:

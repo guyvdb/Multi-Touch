@@ -49,9 +49,6 @@ private slots:
   void addPc();
   void removePc();
 
-
-
-
 private:
 
   // add map tokens

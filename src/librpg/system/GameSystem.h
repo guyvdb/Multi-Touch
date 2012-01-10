@@ -4,11 +4,11 @@
 #include <QObject>
 #include <QtScript/QScriptEngine>
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
 
 namespace mtdnd {
 
-  class LIBMTDND_EXPORT GameSystem : public QObject
+  class LIBRPG_EXPORT GameSystem : public QObject
   {
       Q_OBJECT
   public:

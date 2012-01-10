@@ -18,41 +18,29 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef FILEUTILS_H
-#define FILEUTILS_H
+#ifndef UDPCLIENT_H
+#define UDPCLIENT_H
 
+#include <QUdpSocket>
+#include <QByteArray>
 #include <QString>
-#include <QStringList>
-#include <QDir>
+#include <QUuid>
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
 
 namespace mtdnd {
 
-    class LIBMTDND_EXPORT FileUtils
-    {
-    public:
-        static QString binDirectory();
-        static QString gamesDirectory();
-        static QString mapsDirectory();
-        static QString configDirectory();
-        static QString debugDirectory();
-        static QString systemsDirectory();
+  class LIBRPG_EXPORT CommandClient : public QUdpSocket
+  {
+    Q_OBJECT
+  public:
+    CommandClient();
+    void send(const QString host, const int port, QByteArray &data);
+    QString getId() {return this->id;}
 
-        static QString cacheDirectory();
-        static QString cachedMapsDirectory();
-
-
-        static QString relativeTo(const QString directory, const QString filename);
-        static QString join(const QString p1, const QString p2);
-        static QString join(const QString p1, const QString p2, const QString p3);
-
-
-        //static QString relativeMapName(const QString filename);
-    private:
-        static QString getDirectoryOffRoot(const QString name);
-    };
-
+  private:
+    QString id;
+  };
 }
 
-#endif // FILEUTILS_H
+#endif // UDPCLIENT_H

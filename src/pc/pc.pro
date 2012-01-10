@@ -23,7 +23,7 @@ DEPENDPATH += $$PWD/../../include
 
 DESTDIR += ../../../bin
 
-LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson
+LIBS += -L$$DESTDIR -lrpg -ltiled -lqjson
 
 OTHER_FILES += \
     README \

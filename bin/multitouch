@@ -42,6 +42,8 @@ elif [ $1 = "mtv" ] ; then
   $BIN_DIR/mtv
 elif [ $1 = "headless" ] ; then
   $BIN_DIR/headless
+elif [ $1 = "tiled" ] ; then
+  $BIN_DIR/tiled
 else
   echo "-----------------------"
   echo "Error. Invalid command"

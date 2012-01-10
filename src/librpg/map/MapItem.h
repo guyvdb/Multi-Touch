@@ -18,27 +18,24 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
+#ifndef MAPITEM_H
+#define MAPITEM_H
 
-#ifndef CREATEGAMEDIALOG_H
-#define CREATEGAMEDIALOG_H
+#include <QGraphicsItem>
+#include "librpg_global.h"
 
-#include <QDialog>
+#include "tiled/map.h"
+#include "tiled/maprenderer.h"
 
-namespace Ui {
-    class CreateGameDialog;
+namespace mtdnd {
+
+  class LIBRPG_EXPORT MapItem : public QGraphicsItem
+  {
+  public:
+      MapItem(Tiled::Map *map, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
+      QRectF boundingRect() const;
+      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  };
+
 }
-
-class CreateGameDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit CreateGameDialog(QWidget *parent = 0);
-    ~CreateGameDialog();
-    QString getFileName() const;
-
-private:
-    Ui::CreateGameDialog *ui;
-};
-
-#endif // CREATEGAMEDIALOG_H
+#endif // MAPITEM_H

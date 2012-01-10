@@ -1,5 +1,5 @@
 TEMPLATE    =     subdirs
-SUBDIRS     =     libmtdnd \
+SUBDIRS     =     librpg \
                   libmtv \
                   pipeline \
                   pc \

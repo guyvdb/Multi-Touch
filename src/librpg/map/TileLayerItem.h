@@ -18,15 +18,31 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef LIBMTG_GLOBAL_H
-#define LIBMTG_GLOBAL_H
+#ifndef TILELAYERITEM_H
+#define TILELAYERITEM_H
 
-#include <QtCore/qglobal.h>
+#include <QGraphicsItem>
+#include "librpg_global.h"
 
-#if defined(LIBMTDND_LIBRARY)
-#  define LIBMTDND_EXPORT Q_DECL_EXPORT
-#else
-#  define LIBMTDND_EXPORT Q_DECL_IMPORT
-#endif
+#include "tiled/tilelayer.h"
+#include "tiled/maprenderer.h"
 
-#endif // LIBMTG_GLOBAL_H
+
+namespace mtdnd  {
+
+  class LIBRPG_EXPORT TileLayerItem : public QGraphicsItem
+  {
+  public:
+      TileLayerItem(Tiled::TileLayer *tileLayer, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
+      ~TileLayerItem();
+      QRectF boundingRect() const;
+      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+  private:
+      Tiled::TileLayer *tileLayer;
+      Tiled::MapRenderer *renderer;
+
+  };
+
+}
+
+#endif // TILELAYERITEM_H

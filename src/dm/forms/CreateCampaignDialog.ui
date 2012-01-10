@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CreateGameDialog</class>
- <widget class="QDialog" name="CreateGameDialog">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
+ <class>CreateCampaignDialog</class>
+ <widget class="QDialog" name="CreateCampaignDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>133</height>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Save new game as ...</string>
+   <string>New Campaign</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>90</y>
+     <x>50</x>
+     <y>100</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -32,43 +29,37 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QFrame" name="frame">
+  <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
      <width>381</width>
-     <height>61</height>
+     <height>80</height>
     </rect>
    </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QWidget" name="formLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>361</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Game Name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="edtGameName"/>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QFormLayout" name="formLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Gaming System</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="cmbGameSystem"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Campaign Name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="txtCampaignName"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>
@@ -76,7 +67,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>CreateGameDialog</receiver>
+   <receiver>CreateCampaignDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -92,7 +83,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>CreateGameDialog</receiver>
+   <receiver>CreateCampaignDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

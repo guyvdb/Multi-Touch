@@ -18,24 +18,15 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef MAPITEM_H
-#define MAPITEM_H
+#ifndef LIBMTG_GLOBAL_H
+#define LIBMTG_GLOBAL_H
 
-#include <QGraphicsItem>
-#include "libmtg_global.h"
+#include <QtCore/qglobal.h>
 
-#include "tiled/map.h"
-#include "tiled/maprenderer.h"
+#if defined(LIBRPG_LIBRARY)
+#  define LIBRPG_EXPORT Q_DECL_EXPORT
+#else
+#  define LIBRPG_EXPORT Q_DECL_IMPORT
+#endif
 
-namespace mtdnd {
-
-  class LIBMTDND_EXPORT MapItem : public QGraphicsItem
-  {
-  public:
-      MapItem(Tiled::Map *map, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
-      QRectF boundingRect() const;
-      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-  };
-
-}
-#endif // MAPITEM_H
+#endif // LIBMTG_GLOBAL_H

@@ -41,8 +41,8 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    QString FileUtils::gamesDirectory() {
-      return FileUtils::getDirectoryOffRoot("games");
+    QString FileUtils::campaignsDirectory() {
+      return FileUtils::getDirectoryOffRoot("campaigns");
     }
 
     /* -------------------------------------------------------------------------------------------

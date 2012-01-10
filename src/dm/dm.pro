@@ -11,32 +11,32 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     forms/MainWindow.cpp \
-    forms/CreateGameDialog.cpp \
     forms/NetworkSettingDialog.cpp \
     forms/ShowMapDialog.cpp \
     forms/ErrorDialog.cpp \
     forms/RegisterTableDialog.cpp \
     forms/DMWindow.cpp \
-    widget/DockListWidget.cpp
+    widget/DockListWidget.cpp \
+    forms/CreateCampaignDialog.cpp
 
 HEADERS  += \
     forms/MainWindow.h \
-    forms/CreateGameDialog.h \
     forms/NetworkSettingDialog.h \
     forms/ShowMapDialog.h \
     forms/ErrorDialog.h \
     forms/RegisterTableDialog.h \
     forms/DMWindow.h \
-    widget/DockListWidget.h
+    widget/DockListWidget.h \
+    forms/CreateCampaignDialog.h
 
 FORMS    += \
     forms/MainWindow.ui \
-    forms/CreateGameDialog.ui \
     forms/NetworkSettingDialog.ui \
     forms/ShowMapDialog.ui \
     forms/ErrorDialog.ui \
     forms/RegisterTableDialog.ui \
-    widget/DockListWidget.ui
+    widget/DockListWidget.ui \
+    forms/CreateCampaignDialog.ui
 
 OTHER_FILES += \
     COPYING \
@@ -48,14 +48,14 @@ OTHER_FILES += \
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
-INCLUDEPATH += $$PWD/../libmtdnd
-DEPENDPATH += $$PWD/../libmtdnd
+INCLUDEPATH += $$PWD/../librpg
+DEPENDPATH += $$PWD/../librpg
 
 
 DESTDIR += ../../../bin
 
 
-LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson
+LIBS += -L$$DESTDIR -lrpg -ltiled -lqjson
 
 RESOURCES += \
     assets.qrc

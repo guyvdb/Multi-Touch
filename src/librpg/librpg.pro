@@ -6,10 +6,10 @@
 
 QT       += network webkit xml opengl sql script
 
-TARGET = mtdnd
+TARGET = rpg
 TEMPLATE = lib
 
-DEFINES += LIBMTDND_LIBRARY
+DEFINES += LIBRPG_LIBRARY
 
 SOURCES += \
     utils/FileUtils.cpp \
@@ -67,7 +67,8 @@ HEADERS +=\
     map/fov/AbstractFieldOfVision.h \
     map/fov/BasicFieldOfVision.h \
     repository/Repository.h \
-    system/GameSystem.h
+    system/GameSystem.h \
+    librpg_global.h
 
 
 FORMS += \

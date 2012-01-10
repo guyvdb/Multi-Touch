@@ -18,54 +18,21 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef REPOSITORY_H
-#define REPOSITORY_H
+#ifndef IPADDRESSLOCATOR_H
+#define IPADDRESSLOCATOR_H
 
-#include <QObject>
-#include <QVariant>
-#include <QVariantMap>
-#include <QSqlDatabase>
+#include <QString>
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
 
 namespace mtdnd {
 
-
-
-  class  LIBMTDND_EXPORT Repository : public QObject
+  class LIBRPG_EXPORT IPAddressLocator
   {
-    Q_OBJECT
   public:
-    Repository(const QString name, QObject *parent = 0);
-    ~Repository();
-    bool open(const QString filename);
-    void close();
-    bool isOpen();
-
-    void registerCollection(const QString name);
-    QVariantMap get(const QString collection, const QString key);
-    void put(const QString collection, const QString key, QVariantMap value);
-    void remove(const QString collection, const QString key);
-    QList<QVariantMap> list(const QString collection);
-    bool keyExists(const QString collection, const QString key);
-  protected:
-
-  private:
-    bool exists(const QString collection);
-    void create(const QString collection);
-
-    void update(const QString collection, const QString key, QByteArray &value);
-    void insert(const QString collection, const QString key, QByteArray &value);
-
-
-    QSqlDatabase database;
-
+    static QString getMachineAddress();
   };
-
-
-
-
 
 }
 
-#endif // REPOSITORY_H
+#endif // IPADDRESSLOCATOR_H

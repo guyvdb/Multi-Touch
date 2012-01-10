@@ -34,12 +34,12 @@ OTHER_FILES += \
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
-INCLUDEPATH += $$PWD/../libmtdnd
-DEPENDPATH += $$PWD/../libmtdnd
+INCLUDEPATH += $$PWD/../librpg
+DEPENDPATH += $$PWD/../librpg
 
 
 DESTDIR += ../../../bin
 
 
 
-LIBS += -L$$DESTDIR -lmtdnd -ltiled -lqjson
+LIBS += -L$$DESTDIR -lrpg -ltiled -lqjson

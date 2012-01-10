@@ -32,7 +32,7 @@
 #include "map/GridItem.h"
 
 
-#include "libmtg_global.h"
+#include "librpg_global.h"
 
 namespace Tiled {
     class MapRenderer;
@@ -43,7 +43,7 @@ namespace mtdnd {
   class MapView;
   class GameEngine;
 
-  class LIBMTDND_EXPORT MapScene : public QGraphicsScene
+  class LIBRPG_EXPORT MapScene : public QGraphicsScene
   {
       Q_OBJECT
   public:

@@ -9,7 +9,7 @@
 
 
 #include "utils/FileUtils.h"
-#include "forms/CreateGameDialog.h"
+#include "forms/CreateCampaignDialog.h"
 #include "tiled/mapreader.h"
 #include "tiled/map.h"
 
@@ -55,20 +55,20 @@ DMWindow::~DMWindow()
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::newCampaign() {
 
-  CreateGameDialog dialog;
+  CreateCampaignDialog dialog;
   dialog.show();
   dialog.exec();
   if(dialog.result()) {
     QString fileName = dialog.getFileName();
     if(fileName != "") {
-      if(!fileName.endsWith(".game")) {
-        fileName = fileName + ".game";
+      if(!fileName.endsWith(".cmp")) {
+        fileName = fileName + ".cmp";
       }
-      fileName = mtdnd::FileUtils::gamesDirectory() + QDir::separator() + fileName;
+      fileName = mtdnd::FileUtils::campaignsDirectory() + QDir::separator() + fileName;
       if(QFile::exists(fileName)) {
         QMessageBox msg;
         msg.setText("File Error");
-        msg.setInformativeText("The game " + fileName + "file already exists. Please choose another name.");
+        msg.setInformativeText("The campaign " + fileName + "file already exists. Please choose another name.");
         msg.setStandardButtons(QMessageBox::Ok);
         msg.setEscapeButton(QMessageBox::Ok);
         msg.setWindowTitle("Dungeon Master");
@@ -85,7 +85,7 @@ void DMWindow::newCampaign() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::openCampaign() {
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::gamesDirectory(), tr("Game Files (*.game)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Campaign"),mtdnd::FileUtils::campaignsDirectory(), tr("Campaign Files (*.cmp)"));
   if(fileName  != "") {
     this->engine->start(fileName);
     this->setGameState(GameOpen);

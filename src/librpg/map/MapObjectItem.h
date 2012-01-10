@@ -18,65 +18,34 @@
  *          this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * ------------------------------------------------------------------------------------------- */
-#ifndef MAPVIEW_H
-#define MAPVIEW_H
+#ifndef MAPOBJECTITEM_H
+#define MAPOBJECTITEM_H
+
+#include <QGraphicsItem>
+
+#include "librpg_global.h"
+#include "tiled/tilelayer.h"
+#include "tiled/tileset.h"
+#include "tiled/maprenderer.h"
+#include "tiled/mapobject.h"
 
 
 
-#include <QGraphicsView>
-#include "libmtg_global.h"
-
-#include "map/GridItem.h"
-#include "map/MapScene.h"
-#include "map/MapItem.h"
-#include "map/FogOfWar.h"
-#include "map/MapToken.h"
-#include "map/ZIndex.h"
+namespace  mtdnd {
 
 
-namespace Tiled {
-  class Map;
-  class MapRenderer;
-}
-
-
-
-namespace mtdnd {
-
-
-
-  /**
-   * The MapView shows the map scene. It sets some MapScene specific
-   * properties and also implements zooming and scrolling
-   *
-   */
-  class LIBMTDND_EXPORT MapView : public QGraphicsView
+  class LIBRPG_EXPORT MapObjectItem : public QGraphicsItem
   {
-      Q_OBJECT
   public:
-    MapView(GameEngine *engine);
-    ~MapView();
-    void loadMap(const QString &fileName);
-    void recalculateFogOfWar();
-    void unloadMap();
-    bool isLoaded() {return this->loaded;}
-    QSize getTileSize();
-    mtdnd::MapScene* getScene() {return this->scene;}
-    Tiled::Map * getMap() {return this->map; }
-  protected:
-    virtual void wheelEvent(QWheelEvent *event);
+      MapObjectItem(Tiled::MapObject *mapObject, Tiled::MapRenderer *renderer, QGraphicsItem *parent=0);
+      QRectF boundingRect() const;
+      void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
   private:
-    QSize getMapSizeInTiles();
-    bool loaded;
-    MapScene *scene;
-    GameEngine *engine;
-    Tiled::Map *map;
-    MapItem *mapItem;
-    Tiled::MapRenderer *renderer;
-
-
-
+      Tiled::MapObject *mapObject;
+      Tiled::MapRenderer *renderer;
   };
+
 }
 
-#endif // MAPVIEW_H
+#endif // MAPOBJECTITEM_H
