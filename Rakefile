@@ -9,6 +9,7 @@ task :clean do
     "bin/libmtv.*",
     "bin/libgsdl.*",
     "bin/librpg.*",
+    "bin/libchar.*",
     "bin/pc",
     "bin/dm",
     "bin/table",

@@ -25,12 +25,14 @@ DEPENDPATH += $$PWD/../../include
 INCLUDEPATH += $$PWD/../libgsdl
 DEPENDPATH += $$PWD/../libgsdl
 
+INCLUDEPATH += $$PWD/../libchar
+DEPENDPATH += $$PWD/../libchar
 
 DESTDIR += ../../../bin
 
 
 
-LIBS += -L$$DESTDIR -lgsdl
+LIBS += -L$$DESTDIR -lgsdl -lchar
 
 OTHER_FILES += \
     README

@@ -1,4 +1,4 @@
-QT       += gui webkit
+QT       -= gui
 
 TARGET = gsdl
 TEMPLATE = lib
@@ -25,8 +25,7 @@ HEADERS += \
     compiler/Compiler.h \
     ast/Table.h \
     ast/Item.h \
-    ast/ModifyAction.h \
-    widget/CharacterForm.h
+    ast/ModifyAction.h
 
 SOURCES += \
     ast/GameSystem.cpp \
@@ -37,8 +36,7 @@ SOURCES += \
     ast/Field.cpp \
     compiler/Compiler.cpp \
     ast/Table.cpp \
-    ast/Item.cpp \
-    widget/CharacterForm.cpp
+    ast/Item.cpp
 
 OTHER_FILES += \
     README \

@@ -40,13 +40,21 @@ namespace gsdl {
     qDebug() << document.toInnerXml();
 
     for(int i=fields.count()-1; i >=0; i--){
+
       QWebElement el = fields.at(i);
+
+
+
+
       QString data = el.attribute("name");
       QString name(data);
       name.replace(" ","_");
       QString clazz = el.attribute("class");
-      QString html = "<input type=\"text\" name=\"" + name + "\" data-field-name=\"" + data + "\" class=\"" + clazz + "\" />";
-      el.replace(html);
+      QString html = "<div class=\"" + clazz+ "\"/><label>" + el.attribute("name") + "</label><input type=\"text\" name=\"" + name + "\" data-field-name=\"" + data + "\" class=\"" + clazz + "\" /></div>";
+
+      el.appendInside(html);
+
+
 
 
     }
