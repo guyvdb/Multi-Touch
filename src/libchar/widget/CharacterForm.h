@@ -17,7 +17,10 @@ namespace character {
   {
       Q_OBJECT
   public:
-    explicit CharacterForm(const QString fileName, QVariantMap &character, gsdl::GameSystem *gameSystem, QWidget *parent = 0);
+    explicit CharacterForm(QWidget *parent = 0);
+
+    void show(const QString fileName, QVariantMap *character, gsdl::GameSystem *gameSystem);
+
   protected:
     void resizeEvent(QResizeEvent *);
 
@@ -31,7 +34,7 @@ namespace character {
     QString buildSimpleField(gsdl::Field *metaField, QWebElement &element, const QString fieldName);
 
     QWebView *view;
-    QVariantMap &character;
+    QVariantMap *character;
     gsdl::GameSystem *gameSystem;
     Bridge *bridge;
 

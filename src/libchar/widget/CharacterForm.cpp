@@ -33,8 +33,7 @@ namespace character {
   /* -------------------------------------------------------------------------------------------
    *
    * ------------------------------------------------------------------------------------------- */
-  CharacterForm::CharacterForm(const QString fileName, QVariantMap &character,  gsdl::GameSystem *gameSystem, QWidget *parent)
-    : QFrame(parent), character(character), gameSystem(gameSystem)
+  CharacterForm::CharacterForm(QWidget *parent) : QFrame(parent)
   {
     // create the bridge
     this->bridge = new Bridge(this);
@@ -44,6 +43,21 @@ namespace character {
     this->connect(this->view, SIGNAL(loadFinished(bool)), this, SLOT(OnPageLoaded(bool)));
     this->connect(this->view->page()->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(OnLoadJSObject()));
 
+    // show the browser
+    this->view->show();
+
+    this->character = 0x0;
+    this->gameSystem = 0x0;
+  }
+
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  void CharacterForm::show(const QString fileName, QVariantMap *character, gsdl::GameSystem *gameSystem) {
+
+    this->character = character;
+    this->gameSystem = gameSystem;
+
     // load html content
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly)) {
@@ -51,12 +65,8 @@ namespace character {
       QString html(data);
       this->view->setHtml(html);
     }
-
-
-
-    // show the browser
-    this->view->show();
   }
+
 
   /* -------------------------------------------------------------------------------------------
    *
