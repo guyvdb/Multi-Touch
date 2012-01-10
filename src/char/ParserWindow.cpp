@@ -43,9 +43,12 @@ void ParserWindow::on_btnParse_clicked()
     QStringList lines = data.split("\r\n");
     foreach(QString line, lines) this->ui->txtResult->appendPlainText(line);
 
-    QVariantMap character;
+    QVariantMap charData;
 
-    gsdl::CharacterForm *form = new gsdl::CharacterForm("/home/guy/Projects/Current/MultiTouch/systems/sample.form.html",character,gameSystem, this->ui->tabForm);
+    character::CharacterForm *form = new character::CharacterForm("/home/guy/Projects/Current/MultiTouch/systems/sample.form",
+                                                                  charData,
+                                                                  gameSystem,
+                                                                  this->ui->tabForm);
 
     form->setGeometry(this->ui->tabForm->geometry());
 

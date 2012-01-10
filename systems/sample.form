@@ -1,0 +1,55 @@
+<!--
+  *.form files are actually just HTML 5 markup with custom elements.
+
+  You can embedd or link items relative to the location of the file.
+
+  The custom elements are:
+
+
+  field
+  -------------------------------
+  field is an element that outputs a data field from the character.
+  The type of field and available options are calculated by libchar.
+  The only thing you have to tell it is the field name in the name
+  attribute. Optionally, you can add a css class with the class
+  attribute that will be honered by the system.
+
+  The output will expand as follows:
+
+  given:
+      <div class="xyz" name="Level"/>
+
+
+  simple field:
+      <field class="xyz" name="Level">
+      </field>
+
+
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Character Detail</title>
+</head>
+<body>
+
+
+
+  <div class="xyx" data-field-name="Character Name"></div>
+  <div class="xyx" data-field-name="Class"></div>
+  <div class="xyx" data-field-name="Half Level"></div>
+  <div class="xyx" data-field-name="STR Ability Modifier Plus Half Level" data-label="MOD Half LVL"></div>
+  <div class="xyx" data-field-name="STR Ability Modifier" data-label="MOD"></div>
+
+
+  <!--
+      Fake button so all data fields loose focus. Their onChange events
+      will fire if they have changed and they will be saved
+   -->
+  <input type="button"  value="Save" />
+
+</body>
+</html>

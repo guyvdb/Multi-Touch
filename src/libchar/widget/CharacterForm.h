@@ -4,26 +4,36 @@
 #include <QFrame>
 #include <QVariantMap>
 #include <QWebView>
+#include <QWebElement>
 
 #include "ast/GameSystem.h"
 
+#include "Bridge.h"
 
-namespace gsdl {
+
+namespace character {
 
   class CharacterForm : public QFrame
   {
       Q_OBJECT
   public:
-    explicit CharacterForm(const QString fileName, QVariantMap &character,  GameSystem *gameSystem, QWidget *parent = 0);
+    explicit CharacterForm(const QString fileName, QVariantMap &character, gsdl::GameSystem *gameSystem, QWidget *parent = 0);
   protected:
     void resizeEvent(QResizeEvent *);
 
   private slots:
+    void OnLoadJSObject();
     void OnPageLoaded(bool flag);
+
   private:
+
+    void addField(QWebElement &element, const QString fieldName);
+    QString buildSimpleField(gsdl::Field *metaField, QWebElement &element, const QString fieldName);
+
     QWebView *view;
     QVariantMap &character;
-    GameSystem *gameSystem;
+    gsdl::GameSystem *gameSystem;
+    Bridge *bridge;
 
   };
 

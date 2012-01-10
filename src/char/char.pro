@@ -35,4 +35,7 @@ DESTDIR += ../../../bin
 LIBS += -L$$DESTDIR -lgsdl -lchar
 
 OTHER_FILES += \
-    README
+    README \
+    ../../systems/sample.sheet \
+    ../../systems/sample.gsdl \
+    ../../systems/sample.form

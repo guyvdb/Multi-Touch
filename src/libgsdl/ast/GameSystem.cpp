@@ -102,12 +102,11 @@ namespace gsdl {
     return result;
   }
 
-  /*
-    QList<RuleSource*> sources;
-    Character *character;
-    QList<Table*> tables;
-    Table* currentTable;
-    QMap<QString, QString> guiMappings;
-    */
+  /* -------------------------------------------------------------------------------------------
+   *
+   * ------------------------------------------------------------------------------------------- */
+  Field *GameSystem::getField(const QString name) {
+    return this->character->getField(name);
+  }
 
 }

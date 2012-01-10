@@ -8,10 +8,12 @@ DEFINES += LIBCHAR_LIBRARY
 
 
 HEADERS += \
-    widget/CharacterForm.h
+    widget/CharacterForm.h \
+    widget/Bridge.h
 
 SOURCES += \
-    widget/CharacterForm.cpp
+    widget/CharacterForm.cpp \
+    widget/Bridge.cpp
 
 
 
@@ -32,5 +34,3 @@ DESTDIR += ../../../bin
 
 
 LIBS += -L$$DESTDIR -lrpg -lgsdl -lqjson
-
-

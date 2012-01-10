@@ -52,6 +52,8 @@ namespace gsdl {
     void setName(const QString value) {this->name = value; }
     QString getName() const {return this->name; }
 
+    Field* getField(const QString name);
+
     void addGuiMapping(const QString key, const QString value) {this->guiMappings[key] = value; }
 
     void print(const QString indent);
