@@ -6,7 +6,7 @@
 
 QT       += core gui webkit
 
-TARGET = gsdl
+TARGET = char
 TEMPLATE = app
 
 

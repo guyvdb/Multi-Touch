@@ -9,5 +9,5 @@ SUBDIRS     =     librpg \
                   udp \
     headless \
     libgsdl \
-    gsdl \
+    char \
     libchar
