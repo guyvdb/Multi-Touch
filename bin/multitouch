@@ -44,6 +44,8 @@ elif [ $1 = "headless" ] ; then
   $BIN_DIR/headless
 elif [ $1 = "tiled" ] ; then
   $BIN_DIR/tiled
+elif [ $1 = "char" ] ; then
+  $BIN_DIR/char
 else
   echo "-----------------------"
   echo "Error. Invalid command"

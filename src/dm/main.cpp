@@ -29,10 +29,6 @@
 #include "settings/Settings.h"
 
 
-// for testing only
-#include "system/GameSystem.h"
-
-
 
 int main(int argc, char *argv[])
 {
@@ -49,11 +45,6 @@ int main(int argc, char *argv[])
       return 0;
     }
 
-
-    // testing
-    rpg::GameSystem system;
-    bool loaded = system.load("/home/guy/Projects/Current/MultiTouch/systems/_template/system.js");
-    qDebug() << "GAME SYSTEM LOADED = " << loaded;
 
     // create and launch the main window -- DEPRECATED
     //MainWindow w(&settings);

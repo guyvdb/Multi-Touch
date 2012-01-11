@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += network webkit xml opengl sql script
+QT       += network webkit xml opengl sql
 
 TARGET = rpg
 TEMPLATE = lib
@@ -36,8 +36,7 @@ SOURCES += \
     map/FieldOfVision.cpp \
     map/fov/AbstractFieldOfVision.cpp \
     map/fov/BasicFieldOfVision.cpp \
-    repository/Repository.cpp \
-    system/GameSystem.cpp
+    repository/Repository.cpp
 
 HEADERS +=\
     utils/FileUtils.h \
@@ -67,7 +66,6 @@ HEADERS +=\
     map/fov/AbstractFieldOfVision.h \
     map/fov/BasicFieldOfVision.h \
     repository/Repository.h \
-    system/GameSystem.h \
     librpg_global.h
 
 

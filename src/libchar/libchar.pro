@@ -10,7 +10,7 @@ DEFINES += LIBCHAR_LIBRARY
 HEADERS += \
     widget/CharacterForm.h \
     widget/Bridge.h \
-    widget/libchar_global.h
+    libchar_global.h
 
 SOURCES += \
     widget/CharacterForm.cpp \
