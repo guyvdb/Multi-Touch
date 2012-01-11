@@ -35,7 +35,7 @@ class NetworkSettingDialog : public QDialog
     Q_OBJECT
 
 public:
-    NetworkSettingDialog(mtdnd::Settings *settings,  QWidget *parent = 0);
+    NetworkSettingDialog(rpg::Settings *settings,  QWidget *parent = 0);
     ~NetworkSettingDialog();
 private slots:
     void on_buttonBox_accepted();
@@ -44,7 +44,7 @@ private slots:
 private:
     QVariantMap createDefaults();
     Ui::NetworkSettingDialog *ui;
-    mtdnd::Settings *settings;
+    rpg::Settings *settings;
 };
 
 #endif // NETWORKSETTINGDIALOG_H

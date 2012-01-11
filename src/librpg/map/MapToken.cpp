@@ -24,9 +24,9 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 
-namespace mtdnd {
+namespace rpg {
 
-  MapToken::MapToken(mtdnd::MapToken::Type type, const QString id, const int vision, const int speed)
+  MapToken::MapToken(rpg::MapToken::Type type, const QString id, const int vision, const int speed)
     : QGraphicsItem(), type(type), vision(vision),speed(speed), location(QPoint(0,0)), tileSize(QSize(32,32)), id(id)
   {
     this->initialize();

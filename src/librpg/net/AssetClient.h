@@ -23,7 +23,7 @@
 
 #include <QObject>
 
-namespace mtdnd {
+namespace rpg {
 /*
  * The Asset client connects to an asset server and downloads assets
  *

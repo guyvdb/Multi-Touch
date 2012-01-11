@@ -26,7 +26,7 @@
 
 #include "librpg_global.h"
 
-namespace mtdnd {
+namespace rpg {
 
     class LIBRPG_EXPORT Settings : public QObject
     {

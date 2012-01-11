@@ -24,7 +24,7 @@
 #include <QStringList>
 #include <QHostAddress>
 
-namespace mtdnd {
+namespace rpg {
   QString IPAddressLocator::getMachineAddress() {
     QString address;
 

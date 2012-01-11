@@ -81,18 +81,20 @@ namespace gsdl {
     qi::rule<Iterator, ascii::space_type > system;
     qi::rule<Iterator, ascii::space_type > rule_sources;
     qi::rule<Iterator, ascii::space_type > rule_source;
-    qi::rule<Iterator, ascii::space_type > hooks;
+    //qi::rule<Iterator, ascii::space_type > hooks;
     qi::rule<Iterator, ascii::space_type > character;
     qi::rule<Iterator, ascii::space_type > group;
     qi::rule<Iterator, ascii::space_type > groups;
     qi::rule<Iterator, ascii::space_type > tables;
     qi::rule<Iterator, ascii::space_type > table;
 
+    // list_by
+    qi::rule<Iterator, ascii::space_type > list_by;
 
     // gui items
-    qi::rule<Iterator, ascii::space_type > hook_item;
-    qi::rule<Iterator, ascii::space_type > hook_items;
-    qi::rule<Iterator, ascii::space_type > list_character_by;
+    //qi::rule<Iterator, ascii::space_type > hook_item;
+    //qi::rule<Iterator, ascii::space_type > hook_items;
+    //qi::rule<Iterator, ascii::space_type > list_character_by;
 
     // macros
     qi::rule<Iterator, ascii::space_type > half_macro;        // create half of a field (rounding down)
@@ -142,7 +144,7 @@ namespace gsdl {
           >>      rule_sources
           >>      character
           >>      tables
-          >>      hooks
+         // >>      hooks
           >> '}'
           ;
 
@@ -158,7 +160,7 @@ namespace gsdl {
           >> variable[&internal::createRuleSource]
           //>> eol
           ;
-
+/*
       hooks %=
           lit("hooks")
           >> '{'
@@ -177,12 +179,19 @@ namespace gsdl {
           lit("list_character_by")
           >> variable[&internal::setListCharacterByFieldName]
           ;
+          */
 
       character %=
           lit("character")
           >> '{'
+          >>    list_by
           >>    groups
           >> '}'
+          ;
+
+      list_by %=
+          lit("list_by")
+          >> variable[&internal::setListCharacterByFieldName]
           ;
 
       group %=

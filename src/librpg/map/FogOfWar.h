@@ -28,7 +28,7 @@
 
 #include "map/Matrix.h"
 
-namespace mtdnd {
+namespace rpg {
 
   class FogOfWar : public QGraphicsItem
   {

@@ -26,7 +26,7 @@
 #include <QDebug>
 #include "utils/FileUtils.h"
 
-namespace mtdnd {
+namespace rpg {
 
   /* -------------------------------------------------------------------------------------------
    *

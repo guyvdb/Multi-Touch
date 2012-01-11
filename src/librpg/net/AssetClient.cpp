@@ -20,7 +20,7 @@
  * ------------------------------------------------------------------------------------------- */
 #include "AssetClient.h"
 
-namespace mtdnd {
+namespace rpg {
 
 AssetClient::AssetClient(QObject *parent) :
     QObject(parent)

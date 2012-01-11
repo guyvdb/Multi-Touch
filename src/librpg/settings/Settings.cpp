@@ -25,7 +25,7 @@
 #include "qjson/json_parser.hh"
 #include "qjson/serializer.h"
 
-namespace mtdnd {
+namespace rpg {
 
     /* -------------------------------------------------------------------------------------------
      *

@@ -22,7 +22,7 @@
 #include "ObjectGroupItem.h"
 #include "map/MapObjectItem.h"
 
-namespace mtdnd {
+namespace rpg {
 
   /* -------------------------------------------------------------------------------------------
    *

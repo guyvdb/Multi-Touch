@@ -6,7 +6,7 @@
 
 #include "map/Matrix.h"
 
-namespace mtdnd {
+namespace rpg {
 
 
   class AbstractFieldOfVision : public QObject

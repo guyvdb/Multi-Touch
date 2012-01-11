@@ -45,7 +45,7 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-MainWindow::MainWindow(mtdnd::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
+MainWindow::MainWindow(rpg::Settings *settings, QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), settings(settings), engine(0)
 {
     QDesktopWidget *desktop = QApplication::desktop();
     QRect workspace = desktop->availableGeometry(1);
@@ -54,7 +54,7 @@ MainWindow::MainWindow(mtdnd::Settings *settings, QWidget *parent) : QMainWindow
     this->ui->tabs->setGeometry(this->calculateTabRect());
 
     // PrivateMap
-    this->dmMap = new mtdnd::MapView(0x0);
+    this->dmMap = new rpg::MapView(0x0);
     this->dmMap->setParent(this->ui->tabDMMap);
     this->dmMap->setGeometry(this->calculateMapRect());
     this->dmMap->show();
@@ -178,7 +178,7 @@ QRect MainWindow::calculateMapRect() {
  *
  * ------------------------------------------------------------------------------------------- */
 void MainWindow::openGame() {
-  this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameServer);
+  this->engine = new rpg::GameEngine(this->settings,rpg::GameEngine::GameServer);
   this->engine->start(this->databaseFileName);
 
 
@@ -209,10 +209,10 @@ void MainWindow::startGame() {
   this->started = true;
 
   // add a token
-  mtdnd::MapToken *token;
+  rpg::MapToken *token;
 
   // PC
-  token = new mtdnd::MapToken(mtdnd::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
+  token = new rpg::MapToken(rpg::MapToken::PlayerCharacter,QUuid::createUuid().toString(),3,3);
   token->setLocation(QPoint(9,24));
   this->engine->getScene()->addToken(token);
 
@@ -253,7 +253,7 @@ void MainWindow::on_openGameAction_triggered()
 {  
   if(!this->isGameStateValid(GameClosedState)) return;
 
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::campaignsDirectory(), tr("Game Files (*.game)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),rpg::FileUtils::campaignsDirectory(), tr("Game Files (*.game)"));
   if(fileName  != "") {
     this->databaseFileName = fileName;
     this->openGame();
@@ -294,7 +294,7 @@ void MainWindow::on_newGameAction_triggered()
       if(!fileName.endsWith(".game")) {
         fileName = fileName + ".game";
       }
-      fileName = mtdnd::FileUtils::campaignsDirectory() + QDir::separator() + fileName;
+      fileName = rpg::FileUtils::campaignsDirectory() + QDir::separator() + fileName;
       if(QFile::exists(fileName)) {
         // TODO clean me up. Use a QErrorMessage
         QMessageBox msg;
@@ -307,7 +307,7 @@ void MainWindow::on_newGameAction_triggered()
       } else {
         this->databaseFileName = fileName;
 
-        this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameServer);
+        this->engine = new rpg::GameEngine(this->settings,rpg::GameEngine::GameServer);
         this->engine->start(this->databaseFileName);
 
 
@@ -384,11 +384,11 @@ void MainWindow::on_addMapAction_triggered()
 {
   if(!this->isGameStateValid(GameOpenState)) return;
 
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),rpg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
   qDebug() << "FILE OPEN: " << fileName;
   if(fileName  != "") {
 
-    QString relative = mtdnd::FileUtils::relativeTo(mtdnd::FileUtils::mapsDirectory(),fileName);
+    QString relative = rpg::FileUtils::relativeTo(rpg::FileUtils::mapsDirectory(),fileName);
 
     qDebug() << relative;
 

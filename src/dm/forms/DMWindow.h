@@ -28,7 +28,7 @@ public:
   };
 
 
-  explicit DMWindow(mtdnd::Settings *settings, QWidget *parent = 0);
+  explicit DMWindow(rpg::Settings *settings, QWidget *parent = 0);
   ~DMWindow();
 
 private slots:
@@ -70,8 +70,8 @@ private:
   void createStatusBar();
   void createDockWindows();
 
-  mtdnd::Settings *settings;
-  mtdnd::GameEngine *engine;
+  rpg::Settings *settings;
+  rpg::GameEngine *engine;
 
 
   QMenu *campaignMenu;
@@ -82,7 +82,7 @@ private:
   QMenu *tableMenu;
   QMenu *viewMenu;
 
-  QToolBar *gameToolbar;
+  QToolBar *campaignToolbar;
 
   QAction *newCampaignAction;
   QAction *openCampaignAction;

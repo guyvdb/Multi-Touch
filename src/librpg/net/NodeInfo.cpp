@@ -20,7 +20,7 @@
  * ------------------------------------------------------------------------------------------- */
 #include "NodeInfo.h"
 
-namespace mtdnd {
+namespace rpg {
 
   NodeInfo::NodeInfo(const QString id, const QString host, const int port, const NodeInfo::NodeType type) : id(id), host(host), port(port), type(type)
   {

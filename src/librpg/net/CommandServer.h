@@ -26,7 +26,7 @@
 #include <QUuid>
 #include "message/Message.h"
 
-namespace mtdnd {
+namespace rpg {
 
 
   class CommandServer : public QUdpSocket
@@ -41,7 +41,7 @@ namespace mtdnd {
     QString id;
 
   signals:
-    void messageReady(mtdnd::Message::DataPacket packet);
+    void messageReady(rpg::Message::DataPacket packet);
 
   private slots:
     void process();

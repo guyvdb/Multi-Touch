@@ -24,7 +24,7 @@
 #include <QVariant>
 #include <QVariantMap>
 
-namespace mtdnd {
+namespace rpg {
 
   class Message
   {
@@ -42,7 +42,7 @@ namespace mtdnd {
     static Message::DataPacket decode(QByteArray bytes);
     static QByteArray encode(QString from, QString type, QVariantMap message);
     static QByteArray encode(Message::DataPacket &packet);
-    static QByteArray encode(mtdnd::Message &message);
+    static QByteArray encode(rpg::Message &message);
 
 
 

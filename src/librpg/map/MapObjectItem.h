@@ -31,7 +31,7 @@
 
 
 
-namespace  mtdnd {
+namespace  rpg {
 
 
   class LIBRPG_EXPORT MapObjectItem : public QGraphicsItem

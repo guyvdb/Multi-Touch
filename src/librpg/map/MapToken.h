@@ -26,7 +26,7 @@
 #include "librpg_global.h"
 
 
-namespace mtdnd {
+namespace rpg {
 
 
 class LIBRPG_EXPORT MapToken : public QGraphicsItem
@@ -41,7 +41,7 @@ public:
 
 
 
-  explicit MapToken(mtdnd::MapToken::Type type, const QString id, const int vision, const int speed);
+  explicit MapToken(rpg::MapToken::Type type, const QString id, const int vision, const int speed);
   //explicit MapToken(mtg::MapToken::Type type, QSize tileSize, const int tokenId);
   //explicit MapToken(mtg::MapToken::Type type, QSize tileSize);
   //explicit MapToken(mtg::MapToken::Type type);
@@ -63,7 +63,7 @@ public:
   QColor getColor() {return  this->color;}
   void setColor(QColor value) {this->color = value;}
 
-  mtdnd::MapToken::Type getType() {return this->type;}
+  rpg::MapToken::Type getType() {return this->type;}
 
 protected:
   virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

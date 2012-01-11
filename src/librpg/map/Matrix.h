@@ -24,7 +24,7 @@
 #include <QVector>
 #include <QPoint>
 
-namespace mtdnd {
+namespace rpg {
 
   class Matrix
   {

@@ -28,7 +28,7 @@
 #include "tiled/maprenderer.h"
 
 
-namespace mtdnd  {
+namespace rpg  {
 
   class LIBRPG_EXPORT TileLayerItem : public QGraphicsItem
   {

@@ -24,7 +24,7 @@
 #include <QHostAddress>
 #include <QDebug>
 
-namespace mtdnd {
+namespace rpg {
 
   CommandClient::CommandClient():QUdpSocket() , id(QUuid::createUuid().toString())
   {

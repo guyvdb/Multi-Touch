@@ -4,7 +4,7 @@
 
 #include "map/fov/AbstractFieldOfVision.h"
 
-namespace mtdnd {
+namespace rpg {
 
 
 

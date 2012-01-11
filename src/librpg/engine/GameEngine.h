@@ -51,8 +51,11 @@
 #include "map/MapScene.h"
 
 
+#include "ast/GameSystem.h"
 
-namespace mtdnd {
+
+
+namespace rpg {
 
   /*
    * The game engine provides a central class to carry out all game related activity
@@ -74,16 +77,16 @@ namespace mtdnd {
     ~GameEngine();
 
 
-    void start(const QString databaseName);
+    void start(const QString databaseName, const QString gameSystem = "");
     void stop();
     bool isRunning() {return this->running;}
 
 
-    mtdnd::MapScene* getScene() {return this->mapView->getScene();}
-    mtdnd::MapView *getMapView() {return this->mapView; }
+    rpg::MapScene* getScene() {return this->mapView->getScene();}
+    rpg::MapView *getMapView() {return this->mapView; }
     GameMode getGameMode() {return this->mode; }
 
-    mtdnd::Repository *getRepository() {return this->repository;}
+    rpg::Repository *getRepository() {return this->repository;}
 
 
     void loadMap(const QString filename);
@@ -102,17 +105,17 @@ namespace mtdnd {
 
     void sendClients(QVariantMap &data, const QString type);
     void sendClients(QByteArray data);
-    void sendClients(mtdnd::Message &message);
+    void sendClients(rpg::Message &message);
 
     void sendClient(const QString nodeId, QVariantMap &data, const QString type);
     void sendClient(const QString nodeId, QByteArray data);
-    void sendClient(const QString nodeId, mtdnd::Message &message);
+    void sendClient(const QString nodeId, rpg::Message &message);
 
     void sendServer(QVariantMap &data, const QString type);
     void sendServer(QByteArray data);
-    void sendServer(mtdnd::Message &message);
+    void sendServer(rpg::Message &message);
 
-    void send(const QString host, const int port, mtdnd::Message &message);
+    void send(const QString host, const int port, rpg::Message &message);
     void send(const QString host, const int port, QVariantMap &data, const QString type);
     void send(const QString host, const int port, QByteArray data);
 
@@ -120,8 +123,8 @@ namespace mtdnd {
      void networkRegistrationComplete();
      void waitingNetworkRegistration(const QString host, const int port);
   private slots:
-    void OnMessageForServer(mtdnd::Message::DataPacket packet);
-    void OnMessageForClient(mtdnd::Message::DataPacket packet);
+    void OnMessageForServer(rpg::Message::DataPacket packet);
+    void OnMessageForClient(rpg::Message::DataPacket packet);
   private:
     void identifyRequest(QVariantMap &data);
     void registrationRequest(QVariantMap &data);
@@ -154,6 +157,8 @@ namespace mtdnd {
 
     MapView *mapView;
 
+
+    gsdl::GameSystem *gameSystem;
 
 
   };

@@ -30,9 +30,11 @@
 
 #include "utils/FileUtils.h"
 
+#include "compiler/Compiler.h"
 
 
-namespace mtdnd {
+
+namespace rpg {
 
     /* -------------------------------------------------------------------------------------------
      *
@@ -41,6 +43,7 @@ namespace mtdnd {
     {
       this->commandServer = 0x0;
       this->commandClient = 0x0;
+      this->gameSystem = 0x0;
 
       this->mapView = new MapView(this);      
       this->running = false;
@@ -54,13 +57,14 @@ namespace mtdnd {
     GameEngine::~GameEngine() {
       // delete anything created
       if(this->commandServer) delete this->commandServer;
+      if(this->gameSystem) delete this->gameSystem;
       delete this->mapView;      
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::start(const QString databaseName) {
+    void GameEngine::start(const QString databaseName, const QString gameSystem) {
 
       qDebug() << "[Game Engine] Start";
 
@@ -75,29 +79,53 @@ namespace mtdnd {
       this->clientCommandPort = ports.value("client").toInt();
 
 
+      // game settings
+      gsdl::Compiler compiler;
+      QVariantMap settingsMap;
+      QString qualifiedGameSystemFile;
+
       switch(this->mode) {
       case GameServer:
         // initialize the database
-        this->repository->open(databaseName);
+        this->repository->open(databaseName);        
         this->repository->registerCollection("settings");
         this->repository->registerCollection("maps");
         this->repository->registerCollection("pcs");
         this->repository->registerCollection("npcs");
         this->repository->registerCollection("monsters");
 
+        // if no game system is registered create one
+        settingsMap = this->repository->get("settings","SETTINGS");
+        if(!settingsMap.contains("gsdl")) {
+          settingsMap.insert("gsdl",gameSystem);
+          this->repository->put("settings","SETTINGS",settingsMap);
+        }
+
+        // open/parse the gaming system
+        qDebug() << settingsMap;
+        qualifiedGameSystemFile = FileUtils::join(FileUtils::systemsDirectory(), settingsMap.value("gsdl").toString());
+        this->gameSystem = compiler.compile(qualifiedGameSystemFile);
+
+        // dump the result
+        if(this->gameSystem != 0x0 ) {
+          qDebug() << this->gameSystem->dump("");
+        } else {
+          qDebug() << "*** WARNING **** Game System Failed to Parse";
+        }
+
 
 
         // start the three servers command, asset, discovery
         this->commandServer = new CommandServer("DM");
         this->serverCommandPort = this->commandServer->listen(this->serverCommandPort);
-        this->connect(this->commandServer, SIGNAL(messageReady(mtdnd::Message::DataPacket)),this,SLOT(OnMessageForServer(mtdnd::Message::DataPacket)));
+        this->connect(this->commandServer, SIGNAL(messageReady(rpg::Message::DataPacket)),this,SLOT(OnMessageForServer(rpg::Message::DataPacket)));
         break;
       case GameTable:
 
         // start the command server
         this->commandServer = new CommandServer("Table");
         this->clientCommandPort = this->commandServer->listen(this->clientCommandPort);
-        this->connect(this->commandServer, SIGNAL(messageReady(mtdnd::Message::DataPacket)),this,SLOT(OnMessageForClient(mtdnd::Message::DataPacket)));
+        this->connect(this->commandServer, SIGNAL(messageReady(rpg::Message::DataPacket)),this,SLOT(OnMessageForClient(rpg::Message::DataPacket)));
         emit waitingNetworkRegistration(IPAddressLocator::getMachineAddress(), this->clientCommandPort);
         break;
       case GameClient:        
@@ -201,7 +229,7 @@ namespace mtdnd {
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendClients(QVariantMap &data, const QString type) {
-      this->sendClients(mtdnd::Message::encode(this->commandClient->getId(),type, data));
+      this->sendClients(rpg::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -216,16 +244,16 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::sendClients(mtdnd::Message &message) {
+    void GameEngine::sendClients(rpg::Message &message) {
       message.setFrom(this->commandClient->getId());
-      this->sendClients(mtdnd::Message::encode(message));
+      this->sendClients(rpg::Message::encode(message));
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendServer(QVariantMap &data, const QString type) {
-      this->sendServer(mtdnd::Message::encode(this->commandClient->getId(),type, data));
+      this->sendServer(rpg::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -238,16 +266,16 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::sendServer(mtdnd::Message &message) {
+    void GameEngine::sendServer(rpg::Message &message) {
       message.setFrom(this->commandClient->getId());
-      this->sendServer(mtdnd::Message::encode(message));
+      this->sendServer(rpg::Message::encode(message));
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::sendClient(const QString nodeId, QVariantMap &data, const QString type) {
-      this->sendClient(nodeId, mtdnd::Message::encode(this->commandClient->getId(),type, data));
+      this->sendClient(nodeId, rpg::Message::encode(this->commandClient->getId(),type, data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -265,16 +293,16 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::send(const QString host, const int port, mtdnd::Message &message) {
+    void GameEngine::send(const QString host, const int port, rpg::Message &message) {
       message.setFrom(this->commandClient->getId());
-      this->send(host,port, mtdnd::Message::encode(message));
+      this->send(host,port, rpg::Message::encode(message));
     }
 
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
     void GameEngine::send(const QString host, const int port, QVariantMap &data, const QString type) {
-      this->send(host,port,mtdnd::Message::encode(this->commandClient->getId(),type,data));
+      this->send(host,port,rpg::Message::encode(this->commandClient->getId(),type,data));
     }
 
     /* -------------------------------------------------------------------------------------------
@@ -287,15 +315,15 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      *
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::sendClient(const QString nodeId, mtdnd::Message &message) {
+    void GameEngine::sendClient(const QString nodeId, rpg::Message &message) {
       message.setFrom(this->commandClient->getId());
-      this->sendClient(nodeId, mtdnd::Message::encode(message));
+      this->sendClient(nodeId, rpg::Message::encode(message));
     }
 
     /* -------------------------------------------------------------------------------------------
      * A message has arrived for the DM server
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::OnMessageForServer(mtdnd::Message::DataPacket packet) {
+    void GameEngine::OnMessageForServer(rpg::Message::DataPacket packet) {
       if(packet.type == "REGISTER") {
         this->registrationRequest(packet.data);
       } else if(packet.type == "MOVE_TOKEN") {
@@ -306,7 +334,7 @@ namespace mtdnd {
     /* -------------------------------------------------------------------------------------------
      * A message has arrived for a Client
      * ------------------------------------------------------------------------------------------- */
-    void GameEngine::OnMessageForClient(mtdnd::Message::DataPacket packet) {
+    void GameEngine::OnMessageForClient(rpg::Message::DataPacket packet) {
 
       if(packet.type == "IDENTIFY") {
         this->identifyRequest(packet.data);
@@ -332,7 +360,7 @@ namespace mtdnd {
 
       // register ourself
       Message message("REGISTER");
-      message.set("host",mtdnd::IPAddressLocator::getMachineAddress());
+      message.set("host",rpg::IPAddressLocator::getMachineAddress());
       message.set("port", QString::number(this->clientCommandPort));
       this->sendServer(message);
 

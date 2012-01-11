@@ -1,7 +1,7 @@
 #include "BasicFieldOfVision.h"
 
 
-namespace mtdnd {
+namespace rpg {
 
   BasicFieldOfVision::BasicFieldOfVision(Matrix *obsticals) : AbstractFieldOfVision(obsticals) {}
 

@@ -52,6 +52,9 @@ namespace gsdl {
     Group* getCurrentGroup() {return this->currentGroup; }
     GameSystem *getGameSystem() {return this->gameSystem; }
 
+    void setListByFieldName(const QString value) {this->listByFieldName = value; }
+    QString getListByFieldName() const {return this->listByFieldName; }
+
     QByteArray dump(const QString indent);
   private:
 
@@ -59,6 +62,7 @@ namespace gsdl {
     QList<Group*> groups;
     QList<Field*> fields;
     Group* currentGroup;
+    QString listByFieldName;
 
 
   };

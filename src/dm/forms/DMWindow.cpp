@@ -17,10 +17,10 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-DMWindow::DMWindow(mtdnd::Settings *settings, QWidget *parent) : QMainWindow(parent), settings(settings){
+DMWindow::DMWindow(rpg::Settings *settings, QWidget *parent) : QMainWindow(parent), settings(settings){
 
   // setup the game engine
-  this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameServer);
+  this->engine = new rpg::GameEngine(this->settings,rpg::GameEngine::GameServer);
 
   // setup the central widget
   this->setCentralWidget(this->engine->getMapView());
@@ -60,11 +60,12 @@ void DMWindow::newCampaign() {
   dialog.exec();
   if(dialog.result()) {
     QString fileName = dialog.getFileName();
+    QString gameSystem = dialog.getGameSystem();
     if(fileName != "") {
       if(!fileName.endsWith(".cmp")) {
         fileName = fileName + ".cmp";
       }
-      fileName = mtdnd::FileUtils::campaignsDirectory() + QDir::separator() + fileName;
+      fileName = rpg::FileUtils::campaignsDirectory() + QDir::separator() + fileName;
       if(QFile::exists(fileName)) {
         QMessageBox msg;
         msg.setText("File Error");
@@ -74,7 +75,8 @@ void DMWindow::newCampaign() {
         msg.setWindowTitle("Dungeon Master");
         msg.exec();
       } else {
-        this->engine->start(fileName);
+
+        this->engine->start(fileName, gameSystem);
         this->setGameState(GameOpen);
       }
     }
@@ -85,7 +87,7 @@ void DMWindow::newCampaign() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::openCampaign() {
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Campaign"),mtdnd::FileUtils::campaignsDirectory(), tr("Campaign Files (*.cmp)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Campaign"),rpg::FileUtils::campaignsDirectory(), tr("Campaign Files (*.cmp)"));
   if(fileName  != "") {
     this->engine->start(fileName);
     this->setGameState(GameOpen);
@@ -111,7 +113,7 @@ void DMWindow::closeCampaign() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::addMap() {
-  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),mtdnd::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
+  QString fileName = QFileDialog::getOpenFileName(this,tr("Open Game"),rpg::FileUtils::mapsDirectory(), tr("Map Files (*.tmx)"));
   if(fileName  != "") {
     // Get the name of the map
     Tiled::MapReader reader;
@@ -121,7 +123,7 @@ void DMWindow::addMap() {
 
     QVariantMap data;
     data.insert("name", name);
-    data.insert("file",mtdnd::FileUtils::relativeTo(mtdnd::FileUtils::mapsDirectory(), fileName));
+    data.insert("file",rpg::FileUtils::relativeTo(rpg::FileUtils::mapsDirectory(), fileName));
     this->engine->getRepository()->put("maps",QUuid::createUuid().toString(),data);
     this->updateMapList();
   }
@@ -207,7 +209,7 @@ void DMWindow::updateMapTokens() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::restoreCurrentWindowState() {
-  QFile file(mtdnd::FileUtils::join(mtdnd::FileUtils::configDirectory(),"dm.state"));
+  QFile file(rpg::FileUtils::join(rpg::FileUtils::configDirectory(),"dm.state"));
   if(file.exists()) {
     if(file.open(QIODevice::ReadOnly)) {
       this->restoreState(file.readAll());
@@ -220,7 +222,7 @@ void DMWindow::restoreCurrentWindowState() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::saveCurrentWindowState() {
-  QFile file(mtdnd::FileUtils::join(mtdnd::FileUtils::configDirectory(),"dm.state"));
+  QFile file(rpg::FileUtils::join(rpg::FileUtils::configDirectory(),"dm.state"));
   if(file.open(QIODevice::WriteOnly)){
     file.write(this->saveState());
     file.flush();
@@ -270,12 +272,12 @@ void DMWindow::setGameState(GameState state) {
 void DMWindow::createActions() {
 
   // Campaign
-  this->newCampaignAction = new QAction(QIcon(":/assets/game-new.png"), tr("&New Campaign"), this);
+  this->newCampaignAction = new QAction(QIcon(":/assets/new-campaign.png"), tr("&New Campaign"), this);
   this->newCampaignAction->setShortcut((QKeySequence::New));
   this->newCampaignAction->setStatusTip(tr("Start a new campaign"));
   this->connect(this->newCampaignAction, SIGNAL(triggered()), this,SLOT(newCampaign()));
 
-  this->openCampaignAction = new QAction(QIcon(":/assets/game-open.png"), tr("&Open Campaign"), this);
+  this->openCampaignAction = new QAction(QIcon(":/assets/open-campaign.png"), tr("&Open Campaign"), this);
   this->openCampaignAction->setShortcut((QKeySequence::Open));
   this->openCampaignAction->setStatusTip(tr("Open an existing campaign"));
   this->connect(this->openCampaignAction, SIGNAL(triggered()), this,SLOT(openCampaign()));
@@ -284,8 +286,6 @@ void DMWindow::createActions() {
   this->closeCampaignAction->setShortcut((QKeySequence::Close));
   this->closeCampaignAction->setStatusTip(tr("Close the current campaign"));
   this->connect(this->closeCampaignAction, SIGNAL(triggered()), this,SLOT(closeCampaign()));
-
-
 
 }
 
@@ -322,10 +322,11 @@ void DMWindow::createMenus() {
  *
  * ------------------------------------------------------------------------------------------- */
 void DMWindow::createToolBars() {
-  this->gameToolbar = this->addToolBar(tr("Game"));
-  this->gameToolbar->addAction(this->newCampaignAction);
-  this->gameToolbar->addAction(this->openCampaignAction);
-  this->gameToolbar->addAction(this->closeCampaignAction);
+  this->campaignToolbar = this->addToolBar(tr("Campaign"));
+  this->campaignToolbar->setObjectName("campaign-toolbar");
+  this->campaignToolbar->addAction(this->newCampaignAction);
+  this->campaignToolbar->addAction(this->openCampaignAction);
+  this->campaignToolbar->addAction(this->closeCampaignAction);
 }
 
 /* -------------------------------------------------------------------------------------------
@@ -399,7 +400,5 @@ void DMWindow::createDockWindows() {
   this->monsterDock->setWidget(this->monsterList);
   this->addDockWidget(Qt::RightDockWidgetArea, this->monsterDock);
   this->viewMenu->addAction(this->monsterDock->toggleViewAction());
-
-
 
 }

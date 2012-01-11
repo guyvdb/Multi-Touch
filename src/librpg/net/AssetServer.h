@@ -24,7 +24,7 @@
 #include <QObject>
 
 
-namespace mtdnd {
+namespace rpg {
 
   /*
    * The Asset server runs in the dm client and serves assets on request

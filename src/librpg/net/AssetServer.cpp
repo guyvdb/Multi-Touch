@@ -21,7 +21,7 @@
 #include "AssetServer.h"
 
 
-namespace mtdnd {
+namespace rpg {
 
 
   AssetServer::AssetServer(QObject *parent) :  QObject(parent)

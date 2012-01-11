@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
 
     // read the configuration file
 
-    QString config = mtdnd::FileUtils::configDirectory() + QDir::separator() + "multitable.conf";
-    mtdnd::Settings settings(config);
+    QString config = rpg::FileUtils::configDirectory() + QDir::separator() + "multitable.conf";
+    rpg::Settings settings(config);
     qDebug() << "[Configuration] " << config;
     if(!settings.load()) {
       qDebug() << "[FATAL ERROR] Could not load config file: " << config;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
 
     // testing
-    mtdnd::GameSystem system;
+    rpg::GameSystem system;
     bool loaded = system.load("/home/guy/Projects/Current/MultiTouch/systems/_template/system.js");
     qDebug() << "GAME SYSTEM LOADED = " << loaded;
 

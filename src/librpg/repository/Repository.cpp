@@ -24,7 +24,7 @@
 #include "qjson/serializer.h"
 #include <QSqlQuery>
 
-namespace mtdnd {
+namespace rpg {
 
   /* -------------------------------------------------------------------------------------------
    *

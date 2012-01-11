@@ -33,7 +33,7 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
+TableWindow::TableWindow(rpg::Settings *settings, QWidget *parent) :  QMainWindow(parent, Qt::FramelessWindowHint), ui(new Ui::TableWindow), settings(settings)
 {
     ui->setupUi(this);
     //this->commandServer = 0x0;
@@ -43,7 +43,7 @@ TableWindow::TableWindow(mtdnd::Settings *settings, QWidget *parent) :  QMainWin
 
     this->setGeometry(workspace);
 
-    this->engine = new mtdnd::GameEngine(this->settings,mtdnd::GameEngine::GameTable);
+    this->engine = new rpg::GameEngine(this->settings,rpg::GameEngine::GameTable);
     this->connect(this->engine,SIGNAL(networkDiscoveryComplete()),this,SLOT(OnNetworkRegistrationComplete()));
     this->connect(this->engine, SIGNAL(waitingNetworkRegistration(QString,int)), this, SLOT(OnWaitingNetworkRegistration(QString,int)));
 

@@ -55,9 +55,19 @@ character {}
 -------------------------------------------------------------------------------
 character is a container indicated the start of character definition. The 
 allowable items inside the character container are:
+  * list_by     (1)
   * group       (0..n)
 
 example: character {}
+
+
+list_by <value> EOL
+-------------------------------------------------------------------------------
+list_by is a line orientatied item. It is used to specify the field name that
+will be used in the GUI when listing characters. The paramater value is the
+name of the field you want to list by.
+
+example: list_by "Character Name"
 
 
 group <value> {}
@@ -256,27 +266,6 @@ example: value "-3";
 
 
 
-hooks {}
--------------------------------------------------------------------------------
-hooks is a container item. It is used to hook the game system into the various
-applications in the software. It is concerned with hooking the game system
-to the graphical user interface. All items inside the hooks container should
-only appear once. This is not enforced. If they appear multipule times,
-they will keep overwriting each other making the last one the active one.
-
-Allowable items in this container are:
-  * list_character_by       (1)
-
-example: hooks {}
-
-
-list_character_by <value> EOL
--------------------------------------------------------------------------------
-list_character_by is a line oriented item. This is used to determine which
-field should be used when the GUI is displaying a list of characters. The
-parameter value is the name of a field.
-
-example: list_character_by "Character Name"
 
 
 

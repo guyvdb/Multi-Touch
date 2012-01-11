@@ -37,9 +37,11 @@ DEPENDPATH += $$PWD/../../include
 INCLUDEPATH += $$PWD/../librpg
 DEPENDPATH += $$PWD/../librpg
 
+INCLUDEPATH += $$PWD/../libgsdl
+DEPENDPATH += $$PWD/../libgsdl
 
 DESTDIR += ../../../bin
 
 
 
-LIBS += -L$$DESTDIR -lrpg -ltiled -lqjson
+LIBS += -L$$DESTDIR -lrpg -ltiled -lqjson -lgsdl

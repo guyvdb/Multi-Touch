@@ -30,7 +30,7 @@
 /* -------------------------------------------------------------------------------------------
  *
  * ------------------------------------------------------------------------------------------- */
-NetworkSettingDialog::NetworkSettingDialog(mtdnd::Settings *settings, QWidget *parent) : QDialog(parent), ui(new Ui::NetworkSettingDialog), settings(settings)
+NetworkSettingDialog::NetworkSettingDialog(rpg::Settings *settings, QWidget *parent) : QDialog(parent), ui(new Ui::NetworkSettingDialog), settings(settings)
 {
     ui->setupUi(this);
 

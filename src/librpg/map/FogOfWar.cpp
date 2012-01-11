@@ -26,7 +26,7 @@
 
 #include "CellStates.h"
 
-namespace mtdnd {
+namespace rpg {
 
   FogOfWar::FogOfWar(QRectF bounds, QGraphicsItem *parent) :  QGraphicsItem(parent), bounds(bounds)
   {

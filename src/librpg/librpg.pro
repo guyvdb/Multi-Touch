@@ -85,9 +85,10 @@ OTHER_FILES += \
 INCLUDEPATH += $$PWD/../../include
 DEPENDPATH += $$PWD/../../include
 
-
+INCLUDEPATH += $$PWD/../libgsdl
+DEPENDPATH += $$PWD/../libgsdl
 
 DESTDIR += ../../../bin
 
 
-LIBS += -L$$DESTDIR -ltiled -lqjson
+LIBS += -L$$DESTDIR -ltiled -lqjson -lgsdl

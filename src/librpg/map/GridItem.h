@@ -30,7 +30,7 @@ namespace Tiled {
     class Map;
 }
 
-namespace mtdnd {
+namespace rpg {
 
     class MapView;
 

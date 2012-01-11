@@ -1,7 +1,7 @@
 #include "RegisterTableDialog.h"
 #include "ui_RegisterTableDialog.h"
 
-RegisterTableDialog::RegisterTableDialog(mtdnd::GameEngine *engine) : QDialog(), ui(new Ui::RegisterTableDialog), engine(engine)
+RegisterTableDialog::RegisterTableDialog(rpg::GameEngine *engine) : QDialog(), ui(new Ui::RegisterTableDialog), engine(engine)
 {
     ui->setupUi(this);
 }

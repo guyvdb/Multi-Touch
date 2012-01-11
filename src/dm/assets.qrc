@@ -6,5 +6,7 @@
         <file>assets/quit.png</file>
         <file>assets/close-game.png</file>
         <file>assets/add-map.png</file>
+        <file>assets/new-campaign.png</file>
+        <file>assets/open-campaign.png</file>
     </qresource>
 </RCC>

@@ -2,13 +2,27 @@
 #include "ui_CreateCampaignDialog.h"
 
 #include <QVariant>
+#include <QDir>
+#include <QStringList>
+
+#include "utils/FileUtils.h"
 
 CreateCampaignDialog::CreateCampaignDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CreateCampaignDialog)
 {
     ui->setupUi(this);
+    QDir dir(rpg::FileUtils::systemsDirectory());
+    dir.setFilter(QDir::Files | QDir::NoSymLinks);
+    dir.setSorting(QDir::Name);
+    QStringList files = dir.entryList();
+    foreach(QString file, files) {
+      if(file.endsWith(".gsdl")) {
+        this->ui->cmbGameSystem->addItem(file);
+      }
+    }
 }
+
 
 CreateCampaignDialog::~CreateCampaignDialog()
 {
@@ -24,9 +38,8 @@ void CreateCampaignDialog::loadGameSystems(QStringList &pairs) {
 }
 
 QString CreateCampaignDialog::getGameSystem() {
-  int idx = this->ui->cmbGameSystem->currentIndex();
-  QVariant data = this->ui->cmbGameSystem->itemData(idx);
-  return data.toString();
+  int idx = this->ui->cmbGameSystem->currentIndex();  
+  return this->ui->cmbGameSystem->itemText(idx);
 }
 
 QString CreateCampaignDialog::getFileName() {

@@ -47,14 +47,14 @@ namespace gsdl {
       }
     }
 
-    void setListCharacterByFieldName(std::basic_string<char> value) {
+    /*void setListCharacterByFieldName(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
         QString k = "LIST_CHARACTER_BY_FIELD_NAME";
         QString v = QString::fromStdString(value);
         gameSystem->addGuiMapping(k,v);
         qDebug() << "ADD GUI MAPPING: " << k << "=" << v;
       }
-    }
+    }*/
 
     void createGroup(std::basic_string<char> value) {
       if(gameSystem != 0x0) {
@@ -207,6 +207,15 @@ namespace gsdl {
             item->addInfo(QString::fromStdString(value));
             qDebug() << "ADDED INFO: NAME=" << item->getName() << ", INFO=" << QString::fromStdString(value);
           }
+        }
+      }
+    }
+
+    void setListCharacterByFieldName(std::basic_string<char> value) {
+      if(gameSystem != 0x0) {
+        if(gameSystem->getCharacter() != 0x0) {
+          gameSystem->getCharacter()->setListByFieldName(QString::fromStdString(value));
+          qDebug() << "CHARACTER LIST BY FIELD NAME=" << gameSystem->getCharacter()->getListByFieldName();
         }
       }
     }

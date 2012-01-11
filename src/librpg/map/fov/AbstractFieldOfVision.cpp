@@ -1,6 +1,6 @@
 #include "AbstractFieldOfVision.h"
 
-namespace mtdnd {
+namespace rpg {
 
   AbstractFieldOfVision::AbstractFieldOfVision(Matrix *obsticals) :  QObject(), obsticals(obsticals)
   {

@@ -13,7 +13,7 @@ class RegisterTableDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RegisterTableDialog(mtdnd::GameEngine *engine);
+    explicit RegisterTableDialog(rpg::GameEngine *engine);
     ~RegisterTableDialog();
 
 private slots:
@@ -21,7 +21,7 @@ private slots:
   void on_buttonBox_rejected();
 private:
     Ui::RegisterTableDialog *ui;
-    mtdnd::GameEngine *engine;
+    rpg::GameEngine *engine;
 };
 
 #endif // REGISTERTABLEDIALOG_H

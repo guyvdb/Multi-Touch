@@ -6,6 +6,9 @@ system "D&D 4e" {
   }
 
   character { 
+    list_by      "Character Name"
+
+
     group "Main" {     
       field     "Player Name"
       field     "Character Name" 

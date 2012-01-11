@@ -23,7 +23,7 @@
 
 #include <QString>
 
-namespace mtdnd {
+namespace rpg {
 
   class NodeInfo
   {

@@ -27,7 +27,7 @@
 #include "tiled/map.h"
 #include "tiled/maprenderer.h"
 
-namespace mtdnd {
+namespace rpg {
 
   class LIBRPG_EXPORT MapItem : public QGraphicsItem
   {

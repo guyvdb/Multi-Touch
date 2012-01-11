@@ -5,7 +5,7 @@
 
 
 
-namespace mtdnd {
+namespace rpg {
 
   GameSystem::GameSystem(QObject *parent) :  QObject(parent)
   {

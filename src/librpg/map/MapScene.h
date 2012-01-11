@@ -38,7 +38,7 @@ namespace Tiled {
     class MapRenderer;
 }
 
-namespace mtdnd {
+namespace rpg {
 
   class MapView;
   class GameEngine;
@@ -56,12 +56,12 @@ namespace mtdnd {
     void initializeMap(Tiled::Map *map);
     void finalizeMap();
 
-    mtdnd::MapToken * addToken(mtdnd::MapToken *token);
-    mtdnd::MapToken * findToken(const QString id);
+    rpg::MapToken * addToken(rpg::MapToken *token);
+    rpg::MapToken * findToken(const QString id);
     void moveToken(const QString id, QPoint point);
     void moveToken(const QString id, const int row, const int col);
-    void moveToken(mtdnd::MapToken *token, QPoint point);
-    void moveToken(mtdnd::MapToken *token, const int row, const int col);
+    void moveToken(rpg::MapToken *token, QPoint point);
+    void moveToken(rpg::MapToken *token, const int row, const int col);
 
 
     QPoint sceneToCellTransform(const QPoint scenePoint);

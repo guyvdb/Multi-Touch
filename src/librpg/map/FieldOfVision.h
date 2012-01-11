@@ -27,7 +27,7 @@
 
 #include "Matrix.h"
 
-namespace mtdnd {
+namespace rpg {
 
   class FieldOfVision
   {

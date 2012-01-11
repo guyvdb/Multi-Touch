@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(mtdnd::Settings *settings, QWidget *parent = 0);
+    explicit MainWindow(rpg::Settings *settings, QWidget *parent = 0);
     ~MainWindow();
 protected:
     void resizeEvent(QResizeEvent *e);
@@ -87,9 +87,9 @@ private:
   QString databaseFileName;
   QRect calculateTabRect();
   QRect calculateMapRect();
-  mtdnd::Settings *settings;
-  mtdnd::MapView *dmMap;
-  mtdnd::GameEngine *engine;
+  rpg::Settings *settings;
+  rpg::MapView *dmMap;
+  rpg::GameEngine *engine;
 };
 
 #endif // MAINWINDOW_H
