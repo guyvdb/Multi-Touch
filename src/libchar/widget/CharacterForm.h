@@ -10,10 +10,11 @@
 
 #include "Bridge.h"
 
+#include "libchar_global.h"
 
 namespace character {
 
-  class CharacterForm : public QFrame
+  class LIBCHAR_EXPORT CharacterForm : public QFrame
   {
       Q_OBJECT
   public:
